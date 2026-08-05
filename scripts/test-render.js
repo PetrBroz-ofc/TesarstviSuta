@@ -4,6 +4,38 @@ const path = require("path");
 
 const ROOT = path.join(__dirname, "..");
 
+/**
+ * První test: ověří obsah SUROVÉHO HTML bez spuštění jakéhokoliv JS.
+ * Tohle je přesně scénář, který dělal weby "rozbité" - dokud JS neproběhl
+ * (pomalá síť, GitHub Pages, mobil), byl vidět prázdný/šedý obsah.
+ * Po opravě musí být reálný text a fotky vidět v HTML samotném.
+ */
+function testStaticHtmlHasRealContent() {
+  const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+  const dom = new JSDOM(html); // BEZ runScripts - žádný main.js neběží
+  const doc = dom.window.document;
+
+  const checks = [
+    ["Hero titulek je v syrovém HTML vyplněný", doc.getElementById("hero-title-1").textContent.trim().length > 0],
+    ["Hero podtext je v syrovém HTML vyplněný", doc.getElementById("hero-text").textContent.trim().length > 0],
+    ["Hero fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#hero-media img[src]")],
+    ["O nás fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#about-media img[src]")],
+    ["Navigace je vyplněná bez JS (5 odkazů)", doc.querySelectorAll("#nav-desktop a").length === 5],
+    ["Karty služeb jsou v HTML bez JS (4)", doc.querySelectorAll(".service-card").length === 4],
+    ["Fotky realizací jsou v HTML bez JS (4)", doc.querySelectorAll(".gallery-item img").length === 4],
+    ["Žádný prvek nemá data-skeleton (skrytý text)", doc.querySelectorAll("[data-skeleton]").length === 0]
+  ];
+
+  console.log("--- Test syrového HTML (bez JS) ---");
+  let allPassed = true;
+  checks.forEach(([name, passed]) => {
+    console.log((passed ? "OK  " : "FAIL") + " - " + name);
+    if (!passed) allPassed = false;
+  });
+  console.log("");
+  return allPassed;
+}
+
 async function run() {
   const html = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
   const dom = new JSDOM(html, {
@@ -72,6 +104,7 @@ async function run() {
     ]
   ];
 
+  console.log("--- Test po spuštění main.js (s daty z content.json) ---");
   let allPassed = true;
   checks.forEach(([name, passed]) => {
     console.log((passed ? "OK  " : "FAIL") + " - " + name);
@@ -83,10 +116,14 @@ async function run() {
     errors.forEach((e) => console.log(" -", e && e.stack ? e.stack : e));
   }
 
-  process.exit(allPassed ? 0 : 1);
+  return allPassed;
 }
 
-run().catch((err) => {
+(async () => {
+  const staticOk = testStaticHtmlHasRealContent();
+  const renderOk = await run();
+  process.exit(staticOk && renderOk ? 0 : 1);
+})().catch((err) => {
   console.error("Test selhal s výjimkou:", err);
   process.exit(1);
 });

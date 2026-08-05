@@ -324,18 +324,32 @@
 
   /* ---------- Cookie lišta ---------- */
 
-  function initCookieConsent(content) {
-    const KEY = "suta_cookie_consent";
-    const bar = document.getElementById("cookie-bar");
-    if (!bar) return;
+  const COOKIE_KEY = "suta_cookie_consent";
+  let cookieBehaviorInitialized = false;
 
-    document.getElementById("cookie-text").textContent = content.cookieConsent.text;
+  // Text je už napevno v HTML, takže tohle jen drží text v souladu s content.json
+  // (např. po úpravě v administraci) - nemá vliv na to, kdy se lišta zobrazí.
+  function syncCookieText(content) {
+    const textEl = document.getElementById("cookie-text");
     const acceptBtn = document.getElementById("cookie-accept");
+    if (!textEl || !acceptBtn || !content.cookieConsent) return;
+    textEl.textContent = content.cookieConsent.text;
     acceptBtn.textContent = content.cookieConsent.acceptLabel;
+  }
+
+  // Zobrazení lišty a reakce na klik nezávisí na fetch() - stačí, že HTML
+  // element existuje, spouští se hned při načtení stránky.
+  function initCookieBehavior() {
+    if (cookieBehaviorInitialized) return;
+    cookieBehaviorInitialized = true;
+
+    const bar = document.getElementById("cookie-bar");
+    const acceptBtn = document.getElementById("cookie-accept");
+    if (!bar || !acceptBtn) return;
 
     let consent = null;
     try {
-      consent = localStorage.getItem(KEY);
+      consent = localStorage.getItem(COOKIE_KEY);
     } catch (e) {
       /* localStorage nemusí být dostupný (privátní režim) — liště to nevadí */
     }
@@ -346,7 +360,7 @@
 
     acceptBtn.addEventListener("click", () => {
       try {
-        localStorage.setItem(KEY, "accepted");
+        localStorage.setItem(COOKIE_KEY, "accepted");
       } catch (e) {}
       bar.classList.remove("is-visible");
     });
@@ -433,8 +447,6 @@
 
   /* ---------- Vykreslení celé stránky z dat ---------- */
 
-  let interactionsInitialized = false;
-
   function renderAll(content, theme) {
     if (theme) applyTheme(theme);
 
@@ -453,21 +465,17 @@
     renderScaffolding(content);
     renderContact(content);
     renderFooter(content);
-    initCookieConsent(content);
+    syncCookieText(content);
 
-    // Interaktivní chování (posluchače na scroll/menu/lightbox) stačí
-    // navázat jednou; opakované vykreslení v náhledu jen aktualizuje obsah.
-    if (!interactionsInitialized) {
-      initHeaderScroll();
-      initMobileNav();
-      initLightbox();
-      interactionsInitialized = true;
-    }
+    // Reveal pozorovatel se musí znovu napojit i po přerenderování (např.
+    // v živém náhledu), protože se DOM uzly galerie/služeb/kontaktů nahrazují.
     initReveal();
 
     // Skeleton-loading placeholdery (šedé "cihličky" než se načte obsah) je
     // potřeba po vykreslení skutečného textu odstranit - jinak CSS pravidlo
     // [data-skeleton] drží text natrvalo průhledný, i když je správně vyplněný.
+    // (HTML teď obsahuje reálný obsah rovnou, takže se toto v běžném provozu
+    // ani nemá kdy projevit - jde jen o pojistku pro budoucí úpravy.)
     document.querySelectorAll("[data-skeleton]").forEach((node) => {
       node.removeAttribute("data-skeleton");
     });
@@ -506,15 +514,26 @@
   async function init() {
     if (isPreviewMode) initPreviewListener();
 
+    // Tohle nepotřebuje data z content.json - HTML už obsahuje hotový text,
+    // takže menu, scroll efekt hlavičky, lightbox, scroll-reveal animace
+    // i cookie lišta fungují okamžitě, bez čekání na síť.
+    initHeaderScroll();
+    initMobileNav();
+    initLightbox();
+    initReveal();
+    initCookieBehavior();
+
     try {
       const [content, theme] = await Promise.all([
         fetchJSON("data/content.json"),
         fetchJSON("data/theme.json")
       ]);
+      // Doplní/aktualizuje obsah podle aktuálního content.json (např. po
+      // úpravě v administraci). Pokud fetch selže, stránka dál funguje
+      // s obsahem, který už je napevno v HTML.
       renderAll(content, theme);
     } catch (err) {
       console.error("Chyba při načítání obsahu webu:", err);
-      document.body.classList.add("has-load-error");
     }
   }
 

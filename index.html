@@ -62,18 +62,24 @@
   }
   </script>
 </head>
-<body class="is-loading">
+<body>
   <a href="#main" class="skip-link">Přeskočit na obsah</a>
 
   <!-- ========================= HEADER ========================= -->
   <header class="site-header" id="site-header">
     <div class="container">
       <a href="#" class="logo" aria-label="Domů">
-        <span class="logo-mark" id="logo-text" data-skeleton>Šuta</span>
-        <span class="logo-sub" id="logo-sub" data-skeleton>Tesařství &amp; pokrývačství</span>
+        <span class="logo-mark" id="logo-text">Šuta</span>
+        <span class="logo-sub" id="logo-sub">Tesařství &amp; pokrývačství</span>
       </a>
 
-      <nav class="nav-desktop" id="nav-desktop" aria-label="Hlavní navigace"></nav>
+      <nav class="nav-desktop" id="nav-desktop" aria-label="Hlavní navigace">
+        <a href="#o-nas">O nás</a>
+        <a href="#sluzby">Služby</a>
+        <a href="#realizace">Realizace</a>
+        <a href="#leseni">Lešení</a>
+        <a href="#kontakt">Kontakt</a>
+      </nav>
 
       <div class="header-actions">
         <a href="#kontakt" class="btn btn-primary header-cta" data-header-cta>Nezávazná poptávka</a>
@@ -89,22 +95,38 @@
     <button class="lightbox-close nav-mobile-close" id="nav-mobile-close" aria-label="Zavřít menu">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
-    <nav id="nav-mobile-links" aria-label="Mobilní navigace"></nav>
+    <nav id="nav-mobile-links" aria-label="Mobilní navigace">
+      <a href="#o-nas">O nás</a>
+      <a href="#sluzby">Služby</a>
+      <a href="#realizace">Realizace</a>
+      <a href="#leseni">Lešení</a>
+      <a href="#kontakt">Kontakt</a>
+    </nav>
     <a href="#kontakt" class="btn btn-primary" data-header-cta>Nezávazná poptávka</a>
   </div>
 
   <main id="main">
     <!-- ========================= HERO ========================= -->
     <section class="hero">
-      <div class="hero-scale" id="hero-scale" aria-hidden="true"></div>
+      <div class="hero-scale" id="hero-scale" aria-hidden="true">
+        <div class="tick major"></div>
+        <div class="tick"></div>
+        <div class="tick"></div>
+        <div class="tick"></div>
+        <div class="tick major"></div>
+        <div class="tick"></div>
+        <div class="tick"></div>
+        <div class="tick"></div>
+        <div class="tick major"><span class="tick-label">EST. 2007</span></div>
+      </div>
       <div class="container">
         <div class="hero-content">
-          
+          <p class="eyebrow" id="hero-eyebrow">Od roku 2007</p>
           <h1 class="hero-title">
-            <span id="hero-title-1" data-skeleton>Tesařství a pokrývačství</span>
-            <span id="hero-title-2" class="accent-word" data-skeleton>Jakub Šuta</span>
+            <span id="hero-title-1">Tesařství a pokrývačství</span>
+            <span id="hero-title-2" class="accent-word">Jakub Šuta</span>
           </h1>
-          <p class="lede" id="hero-text" data-skeleton>Řemeslná práce od roku 2007.</p>
+          <p class="lede" id="hero-text">Řemeslná práce od roku 2007. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.</p>
           <div class="hero-actions">
             <a href="#kontakt" class="btn btn-primary" id="hero-cta-primary">
               <span>Nezávazná poptávka</span>
@@ -114,7 +136,8 @@
           </div>
         </div>
         <div class="hero-media" id="hero-media" aria-hidden="false">
-          <div class="placeholder-media"></div>
+          <img src="images/hero-strecha.jpg" alt="Rozestavěná střecha rodinného domu s krovem a difuzní fólií" loading="eager">
+          <div class="badge"><span>EST. 2007</span></div>
         </div>
       </div>
     </section>
@@ -122,13 +145,28 @@
     <!-- ========================= O NÁS ========================= -->
     <section class="section" id="o-nas">
       <div class="container about-grid">
-        <div class="about-media" id="about-media" data-reveal></div>
+        <div class="about-media" id="about-media" data-reveal>
+          <img src="images/o-nas-dilna.jpg" alt="Detail ručně tesaného spoje krokví" loading="lazy">
+        </div>
         <div>
-          <p class="eyebrow" id="about-eyebrow" data-skeleton>O firmě</p>
-          <h2 class="section-title" id="about-title" data-skeleton>Řemeslo, na které se dá spolehnout</h2>
-          <p class="lede" id="about-text" data-skeleton></p>
+          <p class="eyebrow" id="about-eyebrow">O firmě</p>
+          <h2 class="section-title" id="about-title">Řemeslo, na které se dá spolehnout</h2>
+          <p class="lede" id="about-text">Od roku 2007 realizujeme tesařské a pokrývačské práce po celé České republice. Zakládáme si na kvalitním provedení, férovém jednání a dlouhé životnosti našich staveb.</p>
 
-          <div class="stats-row" id="about-stats" data-reveal-stagger></div>
+          <div class="stats-row" id="about-stats" data-reveal-stagger">
+            <div class="stat">
+              <div class="stat-value">19+<span class="stat-unit">let</span></div>
+              <div class="stat-label">zkušeností v oboru</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">100+<span class="stat-unit"></span></div>
+              <div class="stat-label">dokončených realizací</div>
+            </div>
+            <div class="stat">
+              <div class="stat-value">CZ<span class="stat-unit"></span></div>
+              <div class="stat-label">práce po celé ČR</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -137,10 +175,49 @@
     <section class="section section-alt" id="sluzby">
       <div class="container">
         <div class="section-head center">
-          <p class="eyebrow" id="services-eyebrow" data-skeleton>Co děláme</p>
-          <h2 class="section-title" id="services-title" data-skeleton>Služby</h2>
+          <p class="eyebrow" id="services-eyebrow">Co děláme</p>
+          <h2 class="section-title" id="services-title">Služby</h2>
         </div>
-        <div class="services-grid" id="services-grid" data-reveal-stagger></div>
+        <div class="services-grid" id="services-grid" data-reveal-stagger">
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 34 24 10 42 34"/><path d="M13 34V24l11-14 11 14v10"/><path d="M6 34h36"/></svg></div>
+            <h3>Tesařské konstrukce</h3>
+            <ul>
+              <li>Krovy</li>
+              <li>Pergoly</li>
+              <li>Altány</li>
+              <li>Přístřešky</li>
+              <li>Garážová stání</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 20 24 8l18 12"/><path d="M9 20v18h30V20"/><path d="M9 27h30M9 34h30M17 20v18M31 20v18"/></svg></div>
+            <h3>Pokrývačské práce</h3>
+            <ul>
+              <li>Pokládka krytin</li>
+              <li>Rekonstrukce střech</li>
+              <li>Opravy starých střech</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="12" width="36" height="7" rx="1"/><rect x="6" y="21" width="36" height="7" rx="1"/><rect x="6" y="30" width="36" height="7" rx="1"/><path d="M14 12v7M31 21v7M20 30v7"/></svg></div>
+            <h3>Dřevěné prvky</h3>
+            <ul>
+              <li>Palubkové obklady</li>
+              <li>Dřevěné podlahy</li>
+              <li>Ruční tesání trámů</li>
+            </ul>
+          </div>
+          <div class="service-card">
+            <div class="service-icon"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6v6M20 9h8"/><path d="M24 12 36 24v18H12V24z"/><path d="M20 42V30h8v12"/><path d="M12 24H6l18-18 18 18h-6"/></svg></div>
+            <h3>Speciální práce</h3>
+            <ul>
+              <li>Historické objekty</li>
+              <li>Kostely</li>
+              <li>Památkové rekonstrukce</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -148,10 +225,39 @@
     <section class="section" id="realizace">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" id="gallery-eyebrow" data-skeleton>Naše práce</p>
-          <h2 class="section-title" id="gallery-title" data-skeleton>Realizace</h2>
+          <p class="eyebrow" id="gallery-eyebrow">Naše práce</p>
+          <h2 class="section-title" id="gallery-title">Realizace</h2>
         </div>
-        <div class="gallery-grid" id="gallery-grid" data-reveal-stagger></div>
+        <div class="gallery-grid" id="gallery-grid" data-reveal-stagger">
+          <div class="gallery-item" role="button" tabindex="0" aria-label="Zobrazit fotografii: Detail podbití střechy">
+            <img src="images/realizace-01.jpg" alt="Detail podbití střechy" loading="lazy">
+            <div class="gallery-caption">
+              <div class="g-title">Detail podbití střechy</div>
+              <div class="g-desc">Precizní tesařské zpracování okapní hrany a dřevěného obkladu</div>
+            </div>
+          </div>
+          <div class="gallery-item" role="button" tabindex="0" aria-label="Zobrazit fotografii: Historická rekonstrukce">
+            <img src="images/realizace-02.jpg" alt="Historická rekonstrukce" loading="lazy">
+            <div class="gallery-caption">
+              <div class="g-title">Historická rekonstrukce</div>
+              <div class="g-desc">Oprava krovu památkově chráněného dřevěného kostela</div>
+            </div>
+          </div>
+          <div class="gallery-item" role="button" tabindex="0" aria-label="Zobrazit fotografii: Novostavba krovu">
+            <img src="images/realizace-03.jpg" alt="Novostavba krovu" loading="lazy">
+            <div class="gallery-caption">
+              <div class="g-title">Novostavba krovu</div>
+              <div class="g-desc">Tesařská konstrukce hřebene a nároží rodinného domu</div>
+            </div>
+          </div>
+          <div class="gallery-item" role="button" tabindex="0" aria-label="Zobrazit fotografii: Dřevěná nástavba">
+            <img src="images/realizace-04.jpg" alt="Dřevěná nástavba" loading="lazy">
+            <div class="gallery-caption">
+              <div class="g-title">Dřevěná nástavba</div>
+              <div class="g-desc">Tesařská konstrukce podkroví a terasy</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -160,8 +266,8 @@
       <div class="container">
         <div class="scaffolding" data-reveal>
           <div class="scaffolding-text">
-            <h2 id="scaffolding-title" data-skeleton>Pronájem lešení UNI 70</h2>
-            <p id="scaffolding-text" data-skeleton></p>
+            <h2 id="scaffolding-title">Pronájem lešení UNI 70</h2>
+            <p id="scaffolding-text">Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce.</p>
           </div>
           <a href="#kontakt" class="btn btn-outline-light" id="scaffolding-cta">Poptat lešení</a>
         </div>
@@ -172,12 +278,25 @@
     <section class="section section-dark" id="kontakt">
       <div class="container">
         <div class="section-head">
-          <p class="eyebrow" id="contact-eyebrow" data-skeleton>Spojte se s námi</p>
-          <h2 class="section-title" id="contact-title" data-skeleton>Kontakt</h2>
-          <p class="lede contact-lede" id="contact-text" data-skeleton></p>
+          <p class="eyebrow" id="contact-eyebrow">Spojte se s námi</p>
+          <h2 class="section-title" id="contact-title">Kontakt</h2>
+          <p class="lede contact-lede" id="contact-text">Máte v plánu opravu střechy nebo tesařskou zakázku? Ozvěte se nám, poradíme a připravíme nabídku na míru.</p>
         </div>
 
-        <div class="contact-grid" id="contact-grid" data-reveal-stagger></div>
+        <div class="contact-grid" id="contact-grid" data-reveal-stagger">
+          <div class="contact-card">
+            <h3>Jakub Šuta</h3>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg><span>Francova Lhota 393, 756 14</span></div>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8.5" cy="11" r="2"/><path d="M6 16c.6-1.5 1.8-2.2 2.5-2.2s1.9.7 2.5 2.2M14 9.5h5M14 13h5"/></svg><span>IČ: 87041693</span></div>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.5 21 3 14.5 3 6a2 2 0 0 1 1-2z"/></svg><a href="tel:+420739437783">+420 739 437 783</a></div>
+          </div>
+          <div class="contact-card">
+            <h3>Milan Šuta</h3>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.6 7-12a7 7 0 1 0-14 0c0 5.4 7 12 7 12z"/><circle cx="12" cy="9" r="2.3"/></svg><span>Francova Lhota 30, 756 14</span></div>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8.5" cy="11" r="2"/><path d="M6 16c.6-1.5 1.8-2.2 2.5-2.2s1.9.7 2.5 2.2M14 9.5h5M14 13h5"/></svg><span>IČ: 03345050</span></div>
+            <div class="contact-row"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v4a2 2 0 0 1-2 2C9.5 21 3 14.5 3 6a2 2 0 0 1 1-2z"/></svg><a href="tel:+420737020984">+420 737 020 984</a></div>
+          </div>
+        </div>
 
         <div class="contact-cta">
           <a href="mailto:info@tesarstvi-suta.cz" class="btn btn-primary">
@@ -192,16 +311,16 @@
   <!-- ========================= FOOTER ========================= -->
   <footer class="site-footer">
     <div class="container">
-      <p id="footer-text">Tesařství a pokrývačství Jakub Šuta</p>
-      <p id="footer-copy">© 2026</p>
+      <p id="footer-text">Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2007.</p>
+      <p id="footer-copy">© 2026 Jakub Šuta. Všechna práva vyhrazena.</p>
       <a href="admin.html" class="footer-admin-link">Administrace</a>
     </div>
   </footer>
 
   <!-- ========================= COOKIE LIŠTA ========================= -->
   <div class="cookie-bar" id="cookie-bar" role="dialog" aria-label="Souhlas s cookies">
-    <p id="cookie-text"></p>
-    <button class="btn btn-primary" id="cookie-accept"></button>
+    <p id="cookie-text">Tento web používá pouze technické soubory cookie nezbytné pro jeho správné fungování. Žádná analytická ani marketingová data nesbíráme.</p>
+    <button class="btn btn-primary" id="cookie-accept">Rozumím</button>
   </div>
 
   <!-- ========================= LIGHTBOX ========================= -->
