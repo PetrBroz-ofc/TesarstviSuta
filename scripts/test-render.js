@@ -55,7 +55,7 @@ async function run() {
     ["Hero 2. řádek vykreslen", doc.getElementById("hero-title-2").textContent.includes("Šuta")],
     ["Nav odkazy vykresleny (5)", doc.querySelectorAll("#nav-desktop a").length === 5],
     ["Karty služeb vykresleny (4)", doc.querySelectorAll(".service-card").length === 4],
-    ["Položky galerie vykresleny (6)", doc.querySelectorAll(".gallery-item").length === 6],
+    ["Položky galerie vykresleny (4)", doc.querySelectorAll(".gallery-item").length === 4],
     ["Statistiky vykresleny (3)", doc.querySelectorAll("#about-stats .stat").length === 3],
     ["Kontaktní karty vykresleny (2)", doc.querySelectorAll(".contact-card").length === 2],
     ["Patička vykreslena", doc.getElementById("footer-text").textContent.length > 0],
@@ -65,7 +65,11 @@ async function run() {
       doc.querySelector(".contact-card a[href^='tel:']")?.getAttribute("href") ===
         "tel:+420739437783"
     ],
-    ["Žádné JS chyby za běhu", errors.length === 0]
+    ["Žádné JS chyby za běhu", errors.length === 0],
+    [
+      "Skeleton atributy odstraněny (text není neviditelný)",
+      doc.querySelectorAll("[data-skeleton]").length === 0
+    ]
   ];
 
   let allPassed = true;

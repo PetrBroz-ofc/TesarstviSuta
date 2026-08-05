@@ -2,8 +2,8 @@
   "meta": {
     "title": "Tesařství a pokrývačství Jakub Šuta | Krovy, střechy, pergoly",
     "description": "Tesařské a pokrývačské práce po celé České republice od roku 2007. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Ruční práce, zkušenost, spolehlivost.",
-    "ogImage": "/images/og-cover.jpg",
-    "favicon": "/images/favicon.svg",
+    "ogImage": "images/og-cover.jpg",
+    "favicon": "images/favicon-32.png",
     "siteUrl": "https://tesarstvi-suta.cz",
     "themeColor": "#1C1917"
   },
@@ -27,8 +27,8 @@
     "ctaPrimary": { "label": "Nezávazná poptávka", "href": "#kontakt" },
     "ctaSecondary": { "label": "Prohlédnout realizace", "href": "#realizace" },
     "image": {
-      "src": "/images/hero-strecha.jpg",
-      "alt": "Dřevěný krov nové střechy během realizace"
+      "src": "images/hero-strecha.jpg",
+      "alt": "Rozestavěná střecha rodinného domu s krovem a difuzní fólií"
     },
     "scaleLabel": "EST. 2007"
   },
@@ -37,8 +37,8 @@
     "title": "Řemeslo, na které se dá spolehnout",
     "text": "Od roku 2007 realizujeme tesařské a pokrývačské práce po celé České republice. Zakládáme si na kvalitním provedení, férovém jednání a dlouhé životnosti našich staveb.",
     "image": {
-      "src": "/images/o-nas-dilna.jpg",
-      "alt": "Ruční opracování dřevěného trámu"
+      "src": "images/o-nas-dilna.jpg",
+      "alt": "Detail ručně tesaného spoje krokví"
     },
     "stats": [
       { "value": "19+", "unit": "let", "label": "zkušeností v oboru" },
@@ -77,34 +77,24 @@
     "title": "Realizace",
     "items": [
       {
-        "image": "/images/realizace-01.jpg",
-        "title": "Rekonstrukce střechy",
-        "description": "Kompletní výměna krytiny rodinného domu"
+        "image": "images/realizace-01.jpg",
+        "title": "Detail podbití střechy",
+        "description": "Precizní tesařské zpracování okapní hrany a dřevěného obkladu"
       },
       {
-        "image": "/images/realizace-02.jpg",
+        "image": "images/realizace-02.jpg",
         "title": "Historická rekonstrukce",
-        "description": "Oprava krovu památkově chráněného objektu"
+        "description": "Oprava krovu památkově chráněného dřevěného kostela"
       },
       {
-        "image": "/images/realizace-03.jpg",
-        "title": "Dřevěná pergola",
-        "description": "Zakázková pergola na míru zahradě"
-      },
-      {
-        "image": "/images/realizace-04.jpg",
+        "image": "images/realizace-03.jpg",
         "title": "Novostavba krovu",
-        "description": "Tesařská konstrukce rodinného domu"
+        "description": "Tesařská konstrukce hřebene a nároží rodinného domu"
       },
       {
-        "image": "/images/realizace-05.jpg",
-        "title": "Přístřešek na auto",
-        "description": "Dřevěné garážové stání s pokrytím"
-      },
-      {
-        "image": "/images/realizace-06.jpg",
-        "title": "Palubkový obklad",
-        "description": "Interiérové obložení podkroví"
+        "image": "images/realizace-04.jpg",
+        "title": "Dřevěná nástavba",
+        "description": "Tesařská konstrukce podkroví a terasy"
       }
     ]
   },

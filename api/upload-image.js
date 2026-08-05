@@ -91,7 +91,7 @@ module.exports = async (req, res) => {
 
   try {
     await putFile(repoPath, base64, `Admin: nahrání obrázku ${safeName}`, null, true);
-    res.status(200).json({ ok: true, path: `/${repoPath}` });
+    res.status(200).json({ ok: true, path: repoPath });
   } catch (err) {
     console.error("Chyba při nahrávání obrázku do GitHub:", err.message);
     res.status(502).json({ error: "Nahrání se nezdařilo. Zkuste to prosím znovu." });

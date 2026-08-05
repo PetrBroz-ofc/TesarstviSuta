@@ -465,6 +465,13 @@
     }
     initReveal();
 
+    // Skeleton-loading placeholdery (šedé "cihličky" než se načte obsah) je
+    // potřeba po vykreslení skutečného textu odstranit - jinak CSS pravidlo
+    // [data-skeleton] drží text natrvalo průhledný, i když je správně vyplněný.
+    document.querySelectorAll("[data-skeleton]").forEach((node) => {
+      node.removeAttribute("data-skeleton");
+    });
+
     document.body.classList.remove("is-loading");
   }
 
