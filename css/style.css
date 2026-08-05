@@ -208,14 +208,14 @@ h1, h2, h3, .section-title {
   right: 0;
   z-index: 100;
   padding: 1.4rem 0;
-  transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
-  border-bottom: 1px solid transparent;
+  background: rgba(250, 250, 248, 0.96);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  transition: padding 0.4s ease, box-shadow 0.4s ease;
 }
 .site-header.is-scrolled {
-  background: rgba(250, 250, 248, 0.92);
-  backdrop-filter: blur(10px);
   padding: 0.9rem 0;
-  border-color: var(--color-border);
+  box-shadow: 0 4px 24px rgba(28, 25, 23, 0.06);
 }
 .site-header .container {
   display: flex;
