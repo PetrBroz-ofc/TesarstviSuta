@@ -1,0 +1,264 @@
+/* ==========================================================================
+   admin.css — administrační rozhraní (CMS)
+   Utilitární, přehledné rozhraní; vizuální styl webu se odráží jen
+   v barvách a typografii, funkčnost má přednost před ozdobností.
+   ========================================================================== */
+
+:root {
+  --a-bg: #F6F4F0;
+  --a-panel: #FFFFFF;
+  --a-border: #E4E0D8;
+  --a-text: #1C1917;
+  --a-muted: #78716C;
+  --a-accent: #B45309;
+  --a-danger: #B42318;
+  --a-success: #1a7a4c;
+  --a-radius: 6px;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--a-bg);
+  color: var(--a-text);
+}
+button { font: inherit; cursor: pointer; }
+input, textarea, select {
+  font: inherit;
+  color: inherit;
+  width: 100%;
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+  background: #fff;
+}
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--a-accent);
+  outline-offset: 1px;
+}
+label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: block; margin-bottom: 0.3rem; }
+.field { margin-bottom: 1rem; }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+/* ---------- Přihlašovací obrazovka ---------- */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.login-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--a-panel);
+  border: 1px solid var(--a-border);
+  border-radius: 10px;
+  padding: 2.2rem;
+  box-shadow: 0 30px 60px -20px rgba(28, 25, 23, 0.15);
+}
+.login-card h1 {
+  font-size: 1.3rem;
+  margin: 0 0 0.3rem;
+}
+.login-card .sub { color: var(--a-muted); font-size: 0.88rem; margin-bottom: 1.6rem; }
+.login-error {
+  background: #FDEEEE;
+  color: var(--a-danger);
+  border: 1px solid #F3C6C4;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--a-radius);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+  display: none;
+}
+.login-error.is-visible { display: block; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: var(--a-radius);
+  font-weight: 600;
+  font-size: 0.88rem;
+  border: 1px solid transparent;
+  transition: opacity 0.2s ease;
+}
+.btn:disabled { opacity: 0.55; cursor: not-allowed; }
+.btn-primary { background: var(--a-accent); color: #fff; width: 100%; }
+.btn-primary:hover:not(:disabled) { opacity: 0.9; }
+.btn-ghost { background: transparent; border-color: var(--a-border); color: var(--a-text); }
+.btn-ghost:hover { background: #fff; }
+.btn-danger { background: transparent; border-color: #F3C6C4; color: var(--a-danger); }
+.btn-sm { padding: 0.4rem 0.7rem; font-size: 0.78rem; }
+.btn svg { width: 15px; height: 15px; }
+
+/* ---------- Layout aplikace ---------- */
+.app { display: none; min-height: 100vh; grid-template-rows: auto 1fr; }
+.app.is-active { display: grid; }
+
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1.4rem;
+  background: var(--a-panel);
+  border-bottom: 1px solid var(--a-border);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.app-topbar .brand { font-weight: 800; font-size: 1.05rem; }
+.app-topbar .brand span { color: var(--a-accent); }
+.topbar-actions { display: flex; align-items: center; gap: 0.6rem; }
+.save-status { font-size: 0.78rem; color: var(--a-muted); min-width: 90px; }
+.save-status.is-success { color: var(--a-success); }
+.save-status.is-error { color: var(--a-danger); }
+
+.app-body {
+  display: grid;
+  grid-template-columns: minmax(360px, 460px) 1fr;
+  min-height: 0;
+}
+
+.editor-pane {
+  border-right: 1px solid var(--a-border);
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
+}
+.preview-pane {
+  background: #EDEAE3;
+  position: relative;
+}
+.preview-pane iframe {
+  width: 100%;
+  height: calc(100vh - 60px);
+  border: none;
+  background: #fff;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--a-border);
+  background: var(--a-panel);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.tab-btn {
+  flex: 1;
+  padding: 0.85rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--a-muted);
+}
+.tab-btn.is-active { color: var(--a-accent); border-color: var(--a-accent); }
+
+.tab-panel { display: none; padding: 1.4rem; }
+.tab-panel.is-active { display: block; }
+
+.section-block {
+  background: var(--a-panel);
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+  padding: 1.1rem 1.2rem 1.3rem;
+  margin-bottom: 1.1rem;
+}
+.section-block h2 {
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section-block h2 .count {
+  font-weight: 500;
+  color: var(--a-muted);
+  font-size: 0.78rem;
+}
+
+.list-item {
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+  padding: 0.9rem;
+  margin-bottom: 0.8rem;
+  background: #FCFBF9;
+}
+.list-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+}
+.list-item-head .tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--a-muted);
+}
+
+.subitem-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+.subitem-row input { flex: 1; }
+
+/* ---------- Upload obrázku ---------- */
+.image-field {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+}
+.image-preview {
+  width: 84px;
+  height: 64px;
+  border-radius: var(--a-radius);
+  border: 1px solid var(--a-border);
+  background: #EFEBE4 center/cover no-repeat;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--a-muted);
+  font-size: 0.65rem;
+  text-align: center;
+  overflow: hidden;
+}
+.image-field-actions { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+.upload-progress { font-size: 0.75rem; color: var(--a-muted); }
+
+/* ---------- Barvy (theme editor) ---------- */
+.color-field {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.color-field input[type="color"] {
+  width: 46px;
+  height: 40px;
+  padding: 3px;
+  flex-shrink: 0;
+}
+.color-field input[type="text"] { font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+
+.hint {
+  font-size: 0.78rem;
+  color: var(--a-muted);
+  margin-top: 0.4rem;
+}
+
+@media (max-width: 980px) {
+  .app-body { grid-template-columns: 1fr; }
+  .preview-pane { display: none; }
+}

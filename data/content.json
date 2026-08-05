@@ -1,0 +1,146 @@
+{
+  "meta": {
+    "title": "Tesařství a pokrývačství Jakub Šuta | Krovy, střechy, pergoly",
+    "description": "Tesařské a pokrývačské práce po celé České republice od roku 2007. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Ruční práce, zkušenost, spolehlivost.",
+    "ogImage": "/images/og-cover.jpg",
+    "favicon": "/images/favicon.svg",
+    "siteUrl": "https://tesarstvi-suta.cz",
+    "themeColor": "#1C1917"
+  },
+  "header": {
+    "logoText": "Šuta",
+    "logoSub": "Tesařství &amp; pokrývačství",
+    "nav": [
+      { "label": "O nás", "href": "#o-nas" },
+      { "label": "Služby", "href": "#sluzby" },
+      { "label": "Realizace", "href": "#realizace" },
+      { "label": "Lešení", "href": "#leseni" },
+      { "label": "Kontakt", "href": "#kontakt" }
+    ],
+    "ctaLabel": "Nezávazná poptávka"
+  },
+  "hero": {
+    "eyebrow": "Od roku 2007",
+    "titleLine1": "Tesařství a pokrývačství",
+    "titleLine2": "Jakub Šuta",
+    "text": "Řemeslná práce od roku 2007. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
+    "ctaPrimary": { "label": "Nezávazná poptávka", "href": "#kontakt" },
+    "ctaSecondary": { "label": "Prohlédnout realizace", "href": "#realizace" },
+    "image": {
+      "src": "/images/hero-strecha.jpg",
+      "alt": "Dřevěný krov nové střechy během realizace"
+    },
+    "scaleLabel": "EST. 2007"
+  },
+  "about": {
+    "eyebrow": "O firmě",
+    "title": "Řemeslo, na které se dá spolehnout",
+    "text": "Od roku 2007 realizujeme tesařské a pokrývačské práce po celé České republice. Zakládáme si na kvalitním provedení, férovém jednání a dlouhé životnosti našich staveb.",
+    "image": {
+      "src": "/images/o-nas-dilna.jpg",
+      "alt": "Ruční opracování dřevěného trámu"
+    },
+    "stats": [
+      { "value": "19+", "unit": "let", "label": "zkušeností v oboru" },
+      { "value": "100+", "unit": "", "label": "dokončených realizací" },
+      { "value": "CZ", "unit": "", "label": "práce po celé ČR" }
+    ]
+  },
+  "services": {
+    "eyebrow": "Co děláme",
+    "title": "Služby",
+    "items": [
+      {
+        "icon": "roofFrame",
+        "title": "Tesařské konstrukce",
+        "items": ["Krovy", "Pergoly", "Altány", "Přístřešky", "Garážová stání"]
+      },
+      {
+        "icon": "roofTiles",
+        "title": "Pokrývačské práce",
+        "items": ["Pokládka krytin", "Rekonstrukce střech", "Opravy starých střech"]
+      },
+      {
+        "icon": "woodPlank",
+        "title": "Dřevěné prvky",
+        "items": ["Palubkové obklady", "Dřevěné podlahy", "Ruční tesání trámů"]
+      },
+      {
+        "icon": "church",
+        "title": "Speciální práce",
+        "items": ["Historické objekty", "Kostely", "Památkové rekonstrukce"]
+      }
+    ]
+  },
+  "gallery": {
+    "eyebrow": "Naše práce",
+    "title": "Realizace",
+    "items": [
+      {
+        "image": "/images/realizace-01.jpg",
+        "title": "Rekonstrukce střechy",
+        "description": "Kompletní výměna krytiny rodinného domu"
+      },
+      {
+        "image": "/images/realizace-02.jpg",
+        "title": "Historická rekonstrukce",
+        "description": "Oprava krovu památkově chráněného objektu"
+      },
+      {
+        "image": "/images/realizace-03.jpg",
+        "title": "Dřevěná pergola",
+        "description": "Zakázková pergola na míru zahradě"
+      },
+      {
+        "image": "/images/realizace-04.jpg",
+        "title": "Novostavba krovu",
+        "description": "Tesařská konstrukce rodinného domu"
+      },
+      {
+        "image": "/images/realizace-05.jpg",
+        "title": "Přístřešek na auto",
+        "description": "Dřevěné garážové stání s pokrytím"
+      },
+      {
+        "image": "/images/realizace-06.jpg",
+        "title": "Palubkový obklad",
+        "description": "Interiérové obložení podkroví"
+      }
+    ]
+  },
+  "scaffolding": {
+    "eyebrow": "Doplňková služba",
+    "title": "Pronájem lešení UNI 70",
+    "text": "Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce.",
+    "ctaLabel": "Poptat lešení",
+    "ctaHref": "#kontakt"
+  },
+  "contact": {
+    "eyebrow": "Spojte se s námi",
+    "title": "Kontakt",
+    "text": "Máte v plánu opravu střechy nebo tesařskou zakázku? Ozvěte se nám, poradíme a připravíme nabídku na míru.",
+    "ctaLabel": "Kontaktujte nás",
+    "persons": [
+      {
+        "name": "Jakub Šuta",
+        "address": "Francova Lhota 393, 756 14",
+        "ic": "87041693",
+        "phone": "+420 739 437 783"
+      },
+      {
+        "name": "Milan Šuta",
+        "address": "Francova Lhota 30, 756 14",
+        "ic": "03345050",
+        "phone": "+420 737 020 984"
+      }
+    ]
+  },
+  "footer": {
+    "text": "Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2007.",
+    "copyright": "© 2026 Jakub Šuta. Všechna práva vyhrazena."
+  },
+  "cookieConsent": {
+    "text": "Tento web používá pouze technické soubory cookie nezbytné pro jeho správné fungování. Žádná analytická ani marketingová data nesbíráme.",
+    "acceptLabel": "Rozumím"
+  }
+}

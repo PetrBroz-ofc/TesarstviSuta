@@ -1,0 +1,13 @@
+{
+  "name": "tesarstvi-suta",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Web Tesařství a pokrývačství Jakub Šuta — statický web + admin CMS nad GitHub Contents API.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "dependencies": {}
+}

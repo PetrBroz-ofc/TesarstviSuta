@@ -1,0 +1,23 @@
+{
+  "colors": {
+    "primary": "#1C1917",
+    "secondary": "#292524",
+    "background": "#FAFAF8",
+    "backgroundAlt": "#F1EEE8",
+    "accent": "#B45309",
+    "accentLight": "#D97B2E",
+    "textMuted": "#78716C",
+    "border": "#E7E2DB",
+    "white": "#FFFFFF"
+  },
+  "fonts": {
+    "body": "'Inter', -apple-system, sans-serif",
+    "display": "'Inter', -apple-system, sans-serif",
+    "mono": "'JetBrains Mono', 'SFMono-Regular', monospace"
+  },
+  "radius": {
+    "sm": "2px",
+    "md": "4px",
+    "lg": "8px"
+  }
+}
