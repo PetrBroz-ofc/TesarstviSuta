@@ -73,15 +73,19 @@ async function run() {
   const afterLoginChecks = [
     ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
     ["Postranní navigace má 11 položek", navItems.length === 11],
-    ["První položka (SEO) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
-    ["Titulek sekce v topbaru je vyplněný (SEO)", doc.getElementById("section-title").textContent.includes("SEO")],
+    ["První položka (Hero) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
+    ["Titulek sekce v topbaru je vyplněný (Hero)", doc.getElementById("section-title").textContent.includes("Hero")],
     ["Popisný pruh (section-description) existuje a má text", doc.querySelector(".section-description")?.textContent.length > 0],
     ["Bílá karta s poli (section-card) existuje", !!doc.querySelector(".section-card")],
     ["Odkaz 'Zobrazit náhled' míří na index.html", doc.getElementById("preview-link").getAttribute("href") === "index.html"],
-    ["Skupina 'Obsah' je v navigaci", doc.body.textContent.includes("Obsah")],
+    ["Skupina 'Textový obsah' je v navigaci", doc.body.textContent.includes("Textový obsah")],
     [
       "Skupina 'Vzhled' je v navigaci",
       Array.from(doc.querySelectorAll(".nav-group-label")).some((el) => el.textContent === "Vzhled")
+    ],
+    [
+      "Skupina 'Pokročilé nastavení' je v navigaci",
+      Array.from(doc.querySelectorAll(".nav-group-label")).some((el) => el.textContent === "Pokročilé nastavení")
     ],
     ["Žádné JS chyby za běhu", errors.length === 0]
   ];
