@@ -74,10 +74,10 @@ async function run() {
     ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
     ["Postranní navigace má 11 položek", navItems.length === 11],
     ["První položka (SEO) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
-    [
-      "Editor pane obsahuje SEO sekci na startu",
-      doc.getElementById("editor-pane").textContent.includes("SEO a metadata")
-    ],
+    ["Titulek sekce v topbaru je vyplněný (SEO)", doc.getElementById("section-title").textContent.includes("SEO")],
+    ["Popisný pruh (section-description) existuje a má text", doc.querySelector(".section-description")?.textContent.length > 0],
+    ["Bílá karta s poli (section-card) existuje", !!doc.querySelector(".section-card")],
+    ["Odkaz 'Zobrazit náhled' míří na index.html", doc.getElementById("preview-link").getAttribute("href") === "index.html"],
     ["Skupina 'Obsah' je v navigaci", doc.body.textContent.includes("Obsah")],
     [
       "Skupina 'Vzhled' je v navigaci",
@@ -105,6 +105,13 @@ async function run() {
       servicesBtnAfter.classList.contains("is-active");
     console.log((switched ? "OK  " : "FAIL") + " - Klik na 'Služby' přepne aktivní sekci");
     if (!switched) allPassed = false;
+
+    const previewHref = doc.getElementById("preview-link").getAttribute("href");
+    const previewOk = previewHref === "index.html#sluzby";
+    console.log(
+      (previewOk ? "OK  " : "FAIL") + " - Zobrazit náhled ukazuje na #sluzby po přepnutí sekce"
+    );
+    if (!previewOk) allPassed = false;
   } else {
     console.log("FAIL - Tlačítko 'Služby' nenalezeno v navigaci");
     allPassed = false;
