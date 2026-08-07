@@ -205,19 +205,10 @@
     }
   }
 
-  function sectionBlock(title, countText) {
-    const block = document.createElement("div");
-    block.className = "section-block";
-    const h2 = document.createElement("h2");
-    h2.textContent = title;
-    block.appendChild(h2);
-    if (countText) {
-      const count = document.createElement("div");
-      count.className = "section-count";
-      count.textContent = countText;
-      block.appendChild(count);
-    }
-    return block;
+  function fieldsCard() {
+    const card = document.createElement("div");
+    card.className = "section-card";
+    return card;
   }
 
   function smallBtn(label, onClick, danger) {
@@ -233,7 +224,7 @@
 
   function renderMetaSection() {
     const c = state.content;
-    const block = sectionBlock("SEO a metadata");
+    const block = fieldsCard();
     block.appendChild(
       textField("Titulek stránky (title)", c.meta.title, (v) => (c.meta.title = v))
     );
@@ -247,7 +238,7 @@
 
   function renderHeaderSection() {
     const header = state.content.header;
-    const block = sectionBlock("Hlavička webu");
+    const block = fieldsCard();
     block.appendChild(textField("Název firmy v hlavičce", header.logoText, (v) => (header.logoText = v)));
     block.appendChild(textField("Podtitulek v hlavičce", header.logoSub, (v) => (header.logoSub = v)));
     block.appendChild(
@@ -258,7 +249,7 @@
 
   function renderHeroSection() {
     const h = state.content.hero;
-    const block = sectionBlock("Hero sekce");
+    const block = fieldsCard();
 
     block.appendChild(textField("Nadpis nad hlavním titulkem (eyebrow)", h.eyebrow, (v) => (h.eyebrow = v)));
     block.appendChild(textField("Hlavní titulek — 1. řádek", h.titleLine1, (v) => (h.titleLine1 = v)));
@@ -291,7 +282,7 @@
 
   function renderAboutSection() {
     const a = state.content.about;
-    const block = sectionBlock("O firmě");
+    const block = fieldsCard();
 
     block.appendChild(textField("Nadpis nad titulkem", a.eyebrow, (v) => (a.eyebrow = v)));
     block.appendChild(textField("Titulek", a.title, (v) => (a.title = v)));
@@ -327,7 +318,7 @@
 
   function renderServicesSection() {
     const s = state.content.services;
-    const block = sectionBlock("Služby", `${s.items.length} karty`);
+    const block = fieldsCard();
 
     block.appendChild(textField("Nadpis nad titulkem", s.eyebrow, (v) => (s.eyebrow = v)));
     block.appendChild(textField("Titulek sekce", s.title, (v) => (s.title = v)));
@@ -425,7 +416,7 @@
 
   function renderGallerySection() {
     const g = state.content.gallery;
-    const block = sectionBlock("Realizace / galerie", `${g.items.length} fotografií`);
+    const block = fieldsCard();
 
     block.appendChild(textField("Nadpis nad titulkem", g.eyebrow, (v) => (g.eyebrow = v)));
     block.appendChild(textField("Titulek sekce", g.title, (v) => (g.title = v)));
@@ -473,7 +464,7 @@
 
   function renderScaffoldingSection() {
     const sc = state.content.scaffolding;
-    const block = sectionBlock("Pronájem lešení");
+    const block = fieldsCard();
     block.appendChild(textField("Titulek", sc.title, (v) => (sc.title = v)));
     block.appendChild(textField("Text", sc.text, (v) => (sc.text = v), { textarea: true }));
     block.appendChild(textField("Text tlačítka", sc.ctaLabel, (v) => (sc.ctaLabel = v)));
@@ -482,7 +473,7 @@
 
   function renderContactSection() {
     const c = state.content.contact;
-    const block = sectionBlock("Kontakt", `${c.persons.length} osoby`);
+    const block = fieldsCard();
 
     block.appendChild(textField("Nadpis nad titulkem", c.eyebrow, (v) => (c.eyebrow = v)));
     block.appendChild(textField("Titulek sekce", c.title, (v) => (c.title = v)));
@@ -534,7 +525,7 @@
 
   function renderFooterSection() {
     const f = state.content.footer;
-    const block = sectionBlock("Patička webu");
+    const block = fieldsCard();
     block.appendChild(textField("Text v patičce", f.text, (v) => (f.text = v)));
     block.appendChild(textField("Copyright řádek", f.copyright, (v) => (f.copyright = v)));
     return block;
@@ -542,7 +533,7 @@
 
   function renderCookieSection() {
     const cc = state.content.cookieConsent;
-    const block = sectionBlock("Cookie lišta");
+    const block = fieldsCard();
     block.appendChild(textField("Text lišty", cc.text, (v) => (cc.text = v), { textarea: true }));
     block.appendChild(textField("Text tlačítka", cc.acceptLabel, (v) => (cc.acceptLabel = v)));
     return block;
@@ -563,7 +554,7 @@
   };
 
   function renderThemeSection() {
-    const block = sectionBlock("Barevná paleta");
+    const block = fieldsCard();
     const hint = document.createElement("p");
     hint.className = "hint";
     hint.style.marginBottom = "1rem";
@@ -584,17 +575,94 @@
   /* ==================== Postranní navigace sekcí ==================== */
 
   const SECTIONS = [
-    { id: "seo", group: "Obsah", label: "SEO a metadata", render: renderMetaSection },
-    { id: "header", group: "Obsah", label: "Hlavička", render: renderHeaderSection },
-    { id: "hero", group: "Obsah", label: "Hero", render: renderHeroSection },
-    { id: "about", group: "Obsah", label: "O firmě", render: renderAboutSection },
-    { id: "services", group: "Obsah", label: "Služby", render: renderServicesSection },
-    { id: "gallery", group: "Obsah", label: "Realizace", render: renderGallerySection },
-    { id: "scaffolding", group: "Obsah", label: "Lešení", render: renderScaffoldingSection },
-    { id: "contact", group: "Obsah", label: "Kontakt", render: renderContactSection },
-    { id: "footer", group: "Obsah", label: "Patička", render: renderFooterSection },
-    { id: "cookie", group: "Obsah", label: "Cookie lišta", render: renderCookieSection },
-    { id: "theme", group: "Vzhled", label: "Barvy", render: renderThemeSection }
+    {
+      id: "seo",
+      group: "Obsah",
+      label: "SEO a metadata",
+      description: "Titulek stránky a popis, který se zobrazuje ve výsledcích vyhledávání a při sdílení na sítích.",
+      anchor: null,
+      render: renderMetaSection
+    },
+    {
+      id: "header",
+      group: "Obsah",
+      label: "Hlavička",
+      description: "Název firmy, podtitulek a text tlačítka poptávky v horní navigaci webu.",
+      anchor: null,
+      render: renderHeaderSection
+    },
+    {
+      id: "hero",
+      group: "Obsah",
+      label: "Hero",
+      description: "Úvodní sekce webu s hlavním nadpisem, podtextem, tlačítky a hlavní fotografií.",
+      anchor: null,
+      render: renderHeroSection
+    },
+    {
+      id: "about",
+      group: "Obsah",
+      label: "O firmě",
+      description: "Sekce O firmě s textem, fotografií a třemi statistikami pod textem.",
+      anchor: "o-nas",
+      render: renderAboutSection
+    },
+    {
+      id: "services",
+      group: "Obsah",
+      label: "Služby",
+      description: "Karty nabízených služeb - u každé ikona, název a seznam položek.",
+      anchor: "sluzby",
+      render: renderServicesSection
+    },
+    {
+      id: "gallery",
+      group: "Obsah",
+      label: "Realizace",
+      description: "Galerie fotografií dokončených realizací s názvem a krátkým popisem u každé.",
+      anchor: "realizace",
+      render: renderGallerySection
+    },
+    {
+      id: "scaffolding",
+      group: "Obsah",
+      label: "Lešení",
+      description: "Krátká samostatná sekce s nabídkou pronájmu lešení.",
+      anchor: "leseni",
+      render: renderScaffoldingSection
+    },
+    {
+      id: "contact",
+      group: "Obsah",
+      label: "Kontakt",
+      description: "Kontaktní údaje - jméno, adresa, IČ a telefon u každé kontaktní osoby.",
+      anchor: "kontakt",
+      render: renderContactSection
+    },
+    {
+      id: "footer",
+      group: "Obsah",
+      label: "Patička",
+      description: "Text a copyright řádek v patičce webu.",
+      anchor: null,
+      render: renderFooterSection
+    },
+    {
+      id: "cookie",
+      group: "Obsah",
+      label: "Cookie lišta",
+      description: "Text a tlačítko cookie lišty, která se zobrazí novým návštěvníkům webu.",
+      anchor: null,
+      render: renderCookieSection
+    },
+    {
+      id: "theme",
+      group: "Vzhled",
+      label: "Barvy",
+      description: "Barevná paleta webu - změny se projeví po uložení a redeployi.",
+      anchor: null,
+      render: renderThemeSection
+    }
   ];
 
   let activeSectionId = SECTIONS[0].id;
@@ -627,10 +695,23 @@
   }
 
   function renderActiveSection() {
+    const section = SECTIONS.find((s) => s.id === activeSectionId);
+    if (!section) return;
+
+    document.getElementById("section-title").textContent = section.label;
+
+    const previewLink = document.getElementById("preview-link");
+    previewLink.href = "index.html" + (section.anchor ? "#" + section.anchor : "");
+
     const root = document.getElementById("editor-pane");
     root.innerHTML = "";
-    const section = SECTIONS.find((s) => s.id === activeSectionId);
-    if (section) root.appendChild(section.render());
+
+    const desc = document.createElement("p");
+    desc.className = "section-description";
+    desc.textContent = section.description;
+    root.appendChild(desc);
+
+    root.appendChild(section.render());
     root.scrollTop = 0;
   }
 
