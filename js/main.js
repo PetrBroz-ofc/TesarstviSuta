@@ -483,37 +483,9 @@
     document.body.classList.remove("is-loading");
   }
 
-  /* ---------- Živý náhled z administrace (postMessage) ----------
-     Když je stránka načtená uvnitř <iframe> administrace (?preview=1),
-     nečeká se jen na uložený content.json, ale i na zprávy s rozpracovaným
-     (ještě neuloženým) obsahem, aby admin viděl změny okamžitě. */
-
-  const isPreviewMode = new URLSearchParams(location.search).get("preview") === "1";
-
-  function initPreviewListener() {
-    window.addEventListener("message", (event) => {
-      if (event.origin !== window.location.origin) return; // jen stejná origin
-      const msg = event.data;
-      if (!msg || msg.type !== "SUTA_PREVIEW_UPDATE") return;
-      try {
-        renderAll(msg.content, msg.theme);
-      } catch (err) {
-        console.error("Chyba při vykreslení náhledu:", err);
-      }
-    });
-
-    // Dáme rodičovskému oknu (administraci) vědět, že náhled je připraven
-    // přijímat data.
-    if (window.parent && window.parent !== window) {
-      window.parent.postMessage({ type: "SUTA_PREVIEW_READY" }, window.location.origin);
-    }
-  }
-
   /* ---------- Inicializace ---------- */
 
   async function init() {
-    if (isPreviewMode) initPreviewListener();
-
     // Tohle nepotřebuje data z content.json - HTML už obsahuje hotový text,
     // takže menu, scroll efekt hlavičky, lightbox, scroll-reveal animace
     // i cookie lišta fungují okamžitě, bez čekání na síť.
