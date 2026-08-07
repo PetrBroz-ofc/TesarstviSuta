@@ -576,24 +576,8 @@
 
   const SECTIONS = [
     {
-      id: "seo",
-      group: "Obsah",
-      label: "SEO a metadata",
-      description: "Titulek stránky a popis, který se zobrazuje ve výsledcích vyhledávání a při sdílení na sítích.",
-      anchor: null,
-      render: renderMetaSection
-    },
-    {
-      id: "header",
-      group: "Obsah",
-      label: "Hlavička",
-      description: "Název firmy, podtitulek a text tlačítka poptávky v horní navigaci webu.",
-      anchor: null,
-      render: renderHeaderSection
-    },
-    {
       id: "hero",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "Hero",
       description: "Úvodní sekce webu s hlavním nadpisem, podtextem, tlačítky a hlavní fotografií.",
       anchor: null,
@@ -601,7 +585,7 @@
     },
     {
       id: "about",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "O firmě",
       description: "Sekce O firmě s textem, fotografií a třemi statistikami pod textem.",
       anchor: "o-nas",
@@ -609,7 +593,7 @@
     },
     {
       id: "services",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "Služby",
       description: "Karty nabízených služeb - u každé ikona, název a seznam položek.",
       anchor: "sluzby",
@@ -617,7 +601,7 @@
     },
     {
       id: "gallery",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "Realizace",
       description: "Galerie fotografií dokončených realizací s názvem a krátkým popisem u každé.",
       anchor: "realizace",
@@ -625,7 +609,7 @@
     },
     {
       id: "scaffolding",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "Lešení",
       description: "Krátká samostatná sekce s nabídkou pronájmu lešení.",
       anchor: "leseni",
@@ -633,27 +617,11 @@
     },
     {
       id: "contact",
-      group: "Obsah",
+      group: "Textový obsah",
       label: "Kontakt",
       description: "Kontaktní údaje - jméno, adresa, IČ a telefon u každé kontaktní osoby.",
       anchor: "kontakt",
       render: renderContactSection
-    },
-    {
-      id: "footer",
-      group: "Obsah",
-      label: "Patička",
-      description: "Text a copyright řádek v patičce webu.",
-      anchor: null,
-      render: renderFooterSection
-    },
-    {
-      id: "cookie",
-      group: "Obsah",
-      label: "Cookie lišta",
-      description: "Text a tlačítko cookie lišty, která se zobrazí novým návštěvníkům webu.",
-      anchor: null,
-      render: renderCookieSection
     },
     {
       id: "theme",
@@ -662,6 +630,38 @@
       description: "Barevná paleta webu - změny se projeví po uložení a redeployi.",
       anchor: null,
       render: renderThemeSection
+    },
+    {
+      id: "header",
+      group: "Pokročilé nastavení",
+      label: "Hlavička",
+      description: "Název firmy, podtitulek a text tlačítka poptávky v horní navigaci webu.",
+      anchor: null,
+      render: renderHeaderSection
+    },
+    {
+      id: "footer",
+      group: "Pokročilé nastavení",
+      label: "Patička",
+      description: "Text a copyright řádek v patičce webu.",
+      anchor: null,
+      render: renderFooterSection
+    },
+    {
+      id: "seo",
+      group: "Pokročilé nastavení",
+      label: "SEO a metadata",
+      description: "Titulek stránky a popis, který se zobrazuje ve výsledcích vyhledávání a při sdílení na sítích.",
+      anchor: null,
+      render: renderMetaSection
+    },
+    {
+      id: "cookie",
+      group: "Pokročilé nastavení",
+      label: "Cookie lišta",
+      description: "Legislativní text a tlačítko cookie lišty, která se zobrazí novým návštěvníkům webu.",
+      anchor: null,
+      render: renderCookieSection
     }
   ];
 
