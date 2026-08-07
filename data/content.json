@@ -11,11 +11,26 @@
     "logoText": "Šuta",
     "logoSub": "Tesařství &amp; pokrývačství",
     "nav": [
-      { "label": "O nás", "href": "#o-nas" },
-      { "label": "Služby", "href": "#sluzby" },
-      { "label": "Realizace", "href": "#realizace" },
-      { "label": "Lešení", "href": "#leseni" },
-      { "label": "Kontakt", "href": "#kontakt" }
+      {
+        "label": "O nás",
+        "href": "#o-nas"
+      },
+      {
+        "label": "Služby",
+        "href": "#sluzby"
+      },
+      {
+        "label": "Realizace",
+        "href": "#realizace"
+      },
+      {
+        "label": "Lešení",
+        "href": "#leseni"
+      },
+      {
+        "label": "Kontakt",
+        "href": "#kontakt"
+      }
     ],
     "ctaLabel": "Nezávazná poptávka"
   },
@@ -24,8 +39,14 @@
     "titleLine1": "Tesařství a pokrývačství",
     "titleLine2": "Jakub Šuta",
     "text": "Řemeslná práce od roku 2007. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
-    "ctaPrimary": { "label": "Nezávazná poptávka", "href": "#kontakt" },
-    "ctaSecondary": { "label": "Prohlédnout realizace", "href": "#realizace" },
+    "ctaPrimary": {
+      "label": "Nezávazná poptávka",
+      "href": "#kontakt"
+    },
+    "ctaSecondary": {
+      "label": "Prohlédnout realizace",
+      "href": "#realizace"
+    },
     "image": {
       "src": "images/hero-strecha.jpg",
       "alt": "Rozestavěná střecha rodinného domu s krovem a difuzní fólií"
@@ -41,9 +62,21 @@
       "alt": "Detail ručně tesaného spoje krokví"
     },
     "stats": [
-      { "value": "19+", "unit": "let", "label": "zkušeností v oboru" },
-      { "value": "100+", "unit": "", "label": "dokončených realizací" },
-      { "value": "CZ", "unit": "", "label": "práce po celé ČR" }
+      {
+        "value": "19+",
+        "unit": "let",
+        "label": "zkušeností v oboru"
+      },
+      {
+        "value": "100+",
+        "unit": "",
+        "label": "dokončených realizací"
+      },
+      {
+        "value": "CZ",
+        "unit": "",
+        "label": "práce po celé ČR"
+      }
     ]
   },
   "services": {
@@ -53,22 +86,40 @@
       {
         "icon": "roofFrame",
         "title": "Tesařské konstrukce",
-        "items": ["Krovy", "Pergoly", "Altány", "Přístřešky", "Garážová stání"]
+        "items": [
+          "Krovy",
+          "Pergoly",
+          "Altány",
+          "Přístřešky",
+          "Garážová stání"
+        ]
       },
       {
         "icon": "roofTiles",
         "title": "Pokrývačské práce",
-        "items": ["Pokládka krytin", "Rekonstrukce střech", "Opravy starých střech"]
+        "items": [
+          "Pokládka krytin",
+          "Rekonstrukce střech",
+          "Opravy starých střech"
+        ]
       },
       {
         "icon": "woodPlank",
         "title": "Dřevěné prvky",
-        "items": ["Palubkové obklady", "Dřevěné podlahy", "Ruční tesání trámů"]
+        "items": [
+          "Palubkové obklady",
+          "Dřevěné podlahy",
+          "Ruční tesání trámů"
+        ]
       },
       {
         "icon": "church",
         "title": "Speciální práce",
-        "items": ["Historické objekty", "Kostely", "Památkové rekonstrukce"]
+        "items": [
+          "Historické objekty",
+          "Kostely",
+          "Památkové rekonstrukce"
+        ]
       }
     ]
   },
