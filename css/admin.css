@@ -39,6 +39,30 @@ input:focus, textarea:focus, select:focus {
 }
 label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: block; margin-bottom: 0.3rem; }
 .field { margin-bottom: 1rem; }
+
+.password-field {
+  position: relative;
+}
+.password-field input {
+  padding-right: 2.6rem;
+}
+.password-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--a-muted);
+  border-radius: 0 var(--a-radius) var(--a-radius) 0;
+}
+.password-toggle:hover { color: var(--a-text); }
+.password-toggle svg { width: 19px; height: 19px; }
+.password-toggle .icon-eye-off { display: none; }
+.password-toggle.is-visible .icon-eye { display: none; }
+.password-toggle.is-visible .icon-eye-off { display: block; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 
 /* ---------- Přihlašovací obrazovka ---------- */
