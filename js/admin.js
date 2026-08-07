@@ -658,6 +658,7 @@
     {
       id: "cookie",
       group: "Pokročilé nastavení",
+      subgroup: "Právní",
       label: "Cookie lišta",
       description: "Legislativní text a tlačítko cookie lišty, která se zobrazí novým návštěvníkům webu.",
       anchor: null,
@@ -671,6 +672,7 @@
     const nav = document.getElementById("section-nav");
     nav.innerHTML = "";
     let lastGroup = null;
+    let lastSubgroup = null;
     SECTIONS.forEach((s) => {
       if (s.group !== lastGroup) {
         const label = document.createElement("div");
@@ -678,10 +680,23 @@
         label.textContent = s.group;
         nav.appendChild(label);
         lastGroup = s.group;
+        lastSubgroup = null;
+      }
+      if (s.subgroup && s.subgroup !== lastSubgroup) {
+        const subLabel = document.createElement("div");
+        subLabel.className = "nav-subgroup-label";
+        subLabel.textContent = s.subgroup;
+        nav.appendChild(subLabel);
+        lastSubgroup = s.subgroup;
+      } else if (!s.subgroup) {
+        lastSubgroup = null;
       }
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = "nav-item" + (s.id === activeSectionId ? " is-active" : "");
+      btn.className =
+        "nav-item" +
+        (s.subgroup ? " nav-item-nested" : "") +
+        (s.id === activeSectionId ? " is-active" : "");
       btn.textContent = s.label;
       btn.addEventListener("click", () => selectSection(s.id));
       nav.appendChild(btn);
