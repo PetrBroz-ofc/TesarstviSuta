@@ -37,7 +37,15 @@ input:focus, textarea:focus, select:focus {
   outline: 2px solid var(--a-accent);
   outline-offset: 1px;
 }
-label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: block; margin-bottom: 0.3rem; }
+label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--a-muted);
+  display: block;
+  margin-bottom: 0.4rem;
+}
 .field { margin-bottom: 1rem; }
 
 .password-field {
@@ -236,7 +244,7 @@ label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: blo
 .app-topbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 1.4rem;
   background: var(--a-panel);
@@ -244,10 +252,39 @@ label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: blo
   position: sticky;
   top: 0;
   z-index: 20;
+  flex-wrap: wrap;
 }
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0;
+  color: var(--a-text);
+}
+.topbar-actions { display: flex; align-items: center; gap: 0.6rem; }
 .save-status { font-size: 0.78rem; color: var(--a-muted); }
 .save-status.is-success { color: var(--a-success); }
 .save-status.is-error { color: var(--a-danger); }
+
+.section-description {
+  background: #EEF1F5;
+  color: #5b6472;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--a-radius);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0 0 1.4rem;
+}
+
+.section-card {
+  background: var(--a-panel);
+  border: 1px solid var(--a-border);
+  border-radius: 10px;
+  padding: 1.6rem 1.8rem;
+}
+.section-card > .field:first-child,
+.section-card > .hint:first-child {
+  margin-top: 0;
+}
 
 .editor-pane {
   flex: 1;
@@ -256,24 +293,6 @@ label { font-size: 0.8rem; font-weight: 600; color: var(--a-muted); display: blo
 }
 .editor-pane > * {
   max-width: 720px;
-}
-
-.section-block h2 {
-  font-size: 1.05rem;
-  margin: 0 0 0.3rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.section-block .section-count {
-  font-weight: 500;
-  color: var(--a-muted);
-  font-size: 0.78rem;
-  margin-bottom: 1.4rem;
-}
-.section-block > .field:first-of-type,
-.section-block > .hint:first-of-type {
-  margin-top: 1.4rem;
 }
 
 .list-item {
