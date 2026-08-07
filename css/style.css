@@ -720,8 +720,47 @@ h1, h2, h3, .section-title {
   font-size: 0.82rem;
   color: var(--color-text-muted);
 }
+.footer-links { display: flex; align-items: center; gap: 1.2rem; }
 .footer-admin-link { opacity: 0.4; font-size: 0.75rem; }
 .footer-admin-link:hover { opacity: 1; }
+.footer-legal-link { opacity: 0.55; font-size: 0.75rem; }
+.footer-legal-link:hover { opacity: 1; }
+
+/* ==========================================================================
+   Stránka: Ochrana osobních údajů
+   ========================================================================== */
+.legal-hero { padding-bottom: clamp(2rem, 5vw, 3rem); }
+.legal-hero .container { grid-template-columns: 1fr; }
+.legal-hero .hero-content { max-width: 760px; padding-left: 0; }
+.legal-title { font-size: clamp(2.1rem, 4.5vw, 3rem); }
+.legal-updated { font-size: 0.85rem; margin-top: 0.7rem; }
+
+.legal-content {
+  max-width: 760px;
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+.legal-item h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.6rem;
+  color: var(--color-primary);
+}
+.legal-item p {
+  color: var(--color-secondary);
+  line-height: 1.7;
+}
+.legal-contact-note {
+  max-width: 760px;
+  margin-top: 2.6rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+.legal-back { margin-top: 2rem; }
 
 /* ==========================================================================
    Cookie lišta
