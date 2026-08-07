@@ -37,7 +37,8 @@ function validateContentShape(data) {
     "scaffolding",
     "contact",
     "footer",
-    "cookieConsent"
+    "cookieConsent",
+    "legal"
   ];
   return requiredTopLevel.every((key) => Object.prototype.hasOwnProperty.call(data, key));
 }
