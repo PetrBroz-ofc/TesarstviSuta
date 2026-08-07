@@ -1,14 +1,15 @@
 /**
  * _auth.js
  * Bezpečnostní jádro administrace:
- *  - heslo se NIKDY neukládá ani neporovnává v čistém textu, jen jako
- *    scrypt hash (soľ + hash) v proměnné prostředí ADMIN_PASSWORD_HASH
+ *  - heslo se nastavuje přímo jako proměnná prostředí ADMIN_PASSWORD ve
+ *    Vercelu - kdykoliv si ho tam sami změníte, žádný přepočet není potřeba
+ *  - porovnání hesla PŘESTO probíhá v konstantním čase (přes SHA-256 otisk
+ *    obou stran + crypto.timingSafeEqual), aby nešlo heslo uhodnout na
+ *    základě doby odezvy (timing attack) - i když je uložené v čitelné
+ *    podobě, nikdy se neporovnává naivním "===" řetězců
  *  - session je stateless podepsaný token (HMAC-SHA256), uložený
  *    v httpOnly + Secure + SameSite=Strict cookie, takže není čitelný
  *    z JavaScriptu na frontendu (ochrana proti XSS krádeži session)
- *  - veškeré porovnávání hesel/hashů probíhá v konstantním čase
- *    (crypto.timingSafeEqual), aby nešlo hodnotu uhodnout na základě
- *    doby odezvy (timing attack)
  */
 
 const crypto = require("crypto");
@@ -16,21 +17,16 @@ const crypto = require("crypto");
 const SESSION_COOKIE_NAME = "suta_session";
 const SESSION_TTL_SECONDS = 60 * 60 * 4; // 4 hodiny
 
-/* ---------------- Hesla (scrypt) ---------------- */
+/* ---------------- Heslo (přímé porovnání, konstantní čas) ---------------- */
 
-function hashPassword(plainPassword) {
-  const salt = crypto.randomBytes(16).toString("hex");
-  const hash = crypto.scryptSync(plainPassword, salt, 64).toString("hex");
-  return `${salt}:${hash}`;
-}
-
-function verifyPassword(plainPassword, storedHash) {
-  if (!storedHash || !storedHash.includes(":")) return false;
-  const [salt, hash] = storedHash.split(":");
-  const candidate = crypto.scryptSync(plainPassword, salt, 64);
-  const stored = Buffer.from(hash, "hex");
-  if (candidate.length !== stored.length) return false;
-  return crypto.timingSafeEqual(candidate, stored);
+function verifyPassword(submittedPassword, expectedPassword) {
+  if (!expectedPassword || !submittedPassword) return false;
+  // Obě strany se otisknou přes SHA-256, aby crypto.timingSafeEqual vždy
+  // dostal stejně dlouhé bloky bez ohledu na délku hesla - samotné heslo
+  // se tím nikam neukládá, jde jen o bezpečné porovnání za běhu.
+  const a = crypto.createHash("sha256").update(String(submittedPassword)).digest();
+  const b = crypto.createHash("sha256").update(String(expectedPassword)).digest();
+  return crypto.timingSafeEqual(a, b);
 }
 
 /* ---------------- Session token (podepsaný, bez závislostí) ---------------- */
@@ -137,7 +133,6 @@ function requireAuth(req, res) {
 
 module.exports = {
   SESSION_COOKIE_NAME,
-  hashPassword,
   verifyPassword,
   createSessionToken,
   verifySessionToken,

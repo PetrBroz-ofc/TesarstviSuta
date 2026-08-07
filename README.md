@@ -35,15 +35,10 @@ architektura jako u projektu Elrevmont.
 
 ### 3. Heslo do administrace
 
-Heslo se nikam neukládá v čitelné podobě — jen jako nevratný hash.
-
-```bash
-npm install        # jen poprvé (žádné balíčky navíc se nestahují)
-npm run hash-password "vase-silne-heslo"
-```
-
-Vypsanou hodnotu `ADMIN_PASSWORD_HASH=...` vložte na Vercelu do
-proměnné `ADMIN_PASSWORD_HASH`.
+Žádný krok navíc — heslo si prostě zvolíte a v dalším kroku ho rovnou
+vložíte jako proměnnou prostředí `ADMIN_PASSWORD` na Vercelu. Kdykoliv
+si ho tam sami změníte (Project Settings → Environment Variables →
+Redeploy), nic se nemusí přepočítávat.
 
 ### 4. Proměnné prostředí na Vercelu
 
@@ -52,7 +47,7 @@ V **Project Settings → Environment Variables** nastavte (viz také
 
 | Proměnná              | Popis                                                        |
 |------------------------|---------------------------------------------------------------|
-| `ADMIN_PASSWORD_HASH`  | Hash hesla z kroku 3                                          |
+| `ADMIN_PASSWORD`       | Heslo do administrace (obyčejný text, měňte si ho kdykoliv)   |
 | `SESSION_SECRET`       | Náhodný řetězec min. 32 znaků, např. `openssl rand -hex 32`   |
 | `ALLOWED_ORIGIN`       | `https://vase-domena.cz` (doména, odkud běží administrace)    |
 | `GITHUB_TOKEN`         | Token z kroku 2                                               |
@@ -112,15 +107,17 @@ api/save.js                 Ukládání obsahu/barev do GitHubu
 api/upload-image.js          Nahrávání fotografií
 api/_auth.js, _cors.js,        Sdílené bezpečnostní pomocníky
     _rate-limit.js, _github.js
-scripts/hash-password.js    CLI pro vygenerování hesla
 scripts/test-render.js       Automatický test vykreslení webu
 vercel.json                 Bezpečnostní hlavičky (CSP, HSTS, ...)
 ```
 
 ## Bezpečnost — přehled opatření
 
-- **Hesla**: nikdy neukládána v čitelné podobě, jen jako `scrypt` hash;
-  porovnávání probíhá v konstantním čase (ochrana proti timing útokům).
+- **Heslo**: nastavuje se přímo jako proměnná prostředí `ADMIN_PASSWORD`
+  na Vercelu, takže si ho kdykoliv sami změníte bez přepočítávání.
+  Porovnávání přesto probíhá v konstantním čase (ochrana proti timing
+  útokům), takže i takhle uložené heslo nejde uhodnout podle rychlosti
+  odpovědi serveru.
 - **Session**: podepsaný token (HMAC-SHA256) v `HttpOnly` + `Secure` +
   `SameSite=Strict` cookie — nejde ukrást přes JavaScript ani poslat
   z cizí domény.

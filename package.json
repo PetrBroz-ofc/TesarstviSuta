@@ -6,8 +6,5 @@
   "engines": {
     "node": ">=18"
   },
-  "scripts": {
-    "hash-password": "node scripts/hash-password.js"
-  },
   "dependencies": {}
 }

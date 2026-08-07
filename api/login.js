@@ -4,7 +4,9 @@
  *
  * Bezpečnostní opatření:
  *  - rate limiting podle IP adresy (5 pokusů / minutu) proti brute-force
- *  - heslo se porovnává jen jako scrypt hash, v konstantním čase
+ *  - heslo se porovnává v konstantním čase (viz _auth.js), takže i když
+ *    je uložené v čitelné podobě v proměnné prostředí ADMIN_PASSWORD,
+ *    nejde ho uhodnout podle rychlosti odpovědi
  *  - úspěšné i neúspěšné pokusy vrací stejně rychlou odpověď (žádný
  *    "user enumeration" - endpoint má jen jedno jméno "admin")
  *  - session cookie je HttpOnly + Secure + SameSite=Strict
@@ -40,14 +42,14 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const storedHash = process.env.ADMIN_PASSWORD_HASH;
-  if (!storedHash) {
-    console.error("ADMIN_PASSWORD_HASH není nastaven.");
+  const expectedPassword = process.env.ADMIN_PASSWORD;
+  if (!expectedPassword) {
+    console.error("ADMIN_PASSWORD není nastaven.");
     res.status(500).json({ error: "Administrace není správně nakonfigurována." });
     return;
   }
 
-  const valid = verifyPassword(password, storedHash);
+  const valid = verifyPassword(password, expectedPassword);
   if (!valid) {
     res.status(401).json({ error: "Nesprávné heslo." });
     return;
