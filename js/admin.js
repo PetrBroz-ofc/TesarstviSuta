@@ -706,6 +706,21 @@
     showApp();
   }
 
+  function initPasswordToggle() {
+    const toggle = document.getElementById("password-toggle");
+    const input = document.getElementById("login-password");
+    if (!toggle || !input) return;
+
+    toggle.addEventListener("click", () => {
+      const showing = input.type === "text";
+      input.type = showing ? "password" : "text";
+      toggle.classList.toggle("is-visible", !showing);
+      toggle.setAttribute("aria-pressed", String(!showing));
+      toggle.setAttribute("aria-label", showing ? "Zobrazit heslo" : "Skrýt heslo");
+      input.focus();
+    });
+  }
+
   function initLoginForm() {
     const form = document.getElementById("login-form");
     const errorBox = document.getElementById("login-error");
@@ -756,6 +771,7 @@
 
   async function init() {
     initLoginForm();
+    initPasswordToggle();
     initLogout();
     initSaveButton();
 
