@@ -37,18 +37,26 @@
 
   <!-- ========================= APLIKACE ========================= -->
   <div class="app" id="app">
-    <div class="app-topbar">
-      <div class="brand">Šuta <span>Admin</span></div>
-      <div class="topbar-actions">
-        <span class="save-status" id="save-status"></span>
-        <a href="index.html" target="_blank" rel="noopener" class="btn btn-ghost btn-sm">Zobrazit web</a>
-        <button class="btn btn-primary btn-sm" id="save-btn">Uložit změny</button>
-        <button class="btn btn-danger btn-sm" id="logout-btn">Odhlásit</button>
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span class="brand-name">Šuta</span>
+        <span class="brand-sub">/ admin</span>
       </div>
-    </div>
 
-    <div class="app-body">
-      <nav class="section-nav" id="section-nav"></nav>
+      <div class="sidebar-nav" id="section-nav"></div>
+
+      <div class="sidebar-footer">
+        <a href="index.html" target="_blank" rel="noopener" class="sidebar-back-btn">Zpět na web ↗</a>
+        <button type="button" class="sidebar-logout" id="logout-btn">Odhlásit se</button>
+      </div>
+    </nav>
+
+    <div class="app-main">
+      <div class="app-topbar">
+        <span class="save-status" id="save-status"></span>
+        <button class="btn btn-primary btn-sm" id="save-btn">Uložit změny</button>
+      </div>
       <div class="editor-pane" id="editor-pane"></div>
     </div>
   </div>
