@@ -670,15 +670,6 @@
 
   /* ==================== Přihlášení ==================== */
 
-  async function checkSession() {
-    try {
-      const data = await apiGet("/api/session");
-      return !!data.authenticated;
-    } catch {
-      return false;
-    }
-  }
-
   async function loadContentAndTheme() {
     const [content, theme] = await Promise.all([
       fetch("data/content.json", { cache: "no-store" }).then((r) => r.json()),
@@ -775,12 +766,10 @@
     initLogout();
     initSaveButton();
 
-    const authenticated = await checkSession();
-    if (authenticated) {
-      await bootApp();
-    } else {
-      showLogin();
-    }
+    // Vždy se ukáže přihlašovací obrazovka, i když by ještě platila
+    // předchozí session cookie - po každém novém načtení stránky (F5,
+    // zavření a znovu otevření) je potřeba heslo zadat znovu.
+    showLogin();
   }
 
   document.addEventListener("DOMContentLoaded", init);
