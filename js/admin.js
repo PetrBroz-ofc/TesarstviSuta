@@ -10,8 +10,6 @@
 
   let state = { content: null, theme: null };
   let isDirty = false;
-  let previewReady = false;
-  let previewFrame = null;
 
   /* ==================== Obecné pomocné funkce ==================== */
 
@@ -64,27 +62,13 @@
     node.className = "save-status" + (kind ? " is-" + kind : "");
   }
 
-  /* ==================== Živý náhled ==================== */
+  /* ==================== Živý náhled ====================
+     Odstraněno - admin už neobsahuje iframe s náhledem webu. Tahle funkce
+     zůstává jako neškodný no-op, aby nebylo nutné mazat desítky volání
+     rozesetých po celém souboru (markDirty + sendPreviewUpdate se dosud
+     volají společně u každé změny pole). */
 
-  const sendPreviewUpdate = debounce(() => {
-    if (!previewReady || !previewFrame || !previewFrame.contentWindow) return;
-    previewFrame.contentWindow.postMessage(
-      { type: "SUTA_PREVIEW_UPDATE", content: state.content, theme: state.theme },
-      window.location.origin
-    );
-  }, 250);
-
-  function initPreviewFrame() {
-    previewFrame = document.getElementById("preview-frame");
-    window.addEventListener("message", (event) => {
-      if (event.origin !== window.location.origin) return;
-      if (event.data && event.data.type === "SUTA_PREVIEW_READY") {
-        previewReady = true;
-        sendPreviewUpdate();
-      }
-    });
-    previewFrame.src = "index.html?preview=1";
-  }
+  function sendPreviewUpdate() {}
 
   /* ==================== Stavební prvky formulářů ==================== */
 
@@ -693,7 +677,6 @@
     await loadContentAndTheme();
     renderSidebar();
     renderActiveSection();
-    initPreviewFrame();
     showApp();
   }
 
