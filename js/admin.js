@@ -539,6 +539,75 @@
     return block;
   }
 
+  function renderLegalSection() {
+    const l = state.content.legal;
+    const block = fieldsCard();
+
+    block.appendChild(textField("Titulek stránky", l.pageTitle, (v) => (l.pageTitle = v)));
+    block.appendChild(
+      textField("Naposledy aktualizováno", l.lastUpdated, (v) => (l.lastUpdated = v), {
+        placeholder: "např. srpen 2026"
+      })
+    );
+    block.appendChild(
+      textField("Úvodní text", l.intro, (v) => (l.intro = v), { textarea: true, rows: 4, maxlength: 600 })
+    );
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = "Jednotlivé právní odstavce (nadpis + text)";
+    block.appendChild(hint);
+
+    l.sections.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "list-item";
+
+      const head = document.createElement("div");
+      head.className = "list-item-head";
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = "Odstavec " + (index + 1);
+      head.appendChild(tag);
+      head.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            l.sections.splice(index, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
+      );
+      wrap.appendChild(head);
+
+      wrap.appendChild(textField("Nadpis", item.heading, (v) => (item.heading = v)));
+      wrap.appendChild(
+        textField("Text", item.text, (v) => (item.text = v), { textarea: true, rows: 3, maxlength: 1000 })
+      );
+
+      block.appendChild(wrap);
+    });
+
+    block.appendChild(
+      smallBtn("+ Přidat odstavec", () => {
+        l.sections.push({ heading: "Nový nadpis", text: "Text odstavce." });
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      })
+    );
+
+    block.appendChild(
+      textField("Kontaktní poznámka na konci stránky", l.contactNote, (v) => (l.contactNote = v), {
+        textarea: true
+      })
+    );
+
+    return block;
+  }
+
   /* ==================== Sekce: Vzhled ==================== */
 
   const COLOR_LABELS = {
@@ -663,6 +732,15 @@
       description: "Legislativní text a tlačítko cookie lišty, která se zobrazí novým návštěvníkům webu.",
       anchor: null,
       render: renderCookieSection
+    },
+    {
+      id: "legal",
+      group: "Pokročilé nastavení",
+      subgroup: "Právní",
+      label: "GDPR",
+      description: "Text stránky Ochrana osobních údajů - kdo zpracovává data, za jakým účelem a jaká máte práva.",
+      previewUrl: "ochrana-udaju.html",
+      render: renderLegalSection
     }
   ];
 
@@ -716,7 +794,8 @@
     document.getElementById("section-title").textContent = section.label;
 
     const previewLink = document.getElementById("preview-link");
-    previewLink.href = "index.html" + (section.anchor ? "#" + section.anchor : "");
+    previewLink.href =
+      section.previewUrl || "index.html" + (section.anchor ? "#" + section.anchor : "");
 
     const root = document.getElementById("editor-pane");
     root.innerHTML = "";
