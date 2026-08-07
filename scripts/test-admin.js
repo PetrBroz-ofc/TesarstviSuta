@@ -18,7 +18,12 @@ async function run() {
 
   window.fetch = async (url) => {
     const u = String(url);
+    if (u.includes("/api/login")) {
+      return { ok: true, json: async () => ({ ok: true }) };
+    }
     if (u.includes("/api/session")) {
+      // I kdyby tohle admin.js zavolal, session se už NEMÁ používat k
+      // automatickému přeskočení loginu - viz test níže.
       return { ok: true, json: async () => ({ authenticated: true }) };
     }
     if (u.includes("content.json")) {
@@ -37,26 +42,50 @@ async function run() {
   const adminSrc = fs.readFileSync(path.join(ROOT, "js/admin.js"), "utf8");
   window.eval(imgEditorSrc + "\n;\n" + adminSrc);
 
-  window.document.dispatchEvent(new window.Event("DOMContentLoaded"));
-
-  // Počkáme na async init() -> checkSession() -> bootApp() -> loadContentAndTheme()
-  await new Promise((resolve) => setTimeout(resolve, 400));
+  // Žádný ruční dispatch DOMContentLoaded - spoléháme na přirozený
+  // (jednorázový) běh z jsdom, viz vysvětlení v test-render.js.
+  await new Promise((resolve) => setTimeout(resolve, 300));
 
   const doc = window.document;
+
+  console.log("--- Test admin.html - vždy vyžaduje přihlášení ---");
+  const initialChecks = [
+    [
+      "Po načtení stránky se ukáže login screen (i kdyby session platila)",
+      doc.getElementById("login-screen").style.display !== "none"
+    ],
+    ["Aplikace NENÍ automaticky aktivní", !doc.getElementById("app").classList.contains("is-active")]
+  ];
+  let allPassed = true;
+  initialChecks.forEach(([name, passed]) => {
+    console.log((passed ? "OK  " : "FAIL") + " - " + name);
+    if (!passed) allPassed = false;
+  });
+
+  // Simulujeme zadání hesla a odeslání formuláře
+  doc.getElementById("login-password").value = "test-heslo";
+  doc.getElementById("login-form").dispatchEvent(
+    new window.Event("submit", { bubbles: true, cancelable: true })
+  );
+  await new Promise((resolve) => setTimeout(resolve, 300));
+
   const navItems = doc.querySelectorAll(".nav-item");
-  const checks = [
-    ["Aplikace je aktivní (přeskočilo login)", doc.getElementById("app").classList.contains("is-active")],
+  const afterLoginChecks = [
+    ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
     ["Postranní navigace má 11 položek", navItems.length === 11],
     ["První položka (SEO) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
-    ["Editor pane obsahuje SEO sekci na startu", doc.getElementById("editor-pane").textContent.includes("SEO a metadata")],
+    [
+      "Editor pane obsahuje SEO sekci na startu",
+      doc.getElementById("editor-pane").textContent.includes("SEO a metadata")
+    ],
     ["Skupina 'Obsah' je v navigaci", doc.body.textContent.includes("Obsah")],
-    ["Skupina 'Vzhled' je v navigaci", Array.from(doc.querySelectorAll(".nav-group-label")).some(el => el.textContent === "Vzhled")],
+    [
+      "Skupina 'Vzhled' je v navigaci",
+      Array.from(doc.querySelectorAll(".nav-group-label")).some((el) => el.textContent === "Vzhled")
+    ],
     ["Žádné JS chyby za běhu", errors.length === 0]
   ];
-
-  console.log("--- Test admin.html - postranní navigace ---");
-  let allPassed = true;
-  checks.forEach(([name, passed]) => {
+  afterLoginChecks.forEach(([name, passed]) => {
     console.log((passed ? "OK  " : "FAIL") + " - " + name);
     if (!passed) allPassed = false;
   });
@@ -67,7 +96,6 @@ async function run() {
     servicesBtn.click();
     await new Promise((resolve) => setTimeout(resolve, 50));
     const editorText = doc.getElementById("editor-pane").textContent;
-    // Sidebar se po kliknutí přestaví (nové uzly), proto tlačítko hledáme znovu.
     const servicesBtnAfter = Array.from(doc.querySelectorAll(".nav-item")).find(
       (b) => b.textContent === "Služby"
     );
@@ -82,6 +110,14 @@ async function run() {
     allPassed = false;
   }
 
+  // Test tlačítka pro zobrazení hesla (zpět na fresh instanci by bylo čistší,
+  // ale ověřit funkčnost lze i takto - element pořád existuje v DOM pod app).
+  const pwToggle = doc.getElementById("password-toggle");
+  console.log(
+    (pwToggle ? "OK  " : "FAIL") + " - Tlačítko pro zobrazení hesla existuje v DOM"
+  );
+  if (!pwToggle) allPassed = false;
+
   if (errors.length) {
     console.log("\nZachycené chyby:");
     errors.forEach((e) => console.log(" -", e && e.stack ? e.stack : e));
@@ -94,3 +130,4 @@ run().catch((err) => {
   console.error("Test selhal s výjimkou:", err);
   process.exit(1);
 });
+
