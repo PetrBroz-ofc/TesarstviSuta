@@ -72,7 +72,7 @@ async function run() {
   const navItems = doc.querySelectorAll(".nav-item");
   const afterLoginChecks = [
     ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
-    ["Postranní navigace má 11 položek", navItems.length === 11],
+    ["Postranní navigace má 12 položek", navItems.length === 12],
     ["První položka (Hero) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
     ["Titulek sekce v topbaru je vyplněný (Hero)", doc.getElementById("section-title").textContent.includes("Hero")],
     ["Popisný pruh (section-description) existuje a má text", doc.querySelector(".section-description")?.textContent.length > 0],
@@ -118,6 +118,22 @@ async function run() {
     if (!previewOk) allPassed = false;
   } else {
     console.log("FAIL - Tlačítko 'Služby' nenalezeno v navigaci");
+    allPassed = false;
+  }
+
+  // Klikneme na GDPR (vnořená položka pod Právní) a ověříme vlastní previewUrl
+  const gdprBtn = Array.from(doc.querySelectorAll(".nav-item")).find((b) => b.textContent === "GDPR");
+  if (gdprBtn) {
+    gdprBtn.click();
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    const editorText = doc.getElementById("editor-pane").textContent;
+    const gdprOk =
+      editorText.includes("Přidat odstavec") &&
+      doc.getElementById("preview-link").getAttribute("href") === "ochrana-udaju.html";
+    console.log((gdprOk ? "OK  " : "FAIL") + " - GDPR sekce se otevře a má vlastní Zobrazit náhled");
+    if (!gdprOk) allPassed = false;
+  } else {
+    console.log("FAIL - Položka 'GDPR' nenalezena v navigaci");
     allPassed = false;
   }
 
