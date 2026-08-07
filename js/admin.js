@@ -226,13 +226,13 @@
     block.className = "section-block";
     const h2 = document.createElement("h2");
     h2.textContent = title;
-    if (countText) {
-      const span = document.createElement("span");
-      span.className = "count";
-      span.textContent = countText;
-      h2.appendChild(span);
-    }
     block.appendChild(h2);
+    if (countText) {
+      const count = document.createElement("div");
+      count.className = "section-count";
+      count.textContent = countText;
+      block.appendChild(count);
+    }
     return block;
   }
 
@@ -245,22 +245,7 @@
     return btn;
   }
 
-  /* ==================== Sekce: Obsah ==================== */
-
-  function renderContentTab() {
-    const root = document.getElementById("tab-obsah");
-    root.innerHTML = "";
-
-    root.appendChild(renderMetaSection());
-    root.appendChild(renderHeroSection());
-    root.appendChild(renderAboutSection());
-    root.appendChild(renderServicesSection());
-    root.appendChild(renderGallerySection());
-    root.appendChild(renderScaffoldingSection());
-    root.appendChild(renderContactSection());
-    root.appendChild(renderFooterSection());
-    root.appendChild(renderCookieSection());
-  }
+  /* ==================== Jednotlivé sekce obsahu ==================== */
 
   function renderMetaSection() {
     const c = state.content;
@@ -276,16 +261,20 @@
     return block;
   }
 
-  function renderHeroSection() {
-    const h = state.content.hero;
+  function renderHeaderSection() {
     const header = state.content.header;
-    const block = sectionBlock("Hero sekce");
-
+    const block = sectionBlock("Hlavička webu");
     block.appendChild(textField("Název firmy v hlavičce", header.logoText, (v) => (header.logoText = v)));
     block.appendChild(textField("Podtitulek v hlavičce", header.logoSub, (v) => (header.logoSub = v)));
     block.appendChild(
       textField("Text tlačítka poptávky (hlavička)", header.ctaLabel, (v) => (header.ctaLabel = v))
     );
+    return block;
+  }
+
+  function renderHeroSection() {
+    const h = state.content.hero;
+    const block = sectionBlock("Hero sekce");
 
     block.appendChild(textField("Nadpis nad hlavním titulkem (eyebrow)", h.eyebrow, (v) => (h.eyebrow = v)));
     block.appendChild(textField("Hlavní titulek — 1. řádek", h.titleLine1, (v) => (h.titleLine1 = v)));
@@ -373,7 +362,7 @@
         smallBtn("Odebrat kartu", () => {
           s.items.splice(index, 1);
           markDirty();
-          renderContentTab();
+          renderActiveSection();
           sendPreviewUpdate();
         }, true)
       );
@@ -419,7 +408,7 @@
           smallBtn("✕", () => {
             service.items.splice(lineIndex, 1);
             markDirty();
-            renderContentTab();
+            renderActiveSection();
             sendPreviewUpdate();
           }, true)
         );
@@ -430,7 +419,7 @@
         smallBtn("+ Přidat položku", () => {
           service.items.push("Nová položka");
           markDirty();
-          renderContentTab();
+          renderActiveSection();
           sendPreviewUpdate();
         })
       );
@@ -442,7 +431,7 @@
       smallBtn("+ Přidat kartu služby", () => {
         s.items.push({ icon: "woodPlank", title: "Nová služba", items: ["Položka"] });
         markDirty();
-        renderContentTab();
+        renderActiveSection();
         sendPreviewUpdate();
       })
     );
@@ -471,7 +460,7 @@
         smallBtn("Odebrat", () => {
           g.items.splice(index, 1);
           markDirty();
-          renderContentTab();
+          renderActiveSection();
           sendPreviewUpdate();
         }, true)
       );
@@ -490,7 +479,7 @@
       smallBtn("+ Přidat fotografii", () => {
         g.items.push({ image: "", title: "Nová realizace", description: "Popis realizace" });
         markDirty();
-        renderContentTab();
+        renderActiveSection();
         sendPreviewUpdate();
       })
     );
@@ -530,7 +519,7 @@
         smallBtn("Odebrat", () => {
           c.persons.splice(index, 1);
           markDirty();
-          renderContentTab();
+          renderActiveSection();
           sendPreviewUpdate();
         }, true)
       );
@@ -551,7 +540,7 @@
       smallBtn("+ Přidat kontaktní osobu", () => {
         c.persons.push({ name: "Jméno Příjmení", address: "", ic: "", phone: "" });
         markDirty();
-        renderContentTab();
+        renderActiveSection();
         sendPreviewUpdate();
       })
     );
@@ -589,10 +578,7 @@
     white: "Bílá"
   };
 
-  function renderThemeTab() {
-    const root = document.getElementById("tab-vzhled");
-    root.innerHTML = "";
-
+  function renderThemeSection() {
     const block = sectionBlock("Barevná paleta");
     const hint = document.createElement("p");
     hint.className = "hint";
@@ -608,22 +594,60 @@
       );
     });
 
-    root.appendChild(block);
+    return block;
   }
 
-  /* ==================== Tabs ==================== */
+  /* ==================== Postranní navigace sekcí ==================== */
 
-  function initTabs() {
-    document.querySelectorAll(".tab-btn").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("is-active"));
-        document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        document
-          .querySelector(`[data-tab-panel="${btn.dataset.tab}"]`)
-          .classList.add("is-active");
-      });
+  const SECTIONS = [
+    { id: "seo", group: "Obsah", label: "SEO a metadata", render: renderMetaSection },
+    { id: "header", group: "Obsah", label: "Hlavička", render: renderHeaderSection },
+    { id: "hero", group: "Obsah", label: "Hero", render: renderHeroSection },
+    { id: "about", group: "Obsah", label: "O firmě", render: renderAboutSection },
+    { id: "services", group: "Obsah", label: "Služby", render: renderServicesSection },
+    { id: "gallery", group: "Obsah", label: "Realizace", render: renderGallerySection },
+    { id: "scaffolding", group: "Obsah", label: "Lešení", render: renderScaffoldingSection },
+    { id: "contact", group: "Obsah", label: "Kontakt", render: renderContactSection },
+    { id: "footer", group: "Obsah", label: "Patička", render: renderFooterSection },
+    { id: "cookie", group: "Obsah", label: "Cookie lišta", render: renderCookieSection },
+    { id: "theme", group: "Vzhled", label: "Barvy", render: renderThemeSection }
+  ];
+
+  let activeSectionId = SECTIONS[0].id;
+
+  function renderSidebar() {
+    const nav = document.getElementById("section-nav");
+    nav.innerHTML = "";
+    let lastGroup = null;
+    SECTIONS.forEach((s) => {
+      if (s.group !== lastGroup) {
+        const label = document.createElement("div");
+        label.className = "nav-group-label";
+        label.textContent = s.group;
+        nav.appendChild(label);
+        lastGroup = s.group;
+      }
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "nav-item" + (s.id === activeSectionId ? " is-active" : "");
+      btn.textContent = s.label;
+      btn.addEventListener("click", () => selectSection(s.id));
+      nav.appendChild(btn);
     });
+  }
+
+  function selectSection(id) {
+    activeSectionId = id;
+    renderSidebar();
+    renderActiveSection();
+  }
+
+  function renderActiveSection() {
+    const root = document.getElementById("editor-pane");
+    root.innerHTML = "";
+    const section = SECTIONS.find((s) => s.id === activeSectionId);
+    if (section) root.appendChild(section.render());
+    root.scrollTop = 0;
   }
 
   /* ==================== Ukládání ==================== */
@@ -676,9 +700,8 @@
 
   async function bootApp() {
     await loadContentAndTheme();
-    initTabs();
-    renderContentTab();
-    renderThemeTab();
+    renderSidebar();
+    renderActiveSection();
     initPreviewFrame();
     showApp();
   }
