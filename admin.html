@@ -22,7 +22,13 @@
 
       <div class="field">
         <label for="login-password">Heslo</label>
-        <input type="password" id="login-password" name="password" required autocomplete="current-password" minlength="1">
+        <div class="password-field">
+          <input type="password" id="login-password" name="password" required autocomplete="current-password" minlength="1">
+          <button type="button" class="password-toggle" id="password-toggle" aria-label="Zobrazit heslo" aria-pressed="false">
+            <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19.5C5 19.5 1.5 12 1.5 12a20.3 20.3 0 0 1 4.22-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4.5c7 0 10.5 7.5 10.5 7.5a20.29 20.29 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>
+          </button>
+        </div>
       </div>
 
       <button type="submit" class="btn btn-primary" id="login-submit">Přihlásit se</button>
