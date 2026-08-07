@@ -64,7 +64,7 @@
     "stats": [
       {
         "value": "19+",
-        "unit": "",
+        "unit": "let",
         "label": "zkušeností v oboru"
       },
       {
@@ -183,5 +183,45 @@
   "cookieConsent": {
     "text": "Tento web používá pouze technické soubory cookie nezbytné pro jeho správné fungování. Žádná analytická ani marketingová data nesbíráme.",
     "acceptLabel": "Rozumím"
+  },
+  "legal": {
+    "pageTitle": "Ochrana osobních údajů",
+    "lastUpdated": "srpen 2026",
+    "intro": "Vážíme si vaší důvěry, a proto bereme ochranu vašich osobních údajů vážně. Tento web nemá kontaktní formulář ani žádné sledovací nástroje — osobní údaje od vás získáváme pouze tehdy, když nás sami kontaktujete telefonicky nebo e-mailem.",
+    "sections": [
+      {
+        "heading": "Kdo je správcem vašich údajů",
+        "text": "Správcem osobních údajů je Jakub Šuta, IČ: 87041693, se sídlem Francova Lhota 393, 756 14. V rámci realizace zakázek spolupracuje s Milanem Šutou, IČ: 03345050, se sídlem Francova Lhota 30, 756 14."
+      },
+      {
+        "heading": "Jaké osobní údaje zpracováváme",
+        "text": "Pouze údaje, které nám sami poskytnete při telefonické nebo e-mailové poptávce — typicky jméno, telefonní číslo, e-mail a adresu místa realizace. Web sám o sobě žádné osobní údaje automaticky nesbírá."
+      },
+      {
+        "heading": "Za jakým účelem údaje zpracováváme",
+        "text": "Výhradně za účelem vyřízení vaší poptávky, přípravy cenové nabídky a realizace zakázky, případně vystavení účetních dokladů."
+      },
+      {
+        "heading": "Právní základ zpracování",
+        "text": "Jednání o uzavření smlouvy a plnění smlouvy (čl. 6 odst. 1 písm. b) GDPR), u účetních dokladů plnění zákonné povinnosti (čl. 6 odst. 1 písm. c) GDPR)."
+      },
+      {
+        "heading": "Jak dlouho údaje uchováváme",
+        "text": "Po dobu nezbytnou k vyřízení poptávky a realizaci zakázky, u účetních a daňových dokladů po dobu vyžadovanou zákonem (obvykle 10 let)."
+      },
+      {
+        "heading": "Komu údaje předáváme",
+        "text": "Vaše údaje nepředáváme žádným třetím stranám k marketingovým účelům. Předání může nastat pouze vůči osobám podílejícím se na realizaci zakázky (např. subdodavatel) nebo pokud to vyžaduje zákon."
+      },
+      {
+        "heading": "Cookies",
+        "text": "Web používá pouze technické cookies nezbytné pro jeho správné fungování. Nepoužíváme analytické ani marketingové cookies a nesledujeme vaše chování na webu. Podrobnosti najdete v cookie liště při první návštěvě webu."
+      },
+      {
+        "heading": "Vaše práva",
+        "text": "Máte právo na přístup ke svým osobním údajům, jejich opravu či výmaz, omezení zpracování, přenositelnost údajů a právo vznést námitku. Svá práva můžete uplatnit na kontaktech níže. Pokud se domníváte, že vaše údaje zpracováváme v rozporu se zákonem, máte právo podat stížnost u Úřadu pro ochranu osobních údajů (www.uoou.cz)."
+      }
+    ],
+    "contactNote": "S žádostmi ohledně ochrany osobních údajů nás kontaktujte na +420 739 437 783 nebo e-mailem."
   }
 }
