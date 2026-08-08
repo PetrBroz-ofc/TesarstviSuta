@@ -177,33 +177,34 @@ label {
 .sidebar-nav {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   padding: 0.8rem;
 }
 .sidebar-nav .nav-group-label {
-  font-size: 0.66rem;
+  font-size: 0.62rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   color: #5c616b;
-  padding: 0.9rem 0.7rem 0.4rem;
+  padding: 0.8rem 0.6rem 0.35rem;
   font-family: 'JetBrains Mono', monospace;
 }
 .sidebar-nav .nav-group-label:first-child { padding-top: 0.3rem; }
 
 .nav-subgroup-label {
-  font-size: 0.66rem;
+  font-size: 0.6rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: #4a4e57;
-  padding: 0.5rem 0.7rem 0.3rem 1.3rem;
-  margin-left: 0.5rem;
+  padding: 0.45rem 0.6rem 0.25rem 0.9rem;
+  margin-left: 0.4rem;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .nav-item.nav-item-nested {
-  margin-left: 0.5rem;
-  padding-left: 1.5rem;
+  margin-left: 0.4rem;
+  padding-left: 0.9rem;
   border-left: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 0 var(--a-radius) var(--a-radius) 0;
 }
@@ -212,14 +213,17 @@ label {
   display: block;
   width: 100%;
   text-align: left;
-  padding: 0.55rem 0.7rem;
+  padding: 0.5rem 0.6rem;
   border: none;
   border-radius: var(--a-radius);
-  font-size: 0.87rem;
+  font-size: 0.8rem;
   font-weight: 500;
   color: #c9cdd3;
   background: none;
   margin-bottom: 0.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .nav-item:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
 .nav-item.is-active {
