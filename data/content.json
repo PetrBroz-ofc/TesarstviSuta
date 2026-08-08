@@ -46,11 +46,12 @@
       "label": "Prohlédnout realizace",
       "href": "#realizace"
     },
-    "image": {
+    "scaleLabel": "EST. 2007",
+    "media": {
+      "type": "image",
       "src": "images/hero-strecha.jpg",
       "alt": "Rozestavěná střecha rodinného domu s krovem a difuzní fólií"
-    },
-    "scaleLabel": "EST. 2007"
+    }
   },
   "about": {
     "eyebrow": "O firmě",
