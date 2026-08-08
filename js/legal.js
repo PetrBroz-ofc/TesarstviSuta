@@ -102,6 +102,27 @@
 
   /* ---------- Hlavička a mobilní menu ---------- */
 
+  // "Limelight" efekt - zářící pruh, který plynule klouže pod položkou menu
+  // při najetí myší. Stejná logika jako na hlavní stránce (main.js).
+  function initNavLimelight() {
+    const nav = document.getElementById("nav-desktop");
+    const limelight = document.getElementById("nav-limelight");
+    if (!nav || !limelight) return;
+
+    function moveTo(link) {
+      const left = link.offsetLeft + link.offsetWidth / 2 - limelight.offsetWidth / 2;
+      limelight.style.left = left + "px";
+      limelight.classList.add("is-visible");
+    }
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("mouseenter", () => moveTo(link));
+    });
+    nav.addEventListener("mouseleave", () => {
+      limelight.classList.remove("is-visible");
+    });
+  }
+
   function initHeaderScroll() {
     const header = document.getElementById("site-header");
     if (!header) return;
@@ -142,6 +163,7 @@
     // Nezávisí na fetch() - funguje okamžitě, stejně jako na hlavní stránce.
     initHeaderScroll();
     initMobileNav();
+    initNavLimelight();
     initCookieBehavior();
 
     try {
