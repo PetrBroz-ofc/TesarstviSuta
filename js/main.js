@@ -368,6 +368,28 @@
 
   /* ---------- Interakce: header, menu, reveal ---------- */
 
+  // "Limelight" efekt - zářící pruh, který plynule klouže pod položkou menu
+  // při najetí myší. Volá se jak hned při startu (statické odkazy v HTML),
+  // tak znovu po renderHeader() (odkazy se tam přestaví na nové uzly).
+  function initNavLimelight() {
+    const nav = document.getElementById("nav-desktop");
+    const limelight = document.getElementById("nav-limelight");
+    if (!nav || !limelight) return;
+
+    function moveTo(link) {
+      const left = link.offsetLeft + link.offsetWidth / 2 - limelight.offsetWidth / 2;
+      limelight.style.left = left + "px";
+      limelight.classList.add("is-visible");
+    }
+
+    nav.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("mouseenter", () => moveTo(link));
+    });
+    nav.addEventListener("mouseleave", () => {
+      limelight.classList.remove("is-visible");
+    });
+  }
+
   function initHeaderScroll() {
     const header = document.getElementById("site-header");
     const onScroll = () => {
@@ -458,6 +480,7 @@
     if (content.meta.ogImage) setOg("og:image", content.meta.ogImage);
 
     renderHeader(content);
+    initNavLimelight();
     renderHero(content);
     renderAbout(content);
     renderServices(content);
@@ -491,6 +514,7 @@
     // i cookie lišta fungují okamžitě, bez čekání na síť.
     initHeaderScroll();
     initMobileNav();
+    initNavLimelight();
     initLightbox();
     initReveal();
     initCookieBehavior();
