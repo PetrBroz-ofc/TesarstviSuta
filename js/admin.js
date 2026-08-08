@@ -251,7 +251,6 @@
     const h = state.content.hero;
     const block = fieldsCard();
 
-    block.appendChild(textField("Nadpis nad hlavním titulkem (eyebrow)", h.eyebrow, (v) => (h.eyebrow = v)));
     block.appendChild(textField("Hlavní titulek — 1. řádek", h.titleLine1, (v) => (h.titleLine1 = v)));
     block.appendChild(
       textField("Hlavní titulek — 2. řádek (zvýrazněný)", h.titleLine2, (v) => (h.titleLine2 = v))
