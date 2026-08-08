@@ -113,10 +113,20 @@
 
     const heroMedia = document.getElementById("hero-media");
     heroMedia.innerHTML = "";
-    if (hero.image && hero.image.src) {
+    const media = hero.media;
+    if (media && media.src && media.type === "video") {
+      const video = el("video");
+      video.src = media.src;
+      video.setAttribute("aria-label", escapeHTML(media.alt || ""));
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      heroMedia.appendChild(video);
+    } else if (media && media.src) {
       const img = el("img");
-      img.src = hero.image.src;
-      img.alt = escapeHTML(hero.image.alt || "");
+      img.src = media.src;
+      img.alt = escapeHTML(media.alt || "");
       img.loading = "eager";
       heroMedia.appendChild(img);
     } else {
