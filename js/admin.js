@@ -269,12 +269,48 @@
 
     block.appendChild(textField("Štítek na fotce (např. EST. 2007)", h.scaleLabel, (v) => (h.scaleLabel = v)));
 
-    block.appendChild(
-      imageField("Hlavní fotografie (hero)", h.image.src, (path) => (h.image.src = path))
-    );
-    block.appendChild(
-      textField("Popisek fotografie (alt text)", h.image.alt, (v) => (h.image.alt = v))
-    );
+    const typeWrap = fieldWrap("Typ hlavního média");
+    const typeSelect = document.createElement("select");
+    [
+      { value: "image", label: "Fotografie" },
+      { value: "video", label: "Video (přes URL odkaz)" }
+    ].forEach((opt) => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      if (h.media.type === opt.value) optionEl.selected = true;
+      typeSelect.appendChild(optionEl);
+    });
+    typeSelect.addEventListener("change", () => {
+      h.media.type = typeSelect.value;
+      markDirty();
+      renderActiveSection();
+      sendPreviewUpdate();
+    });
+    typeWrap.appendChild(typeSelect);
+    block.appendChild(typeWrap);
+
+    if (h.media.type === "video") {
+      block.appendChild(
+        textField("URL adresa videa (přímý odkaz na .mp4)", h.media.src, (v) => (h.media.src = v), {
+          placeholder: "https://..."
+        })
+      );
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.style.marginBottom = "1rem";
+      hint.textContent =
+        "Video se přes administraci nenahrává jako soubor (videa jsou příliš velká pro přímý upload) - " +
+        "nahrajte ho nejdřív někam jinam (např. vlastní úložiště nebo videoplatformu s přímým odkazem na .mp4) " +
+        "a sem vložte jen odkaz. Video se přehrává potichu, automaticky a ve smyčce.";
+      block.appendChild(hint);
+    } else {
+      block.appendChild(
+        imageField("Hlavní fotografie (hero)", h.media.src, (path) => (h.media.src = path))
+      );
+    }
+
+    block.appendChild(textField("Popisek (alt text)", h.media.alt, (v) => (h.media.alt = v)));
 
     return block;
   }
