@@ -98,7 +98,6 @@
 
   function renderHero(content) {
     const hero = content.hero;
-    document.getElementById("hero-eyebrow").textContent = hero.eyebrow;
     document.getElementById("hero-title-1").textContent = hero.titleLine1;
     document.getElementById("hero-title-2").textContent = hero.titleLine2;
     document.getElementById("hero-text").textContent = hero.text;
