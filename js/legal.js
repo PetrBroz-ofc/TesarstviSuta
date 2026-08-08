@@ -118,7 +118,9 @@
     nav.querySelectorAll("a").forEach((link) => {
       link.addEventListener("mouseenter", () => moveTo(link));
     });
+    nav.addEventListener("mouseenter", () => nav.classList.add("is-hovering"));
     nav.addEventListener("mouseleave", () => {
+      nav.classList.remove("is-hovering");
       limelight.classList.remove("is-visible");
     });
   }
