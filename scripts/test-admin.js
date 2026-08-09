@@ -72,7 +72,7 @@ async function run() {
   const navItems = doc.querySelectorAll(".nav-item");
   const afterLoginChecks = [
     ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
-    ["Postranní navigace má 12 položek", navItems.length === 12],
+    ["Postranní navigace má 14 položek", navItems.length === 14],
     ["První položka (Hero) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
     ["Titulek sekce v topbaru je vyplněný (Hero)", doc.getElementById("section-title").textContent.includes("Hero")],
     ["Popisný pruh (section-description) existuje a má text", doc.querySelector(".section-description")?.textContent.length > 0],
@@ -144,6 +144,33 @@ async function run() {
     (pwToggle ? "OK  " : "FAIL") + " - Tlačítko pro zobrazení hesla existuje v DOM"
   );
   if (!pwToggle) allPassed = false;
+
+  // Test "Zahodit změny" - upravíme pole na sekci Hero, zahodíme, ověříme návrat
+  // k původní hodnotě z (mockovaného) content.json.
+  const heroBtn = Array.from(doc.querySelectorAll(".nav-item")).find((b) => b.textContent === "Hero");
+  heroBtn.click();
+  await new Promise((resolve) => setTimeout(resolve, 50));
+
+  const titleInput = doc.querySelector("#editor-pane input");
+  const originalValue = titleInput.value;
+  titleInput.value = "DOČASNÁ NEULOŽENÁ ZMĚNA";
+  titleInput.dispatchEvent(new window.Event("input", { bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+
+  const dirtyStatusOk = doc.getElementById("save-status").textContent.includes("Neuložené");
+  console.log((dirtyStatusOk ? "OK  " : "FAIL") + " - Po úpravě pole se zobrazí 'Neuložené změny'");
+  if (!dirtyStatusOk) allPassed = false;
+
+  window.confirm = () => true; // simulace potvrzení dialogu
+  doc.getElementById("discard-btn").click();
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  const afterDiscardInput = doc.querySelector("#editor-pane input");
+  const discardOk = afterDiscardInput && afterDiscardInput.value === originalValue;
+  console.log(
+    (discardOk ? "OK  " : "FAIL") + " - 'Zahodit změny' vrátí pole na původní hodnotu"
+  );
+  if (!discardOk) allPassed = false;
 
   if (errors.length) {
     console.log("\nZachycené chyby:");
