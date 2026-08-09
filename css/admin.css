@@ -14,6 +14,7 @@
   --a-danger: #B42318;
   --a-success: #1a7a4c;
   --a-radius: 6px;
+  --a-serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Times New Roman', serif;
 }
 
 * { box-sizing: border-box; }
@@ -35,14 +36,18 @@ input, textarea, select {
   font: inherit;
   color: inherit;
   width: 100%;
-  padding: 0.6rem 0.7rem;
-  border: 1px solid var(--a-border);
-  border-radius: var(--a-radius);
-  background: #fff;
+  padding: 0.55rem 0.1rem;
+  border: none;
+  border-bottom: 1px solid var(--a-border);
+  border-radius: 0;
+  background: transparent;
+  transition: border-color 0.15s ease, background 0.15s ease;
 }
 input:focus, textarea:focus, select:focus {
-  outline: 2px solid var(--a-accent);
-  outline-offset: 1px;
+  outline: none;
+  border-bottom: 2px solid var(--a-accent);
+  padding-bottom: calc(0.55rem - 1px);
+  background: rgba(168, 58, 42, 0.04);
 }
 label {
   font-size: 0.72rem;
@@ -119,12 +124,12 @@ label {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.65rem 1.1rem;
-  border-radius: var(--a-radius);
+  padding: 0.65rem 1.2rem;
+  border-radius: 999px;
   font-weight: 600;
   font-size: 0.88rem;
   border: 1px solid transparent;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
 }
 .btn:disabled { opacity: 0.55; cursor: not-allowed; }
 .btn-primary { background: var(--a-accent); color: #fff; width: 100%; }
@@ -132,8 +137,21 @@ label {
 .btn-ghost { background: transparent; border-color: var(--a-border); color: var(--a-text); }
 .btn-ghost:hover { background: #fff; }
 .btn-danger { background: transparent; border-color: #F3C6C4; color: var(--a-danger); }
-.btn-sm { padding: 0.4rem 0.7rem; font-size: 0.78rem; }
+.btn-sm { padding: 0.45rem 0.85rem; font-size: 0.78rem; }
 .btn svg { width: 15px; height: 15px; }
+
+.btn-discard {
+  background: var(--a-panel);
+  border-color: var(--a-border);
+  color: var(--a-text);
+}
+.btn-discard:hover:not(:disabled) { background: var(--a-bg); }
+
+.btn-publish {
+  background: var(--a-accent);
+  color: #fff;
+}
+.btn-publish:hover:not(:disabled) { opacity: 0.9; }
 
 /* ---------- Layout aplikace ---------- */
 .app { display: none; min-height: 100vh; grid-template-columns: 220px 1fr; }
@@ -271,18 +289,35 @@ label {
   position: sticky;
   top: 0;
   z-index: 20;
+}
+.topbar-actions { display: flex; align-items: center; gap: 0.6rem; }
+.save-status { font-size: 0.82rem; color: var(--a-muted); }
+.save-status.is-success { color: var(--a-success); }
+.save-status.is-error { color: var(--a-danger); }
+
+.content-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
   flex-wrap: wrap;
+  margin-bottom: 1rem;
 }
 .section-title {
-  font-size: 1.1rem;
+  font-family: var(--a-serif);
+  font-size: 1.9rem;
   font-weight: 700;
   margin: 0;
   color: var(--a-text);
+  letter-spacing: -0.01em;
 }
-.topbar-actions { display: flex; align-items: center; gap: 0.6rem; }
-.save-status { font-size: 0.78rem; color: var(--a-muted); }
-.save-status.is-success { color: var(--a-success); }
-.save-status.is-error { color: var(--a-danger); }
+.preview-link-inline {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--a-muted);
+  white-space: nowrap;
+}
+.preview-link-inline:hover { color: var(--a-accent); }
 
 .section-description {
   background: #EEF1F5;
@@ -315,11 +350,13 @@ label {
 }
 
 .list-item {
-  padding: 0.9rem 0;
+  padding: 1rem 1.1rem;
   margin-bottom: 0.9rem;
-  border-bottom: 1px solid var(--a-border);
+  background: #FBF8F1;
+  border: 1px solid var(--a-border);
+  border-radius: 10px;
 }
-.list-item:last-child { border-bottom: none; }
+.list-item:last-child { margin-bottom: 0; }
 .list-item-head {
   display: flex;
   justify-content: space-between;
@@ -327,11 +364,11 @@ label {
   margin-bottom: 0.7rem;
 }
 .list-item-head .tag {
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--a-muted);
+  color: var(--a-accent);
 }
 
 .subitem-row {
