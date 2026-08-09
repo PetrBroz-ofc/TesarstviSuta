@@ -581,74 +581,88 @@
     return block;
   }
 
-  function renderLegalSection() {
-    const l = state.content.legal;
-    const block = fieldsCard();
+  function createLegalSectionRenderer(contentKey) {
+    return function renderGenericLegalSection() {
+      const l = state.content[contentKey];
+      const block = fieldsCard();
 
-    block.appendChild(textField("Titulek stránky", l.pageTitle, (v) => (l.pageTitle = v)));
-    block.appendChild(
-      textField("Naposledy aktualizováno", l.lastUpdated, (v) => (l.lastUpdated = v), {
-        placeholder: "např. srpen 2026"
-      })
-    );
-    block.appendChild(
-      textField("Úvodní text", l.intro, (v) => (l.intro = v), { textarea: true, rows: 4, maxlength: 600 })
-    );
-
-    const hint = document.createElement("div");
-    hint.className = "hint";
-    hint.textContent = "Jednotlivé právní odstavce (nadpis + text)";
-    block.appendChild(hint);
-
-    l.sections.forEach((item, index) => {
-      const wrap = document.createElement("div");
-      wrap.className = "list-item";
-
-      const head = document.createElement("div");
-      head.className = "list-item-head";
-      const tag = document.createElement("span");
-      tag.className = "tag";
-      tag.textContent = "Odstavec " + (index + 1);
-      head.appendChild(tag);
-      head.appendChild(
-        smallBtn(
-          "Odebrat",
-          () => {
-            l.sections.splice(index, 1);
-            markDirty();
-            renderActiveSection();
-            sendPreviewUpdate();
-          },
-          true
-        )
+      block.appendChild(textField("Titulek stránky", l.pageTitle, (v) => (l.pageTitle = v)));
+      block.appendChild(
+        textField("Naposledy aktualizováno", l.lastUpdated, (v) => (l.lastUpdated = v), {
+          placeholder: "např. srpen 2026"
+        })
       );
-      wrap.appendChild(head);
-
-      wrap.appendChild(textField("Nadpis", item.heading, (v) => (item.heading = v)));
-      wrap.appendChild(
-        textField("Text", item.text, (v) => (item.text = v), { textarea: true, rows: 3, maxlength: 1000 })
+      block.appendChild(
+        textField("Úvodní text", l.intro, (v) => (l.intro = v), {
+          textarea: true,
+          rows: 4,
+          maxlength: 600
+        })
       );
 
-      block.appendChild(wrap);
-    });
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = "Jednotlivé právní odstavce (nadpis + text)";
+      block.appendChild(hint);
 
-    block.appendChild(
-      smallBtn("+ Přidat odstavec", () => {
-        l.sections.push({ heading: "Nový nadpis", text: "Text odstavce." });
-        markDirty();
-        renderActiveSection();
-        sendPreviewUpdate();
-      })
-    );
+      l.sections.forEach((item, index) => {
+        const wrap = document.createElement("div");
+        wrap.className = "list-item";
 
-    block.appendChild(
-      textField("Kontaktní poznámka na konci stránky", l.contactNote, (v) => (l.contactNote = v), {
-        textarea: true
-      })
-    );
+        const head = document.createElement("div");
+        head.className = "list-item-head";
+        const tag = document.createElement("span");
+        tag.className = "tag";
+        tag.textContent = "Odstavec " + (index + 1);
+        head.appendChild(tag);
+        head.appendChild(
+          smallBtn(
+            "Odebrat",
+            () => {
+              l.sections.splice(index, 1);
+              markDirty();
+              renderActiveSection();
+              sendPreviewUpdate();
+            },
+            true
+          )
+        );
+        wrap.appendChild(head);
 
-    return block;
+        wrap.appendChild(textField("Nadpis", item.heading, (v) => (item.heading = v)));
+        wrap.appendChild(
+          textField("Text", item.text, (v) => (item.text = v), {
+            textarea: true,
+            rows: 3,
+            maxlength: 1000
+          })
+        );
+
+        block.appendChild(wrap);
+      });
+
+      block.appendChild(
+        smallBtn("+ Přidat odstavec", () => {
+          l.sections.push({ heading: "Nový nadpis", text: "Text odstavce." });
+          markDirty();
+          renderActiveSection();
+          sendPreviewUpdate();
+        })
+      );
+
+      block.appendChild(
+        textField("Kontaktní poznámka na konci stránky", l.contactNote, (v) => (l.contactNote = v), {
+          textarea: true
+        })
+      );
+
+      return block;
+    };
   }
+
+  const renderLegalSection = createLegalSectionRenderer("legal");
+  const renderWarrantySection = createLegalSectionRenderer("warranty");
+  const renderTermsSection = createLegalSectionRenderer("terms");
 
   /* ==================== Sekce: Vzhled ==================== */
 
@@ -783,6 +797,24 @@
       description: "Text stránky Ochrana osobních údajů - kdo zpracovává data, za jakým účelem a jaká máte práva.",
       previewUrl: "ochrana-udaju.html",
       render: renderLegalSection
+    },
+    {
+      id: "warranty",
+      group: "Pokročilé nastavení",
+      subgroup: "Právní",
+      label: "Reklamační řád",
+      description: "Text stránky Reklamační řád - záruční doba, jak reklamaci uplatnit a jaká máte práva z vadného plnění.",
+      previewUrl: "reklamacni-rad.html",
+      render: renderWarrantySection
+    },
+    {
+      id: "terms",
+      group: "Pokročilé nastavení",
+      subgroup: "Právní",
+      label: "Obchodní podmínky",
+      description: "Text stránky Všeobecné obchodní podmínky - platba, termíny, odstoupení od zakázky.",
+      previewUrl: "obchodni-podminky.html",
+      render: renderTermsSection
     }
   ];
 
