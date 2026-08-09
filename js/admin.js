@@ -211,11 +211,18 @@
     return card;
   }
 
+  const TRASH_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6"/><path d="M10 11v6M14 11v6"/></svg>';
+  const PLUS_ICON =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>';
+
   function smallBtn(label, onClick, danger) {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "btn btn-sm " + (danger ? "btn-danger" : "btn-ghost");
-    btn.textContent = label;
+    const isAdd = label.trim().startsWith("+");
+    const cleanLabel = isAdd ? label.replace(/^\+\s*/, "") : label;
+    btn.innerHTML = (danger ? TRASH_ICON : isAdd ? PLUS_ICON : "") + `<span>${cleanLabel}</span>`;
     btn.addEventListener("click", onClick);
     return btn;
   }
@@ -865,14 +872,29 @@
     const section = SECTIONS.find((s) => s.id === activeSectionId);
     if (!section) return;
 
-    document.getElementById("section-title").textContent = section.label;
-
-    const previewLink = document.getElementById("preview-link");
-    previewLink.href =
-      section.previewUrl || "index.html" + (section.anchor ? "#" + section.anchor : "");
-
     const root = document.getElementById("editor-pane");
     root.innerHTML = "";
+
+    const header = document.createElement("div");
+    header.className = "content-header";
+
+    const title = document.createElement("h2");
+    title.className = "section-title";
+    title.id = "section-title";
+    title.textContent = section.label;
+    header.appendChild(title);
+
+    const previewLink = document.createElement("a");
+    previewLink.className = "preview-link-inline";
+    previewLink.id = "preview-link";
+    previewLink.target = "_blank";
+    previewLink.rel = "noopener";
+    previewLink.textContent = "Zobrazit náhled ↗";
+    previewLink.href =
+      section.previewUrl || "index.html" + (section.anchor ? "#" + section.anchor : "");
+    header.appendChild(previewLink);
+
+    root.appendChild(header);
 
     const desc = document.createElement("p");
     desc.className = "section-description";
@@ -887,17 +909,40 @@
 
   async function saveAll() {
     const saveBtn = document.getElementById("save-btn");
+    const discardBtn = document.getElementById("discard-btn");
     saveBtn.disabled = true;
-    setSaveStatus("Ukládám…", "");
+    discardBtn.disabled = true;
+    setSaveStatus("Publikuji…", "");
     try {
       await apiPost("/api/save", { file: "content", data: state.content });
       await apiPost("/api/save", { file: "theme", data: state.theme });
       isDirty = false;
-      setSaveStatus("Uloženo ✓ (nasazení může trvat ~1 minutu)", "success");
+      setSaveStatus("Publikováno ✓ (nasazení může trvat ~1 minutu)", "success");
     } catch (err) {
       setSaveStatus("Chyba: " + err.message, "error");
     } finally {
       saveBtn.disabled = false;
+      discardBtn.disabled = false;
+    }
+  }
+
+  async function discardChanges() {
+    if (!isDirty) return;
+    if (!confirm("Zahodit všechny neuložené změny a načíst naposledy publikovanou verzi?")) return;
+
+    const discardBtn = document.getElementById("discard-btn");
+    discardBtn.disabled = true;
+    setSaveStatus("Zahazuji změny…", "");
+    try {
+      await loadContentAndTheme();
+      isDirty = false;
+      renderSidebar();
+      renderActiveSection();
+      setSaveStatus("Vše uloženo", "");
+    } catch (err) {
+      setSaveStatus("Chyba: " + err.message, "error");
+    } finally {
+      discardBtn.disabled = false;
     }
   }
 
@@ -926,6 +971,7 @@
     await loadContentAndTheme();
     renderSidebar();
     renderActiveSection();
+    setSaveStatus("Vše uloženo", "");
     showApp();
   }
 
@@ -984,6 +1030,7 @@
 
   function initSaveButton() {
     document.getElementById("save-btn").addEventListener("click", saveAll);
+    document.getElementById("discard-btn").addEventListener("click", discardChanges);
   }
 
   window.addEventListener("beforeunload", (e) => {
