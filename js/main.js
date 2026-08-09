@@ -22,12 +22,6 @@
       .replace(/'/g, "&#039;");
   }
 
-  // Pro pole, kde chceme povolit pouze bezpečné, předem známé tagy (např. <br>, &amp;)
-  // použijeme explicitní whitelist místo syrového innerHTML.
-  function safeRichText(str) {
-    return escapeHTML(str).replace(/&amp;amp;/g, "&amp;");
-  }
-
   async function fetchJSON(path) {
     const res = await fetch(path, { cache: "no-store" });
     if (!res.ok) throw new Error("Nepodařilo se načíst " + path);
@@ -71,8 +65,6 @@
 
   function renderHeader(content) {
     const h = content.header;
-    document.getElementById("logo-text").textContent = h.logoText;
-    document.getElementById("logo-sub").innerHTML = safeRichText(h.logoSub);
 
     const navDesktop = document.getElementById("nav-desktop");
     const navMobile = document.getElementById("nav-mobile-links");
