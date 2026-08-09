@@ -99,7 +99,7 @@
       input.style.resize = "none";
     }
     input.value = value || "";
-    input.maxLength = opts.maxlength || 300;
+    if (opts.maxlength) input.maxLength = opts.maxlength;
     if (opts.placeholder) input.placeholder = opts.placeholder;
     input.addEventListener("input", () => {
       onChange(input.value);
@@ -613,8 +613,7 @@
       block.appendChild(
         textField("Úvodní text", l.intro, (v) => (l.intro = v), {
           textarea: true,
-          rows: 4,
-          maxlength: 600
+          rows: 4
         })
       );
 
@@ -651,8 +650,7 @@
         wrap.appendChild(
           textField("Text", item.text, (v) => (item.text = v), {
             textarea: true,
-            rows: 3,
-            maxlength: 1000
+            rows: 3
           })
         );
 
