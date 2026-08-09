@@ -221,5 +221,81 @@
       }
     ],
     "contactNote": "S žádostmi ohledně ochrany osobních údajů nás kontaktujte na +420 739 437 783 nebo e-mailem."
+  },
+  "warranty": {
+    "pageTitle": "Reklamační řád",
+    "lastUpdated": "srpen 2026",
+    "intro": "Stojíme si za kvalitou odvedené práce. Pokud přesto na díle objevíte vadu, tady se dozvíte, jak postupovat a na co máte ze zákona nárok.",
+    "sections": [
+      {
+        "heading": "Záruka na provedené dílo",
+        "text": "Na provedené tesařské a pokrývačské práce poskytujeme zákonnou záruku v souladu s občanským zákoníkem (zákon č. 89/2012 Sb.). U staveb a jejich součástí činí záruční doba 5 let od předání díla, u ostatních prací a dodaného materiálu se řídí obvyklou životností a podmínkami výrobce."
+      },
+      {
+        "heading": "Jak reklamaci uplatnit",
+        "text": "Vadu díla nám prosím nahlaste co nejdříve po jejím zjištění, a to telefonicky nebo e-mailem na kontaktech uvedených níže. V oznámení uveďte místo realizace, popis vady a pokud možno i fotografii. Na základě nahlášení domluvíme termín prohlídky přímo na místě."
+      },
+      {
+        "heading": "Lhůta pro vyřízení",
+        "text": "Reklamaci vyřizujeme bez zbytečného odkladu, nejpozději do 30 dnů od jejího uplatnění, pokud se s vámi nedohodneme na delší lhůtě (např. z důvodu povětrnostních podmínek u venkovních prací)."
+      },
+      {
+        "heading": "Práva z vadného plnění",
+        "text": "V závislosti na povaze vady máte právo na bezplatné odstranění vady opravou, na přiměřenou slevu z ceny díla, nebo v případě podstatné vady na odstoupení od smlouvy - vždy v souladu s příslušnými ustanoveními občanského zákoníku."
+      },
+      {
+        "heading": "Co záruka nepokrývá",
+        "text": "Záruka se nevztahuje na vady způsobené běžným opotřebením, nesprávným užíváním či údržbou, zásahem třetí osoby, živelní událostí nebo úpravami provedenými bez našeho souhlasu po předání díla."
+      }
+    ],
+    "contactNote": "Reklamaci uplatněte na +420 739 437 783 nebo e-mailem - domluvíme se na dalším postupu."
+  },
+  "terms": {
+    "pageTitle": "Všeobecné obchodní podmínky",
+    "lastUpdated": "srpen 2026",
+    "intro": "Přehledně shrnujeme, jak spolu obvykle spolupracujeme - od poptávky přes realizaci až po předání díla. Konkrétní podmínky každé zakázky si vždy domlouváme individuálně.",
+    "sections": [
+      {
+        "heading": "Úvodní ustanovení",
+        "text": "Tyto všeobecné obchodní podmínky upravují vzájemná práva a povinnosti mezi Jakubem Šutou, IČ: 87041693, a Milanem Šutou, IČ: 03345050 (dále jen \"zhotovitel\"), a objednatelem tesařských a pokrývačských prací (dále jen \"objednatel\")."
+      },
+      {
+        "heading": "Uzavření smlouvy",
+        "text": "Smlouva o dílo vzniká na základě vzájemně odsouhlasené nabídky/cenové kalkulace, případně písemnou smlouvou o dílo. Nezávazná poptávka přes web ani telefonické jednání samo o sobě smlouvu nezakládá."
+      },
+      {
+        "heading": "Cena a platební podmínky",
+        "text": "Cena díla se stanovuje na základě individuální kalkulace dle rozsahu prací a použitého materiálu. U větších zakázek je obvyklá platba zálohy před zahájením prací, doplatek pak po předání a převzetí díla. Konkrétní platební podmínky si vždy domlouváme individuálně pro danou zakázku."
+      },
+      {
+        "heading": "Termín provedení díla",
+        "text": "Termín realizace se domlouvá individuálně s ohledem na rozsah zakázky a aktuální vytíženost. U venkovních prací (pokrývačské práce, krovy) může dojít k posunu termínu vlivem nepříznivého počasí - o takové změně objednatele vždy včas informujeme."
+      },
+      {
+        "heading": "Součinnost objednatele",
+        "text": "Objednatel je povinen zajistit přístup na místo realizace a poskytnout součinnost nezbytnou k řádnému provedení díla (např. zajištění přípojky elektřiny, přístupové cesty pro materiál apod.), pokud nebylo dohodnuto jinak."
+      },
+      {
+        "heading": "Předání a převzetí díla",
+        "text": "Po dokončení prací dílo předáme objednateli, o čemž lze sepsat předávací protokol. Okamžikem převzetí přechází na objednatele odpovědnost za dílo, záruční doba běží od tohoto data."
+      },
+      {
+        "heading": "Odstoupení od smlouvy",
+        "text": "Od uzavřené smlouvy lze odstoupit za podmínek stanovených občanským zákoníkem, případně dle ujednání ve smlouvě o dílo. Pokud objednatel odstoupí od smlouvy po zahájení prací, náleží zhotoviteli úhrada za již provedené práce a účelně vynaložený materiál."
+      },
+      {
+        "heading": "Reklamace a záruka",
+        "text": "Práva z vadného plnění a postup při reklamaci upravuje samostatný Reklamační řád, který je nedílnou součástí těchto podmínek."
+      },
+      {
+        "heading": "Ochrana osobních údajů",
+        "text": "Zpracování osobních údajů objednatele se řídí samostatnou stránkou Ochrana osobních údajů."
+      },
+      {
+        "heading": "Závěrečná ustanovení",
+        "text": "Tyto obchodní podmínky se řídí právním řádem České republiky, zejména občanským zákoníkem (zákon č. 89/2012 Sb.). V případě individuální písemné smlouvy o dílo má tato smlouva přednost před zněním těchto podmínek."
+      }
+    ],
+    "contactNote": "Máte k podmínkám dotaz? Ozvěte se na +420 739 437 783 nebo e-mailem."
   }
 }
