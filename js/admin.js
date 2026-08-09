@@ -83,11 +83,21 @@
     return wrap;
   }
 
+  function autoGrow(textarea) {
+    textarea.style.height = "auto";
+    textarea.style.height = textarea.scrollHeight + "px";
+  }
+
   function textField(labelText, value, onChange, opts = {}) {
     const wrap = fieldWrap(labelText);
     const input = document.createElement(opts.textarea ? "textarea" : "input");
-    if (!opts.textarea) input.type = "text";
-    else input.rows = opts.rows || 3;
+    if (!opts.textarea) {
+      input.type = "text";
+    } else {
+      input.rows = opts.rows || 3;
+      input.style.overflow = "hidden";
+      input.style.resize = "none";
+    }
     input.value = value || "";
     input.maxLength = opts.maxlength || 300;
     if (opts.placeholder) input.placeholder = opts.placeholder;
@@ -95,6 +105,7 @@
       onChange(input.value);
       markDirty();
       sendPreviewUpdate();
+      if (opts.textarea) autoGrow(input);
     });
     wrap.appendChild(input);
     return wrap;
@@ -902,6 +913,7 @@
     root.appendChild(desc);
 
     root.appendChild(section.render());
+    root.querySelectorAll("textarea").forEach(autoGrow);
     root.scrollTop = 0;
   }
 
