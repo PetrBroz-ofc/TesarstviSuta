@@ -239,8 +239,15 @@
   function renderHeaderSection() {
     const header = state.content.header;
     const block = fieldsCard();
-    block.appendChild(textField("Název firmy v hlavičce", header.logoText, (v) => (header.logoText = v)));
-    block.appendChild(textField("Podtitulek v hlavičce", header.logoSub, (v) => (header.logoSub = v)));
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.style.marginBottom = "1rem";
+    hint.textContent =
+      "Logo v hlavičce je teď pevný obrázek (images/logo.png), nemění se textem. " +
+      "Pro výměnu loga pošlete nový soubor napřímo.";
+    block.appendChild(hint);
+
     block.appendChild(
       textField("Text tlačítka poptávky (hlavička)", header.ctaLabel, (v) => (header.ctaLabel = v))
     );
