@@ -773,6 +773,16 @@ h1, h2, h3, .section-title {
   color: rgba(250, 250, 248, 0.85);
   margin-top: 0.3rem;
 }
+.footer-contact-ico {
+  font-size: 0.78rem;
+  color: rgba(250, 250, 248, 0.5);
+  margin-top: 0.1rem;
+}
+.footer-contact-note-line {
+  font-size: 0.76rem;
+  color: rgba(250, 250, 248, 0.4);
+  font-style: italic;
+}
 .footer-contact-name-2 { margin-top: 0.9rem; }
 .footer-contact-row {
   display: flex;
@@ -852,6 +862,12 @@ h1, h2, h3, .section-title {
   color: var(--color-secondary);
   line-height: 1.7;
 }
+.legal-item p a {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal-item p a:hover { color: var(--color-primary); }
 .legal-contact-note {
   max-width: 760px;
   margin-top: 2.6rem;
