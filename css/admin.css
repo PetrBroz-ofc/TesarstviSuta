@@ -158,19 +158,10 @@ label {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   font-family: 'JetBrains Mono', monospace;
 }
-.brand-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #D96C55;
-  flex-shrink: 0;
-  align-self: center;
-}
-.brand-name {
-  font-weight: 700;
-  color: #fff;
-  font-size: 0.92rem;
-  letter-spacing: 0.02em;
+.sidebar-logo-img {
+  height: 22px;
+  width: auto;
+  display: block;
 }
 .brand-sub { color: #7d828c; font-size: 0.85rem; }
 
