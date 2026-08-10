@@ -146,7 +146,7 @@
     return wrap;
   }
 
-  function imageField(labelText, currentSrc, onUploaded) {
+  function imageField(labelText, currentSrc, onUploaded, opts = {}) {
     const wrap = fieldWrap(labelText);
     const row = document.createElement("div");
     row.className = "image-field";
@@ -160,13 +160,15 @@
 
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = "image/jpeg,image/png,image/webp";
+    fileInput.accept = opts.allowPdf
+      ? "image/jpeg,image/png,image/webp,application/pdf"
+      : "image/jpeg,image/png,image/webp";
     fileInput.style.display = "none";
 
     const uploadBtn = document.createElement("button");
     uploadBtn.type = "button";
     uploadBtn.className = "btn btn-ghost btn-sm";
-    uploadBtn.textContent = "Nahrát fotografii";
+    uploadBtn.textContent = opts.allowPdf ? "Nahrát fotografii nebo PDF" : "Nahrát fotografii";
 
     const progress = document.createElement("div");
     progress.className = "upload-progress";
@@ -179,7 +181,7 @@
       uploadBtn.disabled = true;
       progress.textContent = "Zpracovávám a nahrávám…";
       try {
-        const processed = await ImageEditor.processImageFile(file);
+        const processed = await ImageEditor.processFile(file, { allowPdf: opts.allowPdf });
         const result = await apiPost("/api/upload-image", {
           mimeType: processed.mimeType,
           base64: processed.base64
@@ -207,6 +209,14 @@
   }
 
   function updatePreviewThumb(node, src) {
+    const isPdf = !!src && /\.pdf($|\?)/i.test(src);
+    node.classList.toggle("is-pdf", isPdf);
+
+    if (isPdf) {
+      node.style.backgroundImage = "none";
+      node.textContent = "PDF";
+      return;
+    }
     if (src) {
       node.style.backgroundImage = `url("${src}")`;
       node.textContent = "";
@@ -618,7 +628,11 @@
       );
       wrap.appendChild(head);
 
-      wrap.appendChild(imageField("Fotografie / scan certifikátu", item.image, (path) => (item.image = path)));
+      wrap.appendChild(
+        imageField("Fotografie / scan certifikátu", item.image, (path) => (item.image = path), {
+          allowPdf: true
+        })
+      );
       wrap.appendChild(textField("Název certifikátu", item.title, (v) => (item.title = v)));
       const row = document.createElement("div");
       row.className = "field-row";
