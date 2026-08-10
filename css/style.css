@@ -733,10 +733,13 @@ h1, h2, h3, .section-title {
   transform: translateY(-3px);
   box-shadow: 0 16px 32px -16px rgba(28, 25, 23, 0.18);
 }
+.cert-card { cursor: default; }
+.cert-card[role="button"] { cursor: pointer; }
 .cert-card img {
   width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
+  aspect-ratio: 3/4;
+  object-fit: contain;
+  background: var(--color-bg-alt);
   display: block;
 }
 .cert-info { padding: 1rem 1.1rem 1.2rem; }
