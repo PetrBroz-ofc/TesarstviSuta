@@ -194,6 +194,8 @@
   /* ---------- Render: galerie ---------- */
 
   let galleryItems = [];
+  let currentAlbumIndex = 0;
+  let currentPhotoIndex = 0;
 
   function renderGallery(content) {
     const gallery = content.gallery;
@@ -205,22 +207,24 @@
     grid.innerHTML = "";
 
     galleryItems.forEach((item, index) => {
+      const images = Array.isArray(item.images) ? item.images : [];
       const figure = el("div", "gallery-item");
       figure.setAttribute("role", "button");
       figure.setAttribute("tabindex", "0");
-      figure.setAttribute(
-        "aria-label",
-        "Zobrazit fotografii: " + (item.title || "realizace")
-      );
+      figure.setAttribute("aria-label", "Zobrazit album: " + (item.title || "realizace"));
 
-      if (item.image) {
+      if (images[0]) {
         const img = el("img");
-        img.src = item.image;
+        img.src = images[0];
         img.alt = escapeHTML(item.title || "Fotografie realizace");
         img.loading = "lazy";
         figure.appendChild(img);
       } else {
         figure.appendChild(el("div", "placeholder-media", ICONS.roofTiles));
+      }
+
+      if (images.length > 1) {
+        figure.appendChild(el("div", "gallery-count-badge", `${images.length} fotek`));
       }
 
       const caption = el(
@@ -232,7 +236,7 @@
       );
       figure.appendChild(caption);
 
-      const open = () => openLightbox(index);
+      const open = () => openLightbox(index, 0);
       figure.addEventListener("click", open);
       figure.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -245,18 +249,50 @@
     });
   }
 
-  function openLightbox(index) {
-    const item = galleryItems[index];
+  function currentAlbumImages() {
+    const item = galleryItems[currentAlbumIndex];
+    return item && Array.isArray(item.images) ? item.images : [];
+  }
+
+  function updateLightboxView() {
+    const item = galleryItems[currentAlbumIndex];
     if (!item) return;
-    const lightbox = document.getElementById("lightbox");
+    const images = currentAlbumImages();
+
     const img = document.getElementById("lightbox-img");
     const caption = document.getElementById("lightbox-caption");
-    img.src = item.image || "";
+    const counter = document.getElementById("lightbox-counter");
+    const prevBtn = document.getElementById("lightbox-prev");
+    const nextBtn = document.getElementById("lightbox-next");
+
+    img.src = images[currentPhotoIndex] || "";
     img.alt = escapeHTML(item.title || "");
     caption.textContent = [item.title, item.description].filter(Boolean).join(" — ");
+
+    const hasMultiple = images.length > 1;
+    prevBtn.hidden = !hasMultiple;
+    nextBtn.hidden = !hasMultiple;
+    counter.textContent = hasMultiple ? `${currentPhotoIndex + 1} / ${images.length}` : "";
+  }
+
+  function openLightbox(albumIndex, photoIndex) {
+    const item = galleryItems[albumIndex];
+    if (!item) return;
+    currentAlbumIndex = albumIndex;
+    currentPhotoIndex = photoIndex || 0;
+
+    const lightbox = document.getElementById("lightbox");
+    updateLightboxView();
     lightbox.classList.add("is-open");
     document.body.style.overflow = "hidden";
     lightbox.focus();
+  }
+
+  function lightboxStep(direction) {
+    const images = currentAlbumImages();
+    if (images.length < 2) return;
+    currentPhotoIndex = (currentPhotoIndex + direction + images.length) % images.length;
+    updateLightboxView();
   }
 
   function closeLightbox() {
@@ -266,6 +302,41 @@
   }
 
   /* ---------- Render: lešení ---------- */
+
+  function renderCertificates(content) {
+    const cert = content.certificates;
+    const section = document.getElementById("certificates-section");
+    const hasItems = cert && Array.isArray(cert.items) && cert.items.length > 0;
+
+    if (!section) return;
+    section.hidden = !hasItems;
+    if (!hasItems) return;
+
+    document.getElementById("certificates-eyebrow").textContent = cert.eyebrow;
+    document.getElementById("certificates-title").textContent = cert.title;
+    document.getElementById("certificates-intro").textContent = cert.intro;
+
+    const grid = document.getElementById("certificates-grid");
+    grid.innerHTML = "";
+    cert.items.forEach((item) => {
+      const card = el("div", "cert-card");
+      if (item.image) {
+        const img = el("img");
+        img.src = item.image;
+        img.alt = escapeHTML(item.title || "Certifikát");
+        img.loading = "lazy";
+        card.appendChild(img);
+      } else {
+        card.appendChild(el("div", "placeholder-media", ICONS.idCard));
+      }
+      const info = el("div", "cert-info");
+      info.appendChild(el("div", "cert-title", escapeHTML(item.title)));
+      const meta = [item.issuer, item.year].filter(Boolean).join(" · ");
+      if (meta) info.appendChild(el("div", "cert-meta", escapeHTML(meta)));
+      card.appendChild(info);
+      grid.appendChild(card);
+    });
+  }
 
   function renderScaffolding(content) {
     const s = content.scaffolding;
@@ -447,11 +518,23 @@
 
   function initLightbox() {
     document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+    document.getElementById("lightbox-prev").addEventListener("click", (e) => {
+      e.stopPropagation();
+      lightboxStep(-1);
+    });
+    document.getElementById("lightbox-next").addEventListener("click", (e) => {
+      e.stopPropagation();
+      lightboxStep(1);
+    });
     document.getElementById("lightbox").addEventListener("click", (e) => {
       if (e.target.id === "lightbox") closeLightbox();
     });
     document.addEventListener("keydown", (e) => {
+      const lightbox = document.getElementById("lightbox");
+      if (!lightbox.classList.contains("is-open")) return;
       if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") lightboxStep(-1);
+      if (e.key === "ArrowRight") lightboxStep(1);
     });
   }
 
@@ -488,6 +571,7 @@
     renderAbout(content);
     renderServices(content);
     renderGallery(content);
+    renderCertificates(content);
     renderScaffolding(content);
     renderContact(content);
     renderFooter(content);
