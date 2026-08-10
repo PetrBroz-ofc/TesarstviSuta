@@ -1040,6 +1040,14 @@
     root.appendChild(section.render());
     root.querySelectorAll("textarea").forEach(autoGrow);
     root.scrollTop = 0;
+
+    // Pojistka: i kdyby první přepočet proběhl dřív, než se dogruntuje
+    // vlastní písmo, jakmile je jisté, že je načtené, přepočítáme znovu.
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        root.querySelectorAll("textarea").forEach(autoGrow);
+      });
+    }
   }
 
   /* ==================== Ukládání ==================== */
