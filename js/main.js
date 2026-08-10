@@ -374,6 +374,57 @@
     });
   }
 
+  function renderFAQ(content) {
+    const faq = content.faq;
+    if (!faq) return;
+    document.getElementById("faq-eyebrow").textContent = faq.eyebrow;
+    document.getElementById("faq-title").textContent = faq.title;
+
+    const list = document.getElementById("faq-list");
+    if (!list || !Array.isArray(faq.items)) return;
+    list.innerHTML = "";
+
+    faq.items.forEach((item, index) => {
+      const wrap = el("div", "faq-item");
+      const answerId = "faq-answer-" + index;
+
+      const button = document.createElement("button");
+      button.className = "faq-question";
+      button.type = "button";
+      button.setAttribute("aria-expanded", "false");
+      button.setAttribute("aria-controls", answerId);
+      button.innerHTML =
+        `<span>${escapeHTML(item.question)}</span>` +
+        `<svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
+
+      const answerWrap = el("div", "faq-answer-wrap");
+      const answerInner = el("div", "faq-answer-inner");
+      const answerP = document.createElement("p");
+      answerP.id = answerId;
+      answerP.textContent = item.answer;
+      answerInner.appendChild(answerP);
+      answerWrap.appendChild(answerInner);
+
+      wrap.appendChild(button);
+      wrap.appendChild(answerWrap);
+      list.appendChild(wrap);
+    });
+  }
+
+  // Klik na otázku rozbalí/sbalí odpověď. Delegováno na #faq-list, takže
+  // funguje i po přerenderování obsahu (renderFAQ nahrazuje uzly uvnitř).
+  function initFAQAccordion() {
+    const list = document.getElementById("faq-list");
+    if (!list) return;
+    list.addEventListener("click", (e) => {
+      const button = e.target.closest(".faq-question");
+      if (!button || !list.contains(button)) return;
+      const item = button.closest(".faq-item");
+      const isOpen = item.classList.toggle("is-open");
+      button.setAttribute("aria-expanded", String(isOpen));
+    });
+  }
+
   function renderScaffolding(content) {
     const s = content.scaffolding;
     document.getElementById("scaffolding-title").textContent = s.title;
@@ -609,6 +660,7 @@
     renderGallery(content);
     renderCertificates(content);
     renderScaffolding(content);
+    renderFAQ(content);
     renderContact(content);
     renderFooter(content);
     syncCookieText(content);
@@ -639,6 +691,7 @@
     initMobileNav();
     initNavLimelight();
     initLightbox();
+    initFAQAccordion();
     initReveal();
     initCookieBehavior();
 
