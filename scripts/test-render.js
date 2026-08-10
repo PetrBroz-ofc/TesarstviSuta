@@ -20,9 +20,10 @@ function testStaticHtmlHasRealContent() {
     ["Hero podtext je v syrovém HTML vyplněný", doc.getElementById("hero-text").textContent.trim().length > 0],
     ["Hero fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#hero-media img[src]")],
     ["O nás fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#about-media img[src]")],
-    ["Navigace je vyplněná bez JS (5 odkazů)", doc.querySelectorAll("#nav-desktop a").length === 5],
+    ["Navigace je vyplněná bez JS (7 odkazů)", doc.querySelectorAll("#nav-desktop a").length === 7],
     ["Karty služeb jsou v HTML bez JS (4)", doc.querySelectorAll(".service-card").length === 4],
     ["Fotky realizací jsou v HTML bez JS (4)", doc.querySelectorAll(".gallery-item img").length === 4],
+    ["FAQ otázky jsou v HTML bez JS (6)", doc.querySelectorAll(".faq-item").length === 6],
     ["Žádný prvek nemá data-skeleton (skrytý text)", doc.querySelectorAll("[data-skeleton]").length === 0]
   ];
 
@@ -73,9 +74,10 @@ async function run() {
   const mainSrc = fs.readFileSync(path.join(ROOT, "js/main.js"), "utf8");
   window.eval(iconsSrc + "\n;\n" + mainSrc);
 
-  // main.js registruje listener na DOMContentLoaded - ten už v jsdomu
-  // proběhl dřív, než jsme stihli script vykonat, takže ho vyvoláme ručně.
-  window.document.dispatchEvent(new window.Event("DOMContentLoaded"));
+  // ŽÁDNÝ ruční dispatch DOMContentLoaded - jsdom ho vystřelí přirozeně
+  // (asynchronně) samo. Ruční dispatch navíc by způsobil DVOJITÉ spuštění
+  // init()/renderAll() (jednou přirozeně, jednou ručně), což ve zbytku
+  // testu dělalo z dřív zachycených DOM referencí zastaralé uzly.
 
   // Počkáme na dokončení async init() (Promise.all fetchů + vykreslení)
   await new Promise((resolve) => setTimeout(resolve, 400));
@@ -85,7 +87,7 @@ async function run() {
     ["Titulek stránky nastaven", doc.title.includes("Šuta")],
     ["Hero nadpis vykreslen", doc.getElementById("hero-title-1").textContent.length > 0],
     ["Hero 2. řádek vykreslen", doc.getElementById("hero-title-2").textContent.includes("Šuta")],
-    ["Nav odkazy vykresleny (5)", doc.querySelectorAll("#nav-desktop a").length === 5],
+    ["Nav odkazy vykresleny (7)", doc.querySelectorAll("#nav-desktop a").length === 7],
     ["Karty služeb vykresleny (4)", doc.querySelectorAll(".service-card").length === 4],
     ["Položky galerie vykresleny (4)", doc.querySelectorAll(".gallery-item").length === 4],
     ["Statistiky vykresleny (3)", doc.querySelectorAll("#about-stats .stat").length === 3],
@@ -105,8 +107,8 @@ async function run() {
     ["Lightbox má šipky prev/next", !!doc.getElementById("lightbox-prev") && !!doc.getElementById("lightbox-next")],
     ["Šipky lightboxu jsou skryté (album má 1 fotku)", doc.getElementById("lightbox-prev").hidden === true],
     [
-      "Sekce Certifikáty je skrytá (zatím žádné certifikáty)",
-      doc.getElementById("certificates-section").hidden === true
+      "Sekce Certifikáty se zobrazuje (obsahuje reálné certifikáty)",
+      doc.getElementById("certificates-section").hidden === false
     ]
   ];
 
@@ -138,6 +140,24 @@ async function run() {
   const lightboxClosed = !lightbox.classList.contains("is-open");
   console.log((lightboxClosed ? "OK  " : "FAIL") + " - Klávesa Escape zavře lightbox");
   if (!lightboxClosed) allPassed = false;
+
+  // Interaktivní test FAQ: klik na otázku ji rozbalí, druhý klik zase sbalí
+  const firstFaqQuestion = doc.querySelector(".faq-question");
+  firstFaqQuestion.click();
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  const faqOpened =
+    firstFaqQuestion.closest(".faq-item").classList.contains("is-open") &&
+    firstFaqQuestion.getAttribute("aria-expanded") === "true";
+  console.log((faqOpened ? "OK  " : "FAIL") + " - Klik na FAQ otázku ji rozbalí");
+  if (!faqOpened) allPassed = false;
+
+  firstFaqQuestion.click();
+  await new Promise((resolve) => setTimeout(resolve, 20));
+  const faqClosed =
+    !firstFaqQuestion.closest(".faq-item").classList.contains("is-open") &&
+    firstFaqQuestion.getAttribute("aria-expanded") === "false";
+  console.log((faqClosed ? "OK  " : "FAIL") + " - Druhý klik na stejnou otázku ji zase sbalí");
+  if (!faqClosed) allPassed = false;
 
   if (errors.length) {
     console.log("\nZachycené chyby:");
