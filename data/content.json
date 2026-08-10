@@ -126,26 +126,40 @@
     "title": "Realizace",
     "items": [
       {
-        "image": "images/realizace-01.jpg",
         "title": "Detail podbití střechy",
-        "description": "Precizní tesařské zpracování okapní hrany a dřevěného obkladu"
+        "description": "Precizní tesařské zpracování okapní hrany a dřevěného obkladu",
+        "images": [
+          "images/realizace-01.jpg"
+        ]
       },
       {
-        "image": "images/realizace-02.jpg",
         "title": "Historická rekonstrukce",
-        "description": "Oprava krovu památkově chráněného dřevěného kostela"
+        "description": "Oprava krovu památkově chráněného dřevěného kostela",
+        "images": [
+          "images/realizace-02.jpg"
+        ]
       },
       {
-        "image": "images/realizace-03.jpg",
         "title": "Novostavba krovu",
-        "description": "Tesařská konstrukce hřebene a nároží rodinného domu"
+        "description": "Tesařská konstrukce hřebene a nároží rodinného domu",
+        "images": [
+          "images/realizace-03.jpg"
+        ]
       },
       {
-        "image": "images/realizace-04.jpg",
         "title": "Dřevěná nástavba",
-        "description": "Tesařská konstrukce podkroví a terasy"
+        "description": "Tesařská konstrukce podkroví a terasy",
+        "images": [
+          "images/realizace-04.jpg"
+        ]
       }
     ]
+  },
+  "certificates": {
+    "eyebrow": "Kvalita a záruky",
+    "title": "Certifikáty",
+    "intro": "Naše práce je podložená odbornou způsobilostí a kvalifikací v oboru.",
+    "items": []
   },
   "scaffolding": {
     "eyebrow": "Doplňková služba",
