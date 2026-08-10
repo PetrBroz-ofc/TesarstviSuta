@@ -655,6 +655,62 @@
     return block;
   }
 
+  function renderFAQSection() {
+    const faq = state.content.faq;
+    const block = fieldsCard();
+
+    block.appendChild(textField("Nadpis nad titulkem", faq.eyebrow, (v) => (faq.eyebrow = v)));
+    block.appendChild(textField("Titulek sekce", faq.title, (v) => (faq.title = v)));
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = "Otázky se na webu zobrazí jako klikací seznam - klik rozbalí odpověď.";
+    block.appendChild(hint);
+
+    faq.items.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "list-item";
+
+      const head = document.createElement("div");
+      head.className = "list-item-head";
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = "Otázka " + (index + 1);
+      head.appendChild(tag);
+      head.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            faq.items.splice(index, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
+      );
+      wrap.appendChild(head);
+
+      wrap.appendChild(textField("Otázka", item.question, (v) => (item.question = v)));
+      wrap.appendChild(
+        textField("Odpověď", item.answer, (v) => (item.answer = v), { textarea: true, rows: 3 })
+      );
+
+      block.appendChild(wrap);
+    });
+
+    block.appendChild(
+      smallBtn("+ Přidat otázku", () => {
+        faq.items.push({ question: "Nová otázka", answer: "Odpověď na otázku." });
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      })
+    );
+
+    return block;
+  }
+
   function renderScaffoldingSection() {
     const sc = state.content.scaffolding;
     const block = fieldsCard();
@@ -896,6 +952,14 @@
       description: "Krátká samostatná sekce s nabídkou pronájmu lešení.",
       anchor: "leseni",
       render: renderScaffoldingSection
+    },
+    {
+      id: "faq",
+      group: "Textový obsah",
+      label: "FAQ",
+      description: "Časté dotazy - klikací seznam otázek a odpovědí.",
+      anchor: "faq",
+      render: renderFAQSection
     },
     {
       id: "contact",
