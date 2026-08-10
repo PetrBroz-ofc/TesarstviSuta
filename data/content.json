@@ -22,8 +22,16 @@
         "href": "#realizace"
       },
       {
+        "label": "Certifikáty",
+        "href": "#certificates-section"
+      },
+      {
         "label": "Lešení",
         "href": "#leseni"
+      },
+      {
+        "label": "FAQ",
+        "href": "#faq"
       },
       {
         "label": "Kontakt",
@@ -186,6 +194,36 @@
     "text": "Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce.",
     "ctaLabel": "Poptat lešení",
     "ctaHref": "#kontakt"
+  },
+  "faq": {
+    "eyebrow": "Časté dotazy",
+    "title": "FAQ",
+    "items": [
+      {
+        "question": "Jak probíhá poptávka a kolik bude realizace stát?",
+        "answer": "Poptávku vyřídíme telefonicky nebo e-mailem, domluvíme si prohlídku přímo na místě a připravíme nezávaznou cenovou nabídku na míru vašemu projektu. Cena se vždy odvíjí od rozsahu prací a použitého materiálu."
+      },
+      {
+        "question": "Jak dlouho trvá realizace zakázky?",
+        "answer": "Záleží na rozsahu prací - menší opravy zvládneme v řádu dní, rekonstrukce střechy nebo krovu obvykle několik týdnů. Konkrétní termín vždy domluvíme předem a o případných změnách (např. kvůli počasí) vás včas informujeme."
+      },
+      {
+        "question": "Poskytujete záruku na provedené práce?",
+        "answer": "Ano, na provedené dílo poskytujeme zákonnou záruku, u staveb 5 let od předání. Podrobnosti a postup reklamace najdete v Reklamačním řádu."
+      },
+      {
+        "question": "Pracujete i mimo Liberecký kraj?",
+        "answer": "Ano, tesařské a pokrývačské práce realizujeme po celé České republice."
+      },
+      {
+        "question": "Nabízíte i samostatný pronájem lešení?",
+        "answer": "Ano, lešení UNI 70 si můžete pronajmout i bez návaznosti na naše tesařské či pokrývačské práce."
+      },
+      {
+        "question": "Umíte pracovat i na historických a památkově chráněných objektech?",
+        "answer": "Ano, rekonstrukce historických staveb, kostelů a památkově chráněných objektů patří mezi naše specializace - najdete je i mezi referencemi."
+      }
+    ]
   },
   "contact": {
     "eyebrow": "Spojte se s námi",
