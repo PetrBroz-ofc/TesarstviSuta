@@ -34,6 +34,7 @@ function validateContentShape(data) {
     "about",
     "services",
     "gallery",
+    "certificates",
     "scaffolding",
     "contact",
     "footer",
