@@ -159,7 +159,14 @@
     "eyebrow": "Kvalita a záruky",
     "title": "Certifikáty",
     "intro": "Naše práce je podložená odbornou způsobilostí a kvalifikací v oboru.",
-    "items": []
+    "items": [
+      {
+        "image": "images/uploads/realizace-1786352884407-8bfa882a.jpg",
+        "title": "Referenční list",
+        "issuer": "Arcibiskupství pražské",
+        "year": "2014"
+      }
+    ]
   },
   "scaffolding": {
     "eyebrow": "Doplňková služba",
