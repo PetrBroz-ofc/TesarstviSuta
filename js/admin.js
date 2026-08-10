@@ -481,7 +481,15 @@
     block.appendChild(textField("Nadpis nad titulkem", g.eyebrow, (v) => (g.eyebrow = v)));
     block.appendChild(textField("Titulek sekce", g.title, (v) => (g.title = v)));
 
-    g.items.forEach((item, index) => {
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent =
+      "Každá realizace je album - může mít jednu i víc fotek, mezi kterými se na webu listuje šipkami.";
+    block.appendChild(hint);
+
+    g.items.forEach((item, albumIndex) => {
+      if (!Array.isArray(item.images)) item.images = [];
+
       const wrap = document.createElement("div");
       wrap.className = "list-item";
 
@@ -489,30 +497,141 @@
       head.className = "list-item-head";
       const tag = document.createElement("span");
       tag.className = "tag";
-      tag.textContent = "Fotografie " + (index + 1);
+      tag.textContent = "Album " + (albumIndex + 1);
       head.appendChild(tag);
       head.appendChild(
-        smallBtn("Odebrat", () => {
-          g.items.splice(index, 1);
-          markDirty();
-          renderActiveSection();
-          sendPreviewUpdate();
-        }, true)
+        smallBtn(
+          "Odebrat album",
+          () => {
+            g.items.splice(albumIndex, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
       );
       wrap.appendChild(head);
 
-      wrap.appendChild(imageField("Fotografie", item.image, (path) => (item.image = path)));
       wrap.appendChild(textField("Název realizace", item.title, (v) => (item.title = v)));
       wrap.appendChild(
         textField("Krátký popis", item.description, (v) => (item.description = v))
+      );
+
+      const photosHint = document.createElement("div");
+      photosHint.className = "hint";
+      photosHint.textContent = `Fotky v albu (${item.images.length})`;
+      wrap.appendChild(photosHint);
+
+      if (item.images.length) {
+        const photosList = document.createElement("div");
+        photosList.className = "album-photos";
+
+        item.images.forEach((imgSrc, photoIndex) => {
+          const row = document.createElement("div");
+          row.className = "album-photo-row";
+
+          const thumb = document.createElement("div");
+          thumb.className = "image-preview";
+          updatePreviewThumb(thumb, imgSrc);
+          row.appendChild(thumb);
+
+          row.appendChild(
+            smallBtn(
+              "Odebrat",
+              () => {
+                item.images.splice(photoIndex, 1);
+                markDirty();
+                renderActiveSection();
+                sendPreviewUpdate();
+              },
+              true
+            )
+          );
+
+          photosList.appendChild(row);
+        });
+
+        wrap.appendChild(photosList);
+      }
+
+      wrap.appendChild(
+        imageField("Přidat další fotku do alba", "", (path) => {
+          item.images.push(path);
+          markDirty();
+          renderActiveSection();
+          sendPreviewUpdate();
+        })
       );
 
       block.appendChild(wrap);
     });
 
     block.appendChild(
-      smallBtn("+ Přidat fotografii", () => {
-        g.items.push({ image: "", title: "Nová realizace", description: "Popis realizace" });
+      smallBtn("+ Přidat album (novou realizaci)", () => {
+        g.items.push({ title: "Nová realizace", description: "Popis realizace", images: [] });
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      })
+    );
+
+    return block;
+  }
+
+  function renderCertificatesSection() {
+    const c = state.content.certificates;
+    const block = fieldsCard();
+
+    block.appendChild(textField("Nadpis nad titulkem", c.eyebrow, (v) => (c.eyebrow = v)));
+    block.appendChild(textField("Titulek sekce", c.title, (v) => (c.title = v)));
+    block.appendChild(textField("Úvodní text", c.intro, (v) => (c.intro = v), { textarea: true }));
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = c.items.length
+      ? "Sekce se na webu zobrazí automaticky, dokud je tu aspoň jeden certifikát."
+      : "Sekce se na webu zatím nezobrazuje - objeví se, jakmile přidáte první certifikát.";
+    block.appendChild(hint);
+
+    c.items.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "list-item";
+
+      const head = document.createElement("div");
+      head.className = "list-item-head";
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = "Certifikát " + (index + 1);
+      head.appendChild(tag);
+      head.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            c.items.splice(index, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
+      );
+      wrap.appendChild(head);
+
+      wrap.appendChild(imageField("Fotografie / scan certifikátu", item.image, (path) => (item.image = path)));
+      wrap.appendChild(textField("Název certifikátu", item.title, (v) => (item.title = v)));
+      const row = document.createElement("div");
+      row.className = "field-row";
+      row.appendChild(textField("Vydavatel", item.issuer, (v) => (item.issuer = v)));
+      row.appendChild(textField("Rok", item.year, (v) => (item.year = v)));
+      wrap.appendChild(row);
+
+      block.appendChild(wrap);
+    });
+
+    block.appendChild(
+      smallBtn("+ Přidat certifikát", () => {
+        c.items.push({ image: "", title: "Název certifikátu", issuer: "", year: "" });
         markDirty();
         renderActiveSection();
         sendPreviewUpdate();
@@ -744,9 +863,17 @@
       id: "gallery",
       group: "Textový obsah",
       label: "Realizace",
-      description: "Galerie fotografií dokončených realizací s názvem a krátkým popisem u každé.",
+      description: "Alba fotografií dokončených realizací - u každé realizace může být víc fotek, mezi kterými se na webu listuje šipkami.",
       anchor: "realizace",
       render: renderGallerySection
+    },
+    {
+      id: "certificates",
+      group: "Textový obsah",
+      label: "Certifikáty",
+      description: "Certifikáty a osvědčení firmy. Sekce se na webu zobrazí automaticky, jakmile přidáte první certifikát.",
+      anchor: "certificates-section",
+      render: renderCertificatesSection
     },
     {
       id: "scaffolding",
