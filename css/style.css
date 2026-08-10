@@ -714,6 +714,56 @@ h1, h2, h3, .section-title {
 }
 
 /* ==========================================================================
+   FAQ
+   ========================================================================== */
+.faq-list {
+  max-width: 720px;
+  margin: 2.5rem auto 0;
+}
+.faq-item {
+  border-bottom: 1px solid var(--color-border);
+}
+.faq-item:first-child { border-top: 1px solid var(--color-border); }
+
+.faq-question {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem;
+  padding: 1.3rem 0.2rem;
+  text-align: left;
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--color-primary);
+}
+.faq-question:hover { color: var(--color-accent); }
+
+.faq-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+  transition: transform 0.3s var(--ease);
+}
+.faq-question[aria-expanded="true"] .faq-icon { transform: rotate(180deg); }
+
+/* Plynulé rozbalení na "auto" výšku bez JS měření - grid 0fr -> 1fr trik */
+.faq-answer-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s var(--ease);
+}
+.faq-item.is-open .faq-answer-wrap { grid-template-rows: 1fr; }
+
+.faq-answer-inner { overflow: hidden; }
+.faq-answer-inner p {
+  padding: 0 0.2rem 1.3rem;
+  color: var(--color-secondary);
+  line-height: 1.65;
+}
+
+/* ==========================================================================
    Certifikáty
    ========================================================================== */
 .cert-grid {
