@@ -3,12 +3,18 @@
  * Před nahráním na server zmenší a zkomprimuje fotografii v prohlížeči
  * (canvas) — realizace z mobilu mívají klidně 8–15 MB, na web stačí
  * dlouhá strana max. 1920 px. Snižuje to dobu nahrávání i zátěž repozitáře.
+ *
+ * PDF (např. sken certifikátu) se oproti tomu neupravuje - jen se ověří
+ * velikost. Vercel serverless funkce mají tvrdý limit cca 4,5 MB na
+ * celý request, proto je PDF omezené na 3 MB (base64 kódování přidá
+ * cca +33 % k velikosti, takže i tak zbývá rezerva).
  */
 const ImageEditor = (function () {
   "use strict";
 
   const ALLOWED_INPUT_TYPES = ["image/jpeg", "image/png", "image/webp"];
-  const MAX_INPUT_BYTES = 20 * 1024 * 1024; // 20 MB - ochrana před extrémně velkými soubory
+  const MAX_INPUT_BYTES = 20 * 1024 * 1024; // 20 MB - obrázek se před uploadem zmenší
+  const MAX_PDF_BYTES = 3 * 1024 * 1024; // 3 MB - PDF se neupravuje
   const MAX_DIMENSION = 1920;
   const JPEG_QUALITY = 0.85;
 
@@ -77,5 +83,33 @@ const ImageEditor = (function () {
     });
   }
 
-  return { processImageFile };
+  /**
+   * Zpracuje PDF beze změny - jen ověří velikost a zakóduje do base64.
+   * @param {File} file
+   */
+  async function processPdfFile(file) {
+    if (file.type !== "application/pdf") {
+      throw new Error("Očekáván PDF soubor.");
+    }
+    if (file.size > MAX_PDF_BYTES) {
+      throw new Error("PDF je příliš velké (max. 3 MB) - zkuste ho nejdřív zmenšit/zkomprimovat.");
+    }
+    const base64 = await blobToBase64(file);
+    return { base64, mimeType: "application/pdf", isPdf: true, bytes: file.size };
+  }
+
+  /**
+   * Obecné zpracování souboru pro upload - obrázek se zmenší/zkomprimuje,
+   * PDF (pokud je povolené) se pošle beze změny.
+   * @param {File} file
+   * @param {{ allowPdf?: boolean }} [opts]
+   */
+  async function processFile(file, opts = {}) {
+    if (opts.allowPdf && file.type === "application/pdf") {
+      return processPdfFile(file);
+    }
+    return processImageFile(file);
+  }
+
+  return { processImageFile, processPdfFile, processFile };
 })();
