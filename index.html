@@ -264,6 +264,18 @@ Za největší odměnu považujeme možnost podílet se na zachování staveb, k
       </div>
     </section>
 
+    <!-- ========================= CERTIFIKÁTY ========================= -->
+    <section class="section section-alt" id="certificates-section" hidden>
+      <div class="container">
+        <div class="section-head center">
+          <p class="eyebrow" id="certificates-eyebrow">Kvalita a záruky</p>
+          <h2 class="section-title" id="certificates-title">Certifikáty</h2>
+          <p class="lede" id="certificates-intro"></p>
+        </div>
+        <div class="cert-grid" id="certificates-grid" data-reveal-stagger></div>
+      </div>
+    </section>
+
     <!-- ========================= LEŠENÍ ========================= -->
     <section class="section section-tight-top" id="leseni">
       <div class="container">
@@ -374,8 +386,15 @@ Za největší odměnu považujeme možnost podílet se na zachování staveb, k
     <button class="lightbox-close" id="lightbox-close" aria-label="Zavřít náhled">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
     </button>
+    <button class="lightbox-arrow lightbox-arrow-prev" id="lightbox-prev" aria-label="Předchozí fotografie" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <button class="lightbox-arrow lightbox-arrow-next" id="lightbox-next" aria-label="Další fotografie" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
     <img id="lightbox-img" src="" alt="">
     <p class="lightbox-caption" id="lightbox-caption"></p>
+    <p class="lightbox-counter" id="lightbox-counter"></p>
   </div>
 
   <script src="js/icons.js"></script>
