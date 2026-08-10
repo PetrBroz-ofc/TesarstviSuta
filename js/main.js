@@ -194,6 +194,7 @@
   /* ---------- Render: galerie ---------- */
 
   let galleryItems = [];
+  let lightboxSource = [];
   let currentAlbumIndex = 0;
   let currentPhotoIndex = 0;
 
@@ -236,7 +237,7 @@
       );
       figure.appendChild(caption);
 
-      const open = () => openLightbox(index, 0);
+      const open = () => openLightbox(galleryItems, index, 0);
       figure.addEventListener("click", open);
       figure.addEventListener("keydown", (e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -250,12 +251,12 @@
   }
 
   function currentAlbumImages() {
-    const item = galleryItems[currentAlbumIndex];
+    const item = lightboxSource[currentAlbumIndex];
     return item && Array.isArray(item.images) ? item.images : [];
   }
 
   function updateLightboxView() {
-    const item = galleryItems[currentAlbumIndex];
+    const item = lightboxSource[currentAlbumIndex];
     if (!item) return;
     const images = currentAlbumImages();
 
@@ -275,8 +276,9 @@
     counter.textContent = hasMultiple ? `${currentPhotoIndex + 1} / ${images.length}` : "";
   }
 
-  function openLightbox(albumIndex, photoIndex) {
-    const item = galleryItems[albumIndex];
+  function openLightbox(source, albumIndex, photoIndex) {
+    lightboxSource = source;
+    const item = lightboxSource[albumIndex];
     if (!item) return;
     currentAlbumIndex = albumIndex;
     currentPhotoIndex = photoIndex || 0;
@@ -316,19 +318,41 @@
     document.getElementById("certificates-title").textContent = cert.title;
     document.getElementById("certificates-intro").textContent = cert.intro;
 
+    // Certifikáty se v lightboxu chovají jako jednofotková alba - stejná
+    // komponenta jako u realizací (jen bez šipek, protože je vždy jen 1 fotka).
+    const certAsAlbums = cert.items.map((item) => ({
+      title: item.title,
+      description: [item.issuer, item.year].filter(Boolean).join(" · "),
+      images: item.image ? [item.image] : []
+    }));
+
     const grid = document.getElementById("certificates-grid");
     grid.innerHTML = "";
-    cert.items.forEach((item) => {
+    cert.items.forEach((item, index) => {
       const card = el("div", "cert-card");
+
       if (item.image) {
         const img = el("img");
         img.src = item.image;
         img.alt = escapeHTML(item.title || "Certifikát");
         img.loading = "lazy";
         card.appendChild(img);
+
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("aria-label", "Zobrazit certifikát: " + (item.title || ""));
+        const open = () => openLightbox(certAsAlbums, index, 0);
+        card.addEventListener("click", open);
+        card.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            open();
+          }
+        });
       } else {
         card.appendChild(el("div", "placeholder-media", ICONS.idCard));
       }
+
       const info = el("div", "cert-info");
       info.appendChild(el("div", "cert-title", escapeHTML(item.title)));
       const meta = [item.issuer, item.year].filter(Boolean).join(" · ");
