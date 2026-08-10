@@ -1,16 +1,19 @@
 /**
  * POST /api/upload-image
- * Body: { "filename": "muj-obrazek.jpg", "mimeType": "image/jpeg", "base64": "..." }
+ * Body: { "mimeType": "image/jpeg" | "application/pdf", "base64": "..." }
  *
- * Chráněný endpoint pro nahrávání fotografií realizací z administrace.
+ * Chráněný endpoint pro nahrávání fotografií (a u certifikátů i PDF)
+ * z administrace.
  *
  * Bezpečnostní opatření:
  *  - vyžaduje platnou session
- *  - whitelist povolených MIME typů (jpeg/png/webp) - ŽÁDNÁ spustitelná
+ *  - whitelist povolených MIME typů (jpeg/png/webp/pdf) - ŽÁDNÁ spustitelná
  *    přípona ani SVG (SVG může obsahovat JavaScript -> XSS riziko)
  *  - kontrola "magic bytes" na začátku souboru, aby obsah skutečně
  *    odpovídal deklarovanému typu (nejde jen o přejmenovanou příponu)
- *  - limit velikosti souboru (8 MB)
+ *  - limit velikosti souboru - Vercel serverless funkce mají tvrdý limit
+ *    cca 4,5 MB na celý request (base64 přidává +33 % k velikosti), proto
+ *    je zde nastaven bezpečný strop 4 MB na dekódovaný soubor
  *  - název souboru se NIKDY nepoužije doslova z uživatelského vstupu —
  *    vygeneruje se bezpečný unikátní název, čímž se vylučuje path traversal
  *    (např. "../../api/login.js") i kolize/přepsání existujících souborů
@@ -22,12 +25,13 @@ const { requireAuth } = require("./_auth");
 const { checkRateLimit, getClientIp } = require("./_rate-limit");
 const { putFile } = require("./_github");
 
-const MAX_BYTES = 8 * 1024 * 1024; // 8 MB
+const MAX_BYTES = 4 * 1024 * 1024; // 4 MB (viz vysvětlení výše - limit Vercelu)
 
 const ALLOWED_TYPES = {
   "image/jpeg": { ext: "jpg", magic: [0xff, 0xd8, 0xff] },
   "image/png": { ext: "png", magic: [0x89, 0x50, 0x4e, 0x47] },
-  "image/webp": { ext: "webp", magic: [0x52, 0x49, 0x46, 0x46] } // "RIFF", WEBP je na bajtech 8-11
+  "image/webp": { ext: "webp", magic: [0x52, 0x49, 0x46, 0x46] }, // "RIFF", WEBP je na bajtech 8-11
+  "application/pdf": { ext: "pdf", magic: [0x25, 0x50, 0x44, 0x46] } // "%PDF"
 };
 
 function matchesMagicBytes(buffer, magic) {
@@ -59,7 +63,7 @@ module.exports = async (req, res) => {
 
   const typeInfo = ALLOWED_TYPES[mimeType];
   if (!typeInfo) {
-    res.status(400).json({ error: "Nepovolený typ souboru. Použijte JPG, PNG nebo WEBP." });
+    res.status(400).json({ error: "Nepovolený typ souboru. Použijte JPG, PNG, WEBP nebo PDF." });
     return;
   }
 
@@ -77,23 +81,23 @@ module.exports = async (req, res) => {
   }
 
   if (buffer.length === 0 || buffer.length > MAX_BYTES) {
-    res.status(413).json({ error: "Soubor je prázdný nebo příliš velký (max. 8 MB)." });
+    res.status(413).json({ error: "Soubor je prázdný nebo příliš velký (max. 4 MB)." });
     return;
   }
 
   if (!matchesMagicBytes(buffer, typeInfo.magic)) {
-    res.status(422).json({ error: "Obsah souboru neodpovídá deklarovanému typu obrázku." });
+    res.status(422).json({ error: "Obsah souboru neodpovídá deklarovanému typu." });
     return;
   }
 
-  const safeName = `realizace-${Date.now()}-${crypto.randomBytes(4).toString("hex")}.${typeInfo.ext}`;
+  const safeName = `upload-${Date.now()}-${crypto.randomBytes(4).toString("hex")}.${typeInfo.ext}`;
   const repoPath = `images/uploads/${safeName}`;
 
   try {
-    await putFile(repoPath, base64, `Admin: nahrání obrázku ${safeName}`, null, true);
+    await putFile(repoPath, base64, `Admin: nahrání souboru ${safeName}`, null, true);
     res.status(200).json({ ok: true, path: repoPath });
   } catch (err) {
-    console.error("Chyba při nahrávání obrázku do GitHub:", err.message);
+    console.error("Chyba při nahrávání souboru do GitHub:", err.message);
     res.status(502).json({ error: "Nahrání se nezdařilo. Zkuste to prosím znovu." });
   }
 };
