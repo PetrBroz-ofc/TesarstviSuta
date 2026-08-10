@@ -421,7 +421,31 @@ label {
   text-align: center;
   overflow: hidden;
 }
+.image-preview.is-pdf {
+  background-color: #FDEEEE;
+  color: var(--a-danger);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.03em;
+}
 .image-field-actions { display: flex; flex-direction: column; gap: 0.4rem; flex: 1; }
+
+.album-photos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+.album-photo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.5rem;
+  background: var(--a-panel);
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+}
+.album-photo-row .image-preview { width: 64px; height: 48px; }
 .upload-progress { font-size: 0.75rem; color: var(--a-muted); }
 
 /* ---------- Barvy (theme editor) ---------- */
