@@ -72,7 +72,7 @@ async function run() {
   const navItems = doc.querySelectorAll(".nav-item");
   const afterLoginChecks = [
     ["Po přihlášení je aplikace aktivní", doc.getElementById("app").classList.contains("is-active")],
-    ["Postranní navigace má 15 položek", navItems.length === 15],
+    ["Postranní navigace má 16 položek", navItems.length === 16],
     ["První položka (Hero) je aktivní na startu", navItems[0] && navItems[0].classList.contains("is-active")],
     ["Titulek sekce v topbaru je vyplněný (Hero)", doc.getElementById("section-title").textContent.includes("Hero")],
     ["Popisný pruh (section-description) existuje a má text", doc.querySelector(".section-description")?.textContent.length > 0],
