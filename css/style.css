@@ -723,6 +723,7 @@ h1, h2, h3, .section-title {
   margin-top: 2.5rem;
 }
 .cert-card {
+  position: relative;
   background: var(--color-white);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
@@ -741,6 +742,29 @@ h1, h2, h3, .section-title {
   object-fit: contain;
   background: var(--color-bg-alt);
   display: block;
+}
+.cert-pdf-preview {
+  aspect-ratio: 3/4;
+  background: var(--color-bg-alt);
+}
+.cert-pdf-preview svg { width: 30%; height: 30%; color: var(--color-text-muted); }
+.cert-pdf-badge {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  background: var(--color-accent);
+  color: var(--color-white);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  padding: 0.22rem 0.5rem;
+  border-radius: 4px;
+}
+.cert-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
 }
 .cert-info { padding: 1rem 1.1rem 1.2rem; }
 .cert-title { font-weight: 700; font-size: 0.92rem; }
