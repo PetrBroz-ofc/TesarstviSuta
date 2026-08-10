@@ -19,6 +19,8 @@ const ICONS = {
 
   idCard: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8.5" cy="11" r="2"/><path d="M6 16c.6-1.5 1.8-2.2 2.5-2.2s1.9.7 2.5 2.2M14 9.5h5M14 13h5"/></svg>`,
 
+  pdfDoc: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8.5 17v-4h1.2a1.3 1.3 0 0 1 0 2.6H8.5M12.5 17v-4h1a1.5 1.5 0 0 1 0 4h-1zM17.5 13h-1.2v4M16.3 15h1"/></svg>`,
+
   arrowRight: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
 
   menu: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
