@@ -101,6 +101,12 @@ async function run() {
     [
       "Skeleton atributy odstraněny (text není neviditelný)",
       doc.querySelectorAll("[data-skeleton]").length === 0
+    ],
+    ["Lightbox má šipky prev/next", !!doc.getElementById("lightbox-prev") && !!doc.getElementById("lightbox-next")],
+    ["Šipky lightboxu jsou skryté (album má 1 fotku)", doc.getElementById("lightbox-prev").hidden === true],
+    [
+      "Sekce Certifikáty je skrytá (zatím žádné certifikáty)",
+      doc.getElementById("certificates-section").hidden === true
     ]
   ];
 
@@ -110,6 +116,28 @@ async function run() {
     console.log((passed ? "OK  " : "FAIL") + " - " + name);
     if (!passed) allPassed = false;
   });
+
+  // Interaktivní test lightboxu: klik na první album otevře náhled se správnou fotkou
+  const firstAlbum = doc.querySelector(".gallery-item");
+  firstAlbum.click();
+  await new Promise((resolve) => setTimeout(resolve, 30));
+
+  const lightbox = doc.getElementById("lightbox");
+  const lightboxOpened = lightbox.classList.contains("is-open");
+  console.log((lightboxOpened ? "OK  " : "FAIL") + " - Klik na album otevře lightbox");
+  if (!lightboxOpened) allPassed = false;
+
+  const lightboxImgSrc = doc.getElementById("lightbox-img").getAttribute("src");
+  const firstAlbumImgSrc = firstAlbum.querySelector("img")?.getAttribute("src");
+  const correctImage = lightboxImgSrc === firstAlbumImgSrc;
+  console.log((correctImage ? "OK  " : "FAIL") + " - Lightbox zobrazuje správnou fotku alba");
+  if (!correctImage) allPassed = false;
+
+  doc.dispatchEvent(new window.KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  const lightboxClosed = !lightbox.classList.contains("is-open");
+  console.log((lightboxClosed ? "OK  " : "FAIL") + " - Klávesa Escape zavře lightbox");
+  if (!lightboxClosed) allPassed = false;
 
   if (errors.length) {
     console.log("\nZachycené chyby:");
