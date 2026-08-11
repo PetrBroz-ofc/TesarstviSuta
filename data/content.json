@@ -43,7 +43,7 @@
   "hero": {
     "titleLine1": "Tesařství a pokrývačství",
     "titleLine2": "Jakub Šuta",
-    "text": "Řemeslná práce od roku 2007. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
+    "text": "Řemeslná práce od roku 2008. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
     "ctaPrimary": {
       "label": "Nezávazná poptávka",
       "href": "#kontakt"
@@ -52,7 +52,7 @@
       "label": "Prohlédnout realizace",
       "href": "#realizace"
     },
-    "scaleLabel": "EST. 2007",
+    "scaleLabel": "EST. 2008",
     "media": {
       "type": "image",
       "src": "images/hero-strecha.jpg",
