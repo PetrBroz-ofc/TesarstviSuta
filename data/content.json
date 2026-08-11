@@ -66,24 +66,7 @@
     "image": {
       "src": "images/o-nas-dilna.jpg",
       "alt": "Detail ručně tesaného spoje krokví"
-    },
-    "stats": [
-      {
-        "value": "19+",
-        "unit": "",
-        "label": "zkušeností v oboru"
-      },
-      {
-        "value": "100+",
-        "unit": "",
-        "label": "dokončených realizací"
-      },
-      {
-        "value": "CZ",
-        "unit": "",
-        "label": "práce po celé ČR"
-      }
-    ]
+    }
   },
   "services": {
     "eyebrow": "Co děláme",
