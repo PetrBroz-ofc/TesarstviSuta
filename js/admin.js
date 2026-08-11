@@ -179,7 +179,7 @@
       const file = fileInput.files[0];
       if (!file) return;
       uploadBtn.disabled = true;
-      progress.textContent = "Zpracovávám a nahrávám…";
+      progress.textContent = file.type === "application/pdf" ? "Čtu PDF a dělám náhled…" : "Zpracovávám a nahrávám…";
       try {
         const processed = await ImageEditor.processFile(file, { allowPdf: opts.allowPdf });
         const result = await apiPost("/api/upload-image", {
@@ -188,6 +188,16 @@
         });
         onUploaded(result.path);
         updatePreviewThumb(preview, result.path);
+
+        if (processed.isPdf && processed.pdfBase64 && opts.onPdfUploaded) {
+          progress.textContent = "Nahrávám originál PDF…";
+          const pdfResult = await apiPost("/api/upload-image", {
+            mimeType: processed.pdfMimeType,
+            base64: processed.pdfBase64
+          });
+          opts.onPdfUploaded(pdfResult.path);
+        }
+
         progress.textContent = "Nahráno ✓";
         markDirty();
         sendPreviewUpdate();
@@ -615,9 +625,34 @@
 
       wrap.appendChild(
         imageField("Fotografie / scan certifikátu", item.image, (path) => (item.image = path), {
-          allowPdf: true
+          allowPdf: true,
+          onPdfUploaded: (path) => {
+            item.pdfFile = path;
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          }
         })
       );
+
+      if (item.pdfFile) {
+        const pdfNote = document.createElement("div");
+        pdfNote.className = "hint pdf-attached-note";
+        pdfNote.textContent = "📎 Připojen originál PDF ke stažení. ";
+        const removeLink = document.createElement("button");
+        removeLink.type = "button";
+        removeLink.className = "link-btn";
+        removeLink.textContent = "Odebrat PDF (náhled zůstane)";
+        removeLink.addEventListener("click", () => {
+          delete item.pdfFile;
+          markDirty();
+          renderActiveSection();
+          sendPreviewUpdate();
+        });
+        pdfNote.appendChild(removeLink);
+        wrap.appendChild(pdfNote);
+      }
+
       wrap.appendChild(textField("Název certifikátu", item.title, (v) => (item.title = v)));
       const row = document.createElement("div");
       row.className = "field-row";
