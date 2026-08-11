@@ -361,21 +361,6 @@
     block.appendChild(imageField("Fotografie", a.image.src, (path) => (a.image.src = path)));
     block.appendChild(textField("Popisek fotografie (alt text)", a.image.alt, (v) => (a.image.alt = v)));
 
-    const statsHead = document.createElement("div");
-    statsHead.className = "hint";
-    statsHead.textContent = "Statistiky (3 čísla pod textem)";
-    block.appendChild(statsHead);
-
-    a.stats.forEach((stat, i) => {
-      const row = document.createElement("div");
-      row.className = "field-row";
-      row.style.marginTop = "0.6rem";
-      row.appendChild(textField(`Hodnota #${i + 1}`, stat.value, (v) => (stat.value = v)));
-      row.appendChild(textField(`Jednotka #${i + 1}`, stat.unit, (v) => (stat.unit = v)));
-      block.appendChild(row);
-      block.appendChild(textField(`Popisek #${i + 1}`, stat.label, (v) => (stat.label = v)));
-    });
-
     return block;
   }
 
