@@ -149,21 +149,6 @@
     } else {
       mediaContainer.appendChild(el("div", "placeholder-media", ICONS.woodPlank));
     }
-
-    const statsRow = document.getElementById("about-stats");
-    statsRow.innerHTML = "";
-    (about.stats || []).forEach((stat) => {
-      const wrap = el("div", "stat");
-      const value = el(
-        "div",
-        "stat-value",
-        `${escapeHTML(stat.value)}<span class="stat-unit">${escapeHTML(stat.unit || "")}</span>`
-      );
-      const label = el("div", "stat-label", escapeHTML(stat.label));
-      wrap.appendChild(value);
-      wrap.appendChild(label);
-      statsRow.appendChild(wrap);
-    });
   }
 
   /* ---------- Render: služby ---------- */
