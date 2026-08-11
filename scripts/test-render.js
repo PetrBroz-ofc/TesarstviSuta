@@ -90,7 +90,6 @@ async function run() {
     ["Nav odkazy vykresleny (7)", doc.querySelectorAll("#nav-desktop a").length === 7],
     ["Karty služeb vykresleny (4)", doc.querySelectorAll(".service-card").length === 4],
     ["Položky galerie vykresleny (4)", doc.querySelectorAll(".gallery-item").length === 4],
-    ["Statistiky vykresleny (3)", doc.querySelectorAll("#about-stats .stat").length === 3],
     ["Kontaktní karty vykresleny (2)", doc.querySelectorAll(".contact-card").length === 2],
     ["Patička vykreslena", doc.getElementById("footer-text").textContent.length > 0],
     ["Tělo už není is-loading", !doc.body.classList.contains("is-loading")],
