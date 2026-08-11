@@ -66,7 +66,24 @@
     "image": {
       "src": "images/o-nas-dilna.jpg",
       "alt": "Detail ručně tesaného spoje krokví"
-    }
+    },
+    "stats": [
+      {
+        "value": "19+",
+        "unit": "",
+        "label": "zkušeností v oboru"
+      },
+      {
+        "value": "100+",
+        "unit": "",
+        "label": "dokončených realizací"
+      },
+      {
+        "value": "CZ",
+        "unit": "",
+        "label": "práce po celé ČR"
+      }
+    ]
   },
   "services": {
     "eyebrow": "Co děláme",
@@ -164,10 +181,10 @@
         "year": "2012"
       },
       {
-        "image": "",
-        "title": "Název certifikátu",
-        "issuer": "",
-        "year": ""
+        "image": "images/uploads/upload-1786471138908-9b248226.pdf",
+        "title": "Osvědčení",
+        "issuer": "Wienerberger s.r.o.",
+        "year": "2026"
       }
     ]
   },
