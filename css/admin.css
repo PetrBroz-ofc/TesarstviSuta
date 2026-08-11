@@ -469,6 +469,20 @@ label {
   margin-top: 0.4rem;
   margin-bottom: 1rem;
 }
+.pdf-attached-note {
+  background: #F1F0FB;
+  color: #4B4A78;
+  padding: 0.5rem 0.7rem;
+  border-radius: var(--a-radius);
+  margin-top: -0.4rem;
+}
+.link-btn {
+  color: var(--a-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
+}
+.link-btn:hover { opacity: 0.8; }
 
 @media (max-width: 1180px) {
   .app { grid-template-columns: 180px 1fr; }
