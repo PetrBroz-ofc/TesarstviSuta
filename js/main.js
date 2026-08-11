@@ -315,20 +315,8 @@
     grid.innerHTML = "";
     cert.items.forEach((item, index) => {
       const card = el("div", "cert-card");
-      const isPdf = item.image && /\.pdf($|\?)/i.test(item.image);
 
-      if (isPdf) {
-        card.appendChild(el("div", "placeholder-media cert-pdf-preview", ICONS.pdfDoc));
-        card.appendChild(el("div", "cert-pdf-badge", "PDF"));
-
-        const link = document.createElement("a");
-        link.href = item.image;
-        link.target = "_blank";
-        link.rel = "noopener";
-        link.className = "cert-card-link";
-        link.setAttribute("aria-label", "Otevřít PDF: " + (item.title || ""));
-        card.appendChild(link);
-      } else if (item.image) {
+      if (item.image) {
         const img = el("img");
         img.src = item.image;
         img.alt = escapeHTML(item.title || "Certifikát");
@@ -346,6 +334,18 @@
             open();
           }
         });
+
+        if (item.pdfFile) {
+          const pdfLink = document.createElement("a");
+          pdfLink.href = item.pdfFile;
+          pdfLink.target = "_blank";
+          pdfLink.rel = "noopener";
+          pdfLink.className = "cert-pdf-badge";
+          pdfLink.textContent = "PDF";
+          pdfLink.setAttribute("aria-label", "Stáhnout PDF originál: " + (item.title || ""));
+          pdfLink.addEventListener("click", (e) => e.stopPropagation());
+          card.appendChild(pdfLink);
+        }
       } else {
         card.appendChild(el("div", "placeholder-media", ICONS.idCard));
       }
