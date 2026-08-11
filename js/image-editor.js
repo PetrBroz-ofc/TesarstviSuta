@@ -84,7 +84,10 @@ const ImageEditor = (function () {
   }
 
   /**
-   * Zpracuje PDF beze změny - jen ověří velikost a zakóduje do base64.
+   * Z PDF (např. sken certifikátu) vygeneruje JPEG náhled první strany -
+   * na webu se pak certifikát chová úplně stejně jako běžná fotka (karta,
+   * zvětšení v náhledu). Vedle náhledu se pošle i originál PDF, aby ho šlo
+   * z webu stáhnout/otevřít celý.
    * @param {File} file
    */
   async function processPdfFile(file) {
@@ -94,8 +97,48 @@ const ImageEditor = (function () {
     if (file.size > MAX_PDF_BYTES) {
       throw new Error("PDF je příliš velké (max. 3 MB) - zkuste ho nejdřív zmenšit/zkomprimovat.");
     }
-    const base64 = await blobToBase64(file);
-    return { base64, mimeType: "application/pdf", isPdf: true, bytes: file.size };
+    if (typeof pdfjsLib === "undefined") {
+      throw new Error("Knihovna pro čtení PDF se nenačetla. Zkuste stránku obnovit.");
+    }
+    pdfjsLib.GlobalWorkerOptions.workerSrc = "js/vendor/pdf.worker.min.js";
+
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+    const page = await pdf.getPage(1);
+
+    const baseViewport = page.getViewport({ scale: 1 });
+    const scale = MAX_DIMENSION / Math.max(baseViewport.width, baseViewport.height);
+    const viewport = page.getViewport({ scale: Math.min(scale, 3) });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(viewport.width);
+    canvas.height = Math.round(viewport.height);
+    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#ffffff"; // PDF strany mivaji na okrajich pruhledne pozadi
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    await page.render({ canvasContext: ctx, viewport }).promise;
+
+    const thumbBlob = await new Promise((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", JPEG_QUALITY)
+    );
+    if (!thumbBlob) throw new Error("Vytvoření náhledu PDF selhalo.");
+
+    const base64 = await blobToBase64(thumbBlob);
+    const pdfBase64 = await blobToBase64(file);
+
+    return {
+      // Nahled - posila se stejne jako bezna fotka (image pole).
+      base64,
+      mimeType: "image/jpeg",
+      width: canvas.width,
+      height: canvas.height,
+      bytes: thumbBlob.size,
+      // + puvodni PDF k samostatnemu uploadu.
+      isPdf: true,
+      pdfBase64,
+      pdfMimeType: "application/pdf",
+      pdfBytes: file.size
+    };
   }
 
   /**
