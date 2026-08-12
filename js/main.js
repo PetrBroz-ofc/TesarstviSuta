@@ -101,7 +101,7 @@
 
     const ctaSecondary = document.getElementById("hero-cta-secondary");
     ctaSecondary.href = hero.ctaSecondary.href;
-    ctaSecondary.textContent = hero.ctaSecondary.label;
+    ctaSecondary.querySelector(".btn-label").textContent = hero.ctaSecondary.label;
 
     const heroMedia = document.getElementById("hero-media");
     heroMedia.innerHTML = "";
@@ -415,7 +415,7 @@
     document.getElementById("scaffolding-title").textContent = s.title;
     document.getElementById("scaffolding-text").textContent = s.text;
     const cta = document.getElementById("scaffolding-cta");
-    cta.textContent = s.ctaLabel;
+    cta.querySelector(".btn-label").textContent = s.ctaLabel;
     cta.href = s.ctaHref || "#kontakt";
   }
 
