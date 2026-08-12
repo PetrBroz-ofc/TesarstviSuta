@@ -159,6 +159,7 @@ h1, h2, h3, .section-title {
    Tlačítka
    ========================================================================== */
 .btn {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
@@ -168,8 +169,28 @@ h1, h2, h3, .section-title {
   border-radius: var(--radius-md);
   transition: transform 0.35s var(--ease), background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
 }
-.btn svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); }
+.btn svg { width: 16px; height: 16px; transition: transform 0.3s var(--ease); position: relative; z-index: 1; }
+.btn > span:not(.btn-dot) { position: relative; z-index: 1; }
+
+.btn .btn-dot {
+  position: absolute;
+  top: 50%;
+  left: 1.15rem;
+  right: auto;
+  bottom: auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: top 0.45s var(--ease), left 0.45s var(--ease), right 0.45s var(--ease),
+    bottom 0.45s var(--ease), width 0.45s var(--ease), height 0.45s var(--ease),
+    border-radius 0.45s var(--ease), transform 0.45s var(--ease), opacity 0.3s ease;
+  z-index: 0;
+  pointer-events: none;
+}
 
 .btn-primary {
   background: var(--color-accent);
@@ -182,19 +203,44 @@ h1, h2, h3, .section-title {
   color: var(--color-primary);
   background: transparent;
 }
+.btn-outline .btn-dot { background: var(--color-accent); opacity: 0; }
 .btn-outline:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-accent);
+  color: var(--color-white);
   transform: translateY(-2px);
+}
+.btn-outline:hover .btn-dot {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  border-radius: inherit;
+  opacity: 1;
 }
 
 .btn-outline-light {
   border: 1px solid rgba(250, 250, 248, 0.3);
   color: var(--color-white);
 }
+.btn-outline-light .btn-dot { background: var(--color-white); opacity: 0; }
 .btn-outline-light:hover {
   border-color: var(--color-white);
-  background: rgba(250, 250, 248, 0.08);
+  color: var(--color-primary);
   transform: translateY(-2px);
+}
+.btn-outline-light:hover .btn-dot {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  transform: none;
+  border-radius: inherit;
+  opacity: 1;
 }
 
 .btn:hover svg { transform: translateX(3px); }
