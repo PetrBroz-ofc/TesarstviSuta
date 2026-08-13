@@ -357,18 +357,19 @@ h1, h2, h3, .section-title {
   z-index: 99;
   display: flex;
   flex-direction: column;
-  padding: 6rem 2rem 3rem;
+  padding: 5.5rem 2rem 2.5rem;
+  overflow-y: auto;
   transform: translateY(-100%);
   transition: transform 0.5s var(--ease);
 }
 .nav-mobile.is-open { transform: translateY(0); }
 .nav-mobile a {
-  font-size: 1.6rem;
+  font-size: 1.35rem;
   font-weight: 700;
-  padding: 0.9rem 0;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--color-border);
 }
-.nav-mobile .btn { margin-top: 2rem; align-self: flex-start; }
+.nav-mobile .btn { margin-top: 1.6rem; align-self: flex-start; flex-shrink: 0; }
 
 .nav-mobile-close {
   position: absolute;
