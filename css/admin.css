@@ -503,13 +503,22 @@ label {
     gap: 0.3rem;
   }
   .sidebar-nav .nav-group-label { display: none; }
+  .nav-subgroup-label { display: none; }
   .nav-item { white-space: nowrap; width: auto; }
+  .nav-item.nav-item-nested {
+    margin-left: 0;
+    padding-left: 0.7rem;
+    border-left: none;
+    border-radius: var(--a-radius);
+  }
   .sidebar-footer { flex-direction: row; }
   .sidebar-back-btn { flex: 1; }
+  .sidebar-logout { padding: 0.6rem 0.8rem; }
   .editor-pane { max-height: none; }
+  .image-field { flex-wrap: wrap; }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 560px) {
   .app-topbar { padding: 0.7rem 1rem; }
   .save-status { width: 100%; order: -1; }
   .btn-discard, .btn-publish { padding: 0.6rem 0.9rem; font-size: 0.8rem; }
