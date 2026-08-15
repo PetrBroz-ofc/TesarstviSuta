@@ -91,4 +91,63 @@ async function putFile(filePath, contentUtf8OrBase64, message, sha, isBase64 = f
   });
 }
 
-module.exports = { getFile, putFile };
+/**
+ * Zapíše VÍC souborů v JEDNOM atomickém commitu (Git Data API) - důležité
+ * pro hromadné nahrávání fotek: bez tohohle by každá fotka spustila
+ * samostatné nasazení, a při nahrávání víc fotek najednou by mohlo dojít
+ * k závodu mezi rychle po sobě jdoucími nasazeními (CDN pak umí na chvíli
+ * zaseknout chybnou odpověď pro soubor, který se objevil "mezi" nasazeními).
+ * @param {{path: string, base64: string}[]} files
+ * @param {string} message
+ * @returns {Promise<{ path: string, shaCommit: string }>}
+ */
+async function putFilesBatch(files, message) {
+  const { repo, branch } = getConfig();
+
+  // 1) Aktuální stav větve (poslední commit + jeho strom)
+  const ref = await githubRequest(`/repos/${repo}/git/ref/heads/${branch}`);
+  const baseCommitSha = ref.object.sha;
+  const baseCommit = await githubRequest(`/repos/${repo}/git/commits/${baseCommitSha}`);
+  const baseTreeSha = baseCommit.tree.sha;
+
+  // 2) Blob pro každý soubor (samotné nahrání obsahu, ještě nic nemění)
+  const treeItems = [];
+  for (const file of files) {
+    const blob = await githubRequest(`/repos/${repo}/git/blobs`, {
+      method: "POST",
+      body: JSON.stringify({ content: file.base64, encoding: "base64" })
+    });
+    treeItems.push({
+      path: file.path,
+      mode: "100644",
+      type: "blob",
+      sha: blob.sha
+    });
+  }
+
+  // 3) Nový strom (base_tree + nové/změněné soubory)
+  const newTree = await githubRequest(`/repos/${repo}/git/trees`, {
+    method: "POST",
+    body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems })
+  });
+
+  // 4) Nový commit ukazující na nový strom
+  const newCommit = await githubRequest(`/repos/${repo}/git/commits`, {
+    method: "POST",
+    body: JSON.stringify({
+      message,
+      tree: newTree.sha,
+      parents: [baseCommitSha]
+    })
+  });
+
+  // 5) Posun větve na nový commit (JEDINÝ trigger nasazení pro celou dávku)
+  await githubRequest(`/repos/${repo}/git/refs/heads/${branch}`, {
+    method: "PATCH",
+    body: JSON.stringify({ sha: newCommit.sha })
+  });
+
+  return { shaCommit: newCommit.sha, count: files.length };
+}
+
+module.exports = { getFile, putFile, putFilesBatch };
