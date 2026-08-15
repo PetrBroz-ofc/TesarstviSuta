@@ -588,26 +588,66 @@
 
     uploadBtn.addEventListener("click", () => fileInput.click());
 
+    // Bezpečný strop na jednu dávku (request) - držíme rezervu pod limitem
+    // Vercel serverless funkcí (~4,5 MB na request včetně base64 režie).
+    const MAX_BATCH_BYTES = 2.5 * 1024 * 1024;
+    const MAX_BATCH_FILES = 10;
+
     fileInput.addEventListener("change", async () => {
       const files = Array.from(fileInput.files || []);
       if (!files.length) return;
       uploadBtn.disabled = true;
       let successCount = 0;
 
-      for (let i = 0; i < files.length; i++) {
-        progress.textContent = `Nahrávám fotku ${i + 1} / ${files.length}…`;
-        try {
-          const processed = await ImageEditor.processFile(files[i], {});
-          const result = await apiPost("/api/upload-image", {
-            mimeType: processed.mimeType,
-            base64: processed.base64
-          });
-          onEachUploaded(result.path);
-          successCount++;
-        } catch (err) {
-          progress.textContent = `Chyba u "${files[i].name}": ${err.message}`;
-          await new Promise((resolve) => setTimeout(resolve, 1800));
+      try {
+        // 1) Všechny fotky nejdřív lokálně zmenšíme/zkomprimujeme.
+        const processed = [];
+        for (let i = 0; i < files.length; i++) {
+          progress.textContent = `Zpracovávám fotku ${i + 1} / ${files.length}…`;
+          try {
+            const p = await ImageEditor.processFile(files[i], {});
+            processed.push(p);
+          } catch (err) {
+            progress.textContent = `Chyba u "${files[i].name}": ${err.message}`;
+            await new Promise((resolve) => setTimeout(resolve, 1800));
+          }
         }
+
+        // 2) Rozdělíme do dávek podle velikosti, ať se vejdeme do limitu
+        //    jednoho requestu - každá dávka je pak JEDEN atomický commit.
+        const batches = [];
+        let current = [];
+        let currentBytes = 0;
+        for (const p of processed) {
+          const wouldExceed =
+            current.length >= MAX_BATCH_FILES || currentBytes + p.bytes > MAX_BATCH_BYTES;
+          if (wouldExceed && current.length) {
+            batches.push(current);
+            current = [];
+            currentBytes = 0;
+          }
+          current.push(p);
+          currentBytes += p.bytes;
+        }
+        if (current.length) batches.push(current);
+
+        // 3) Každou dávku nahrajeme jedním requestem (1 dávka = 1 commit = 1 nasazení).
+        for (let b = 0; b < batches.length; b++) {
+          progress.textContent =
+            batches.length > 1
+              ? `Nahrávám dávku ${b + 1} / ${batches.length}…`
+              : `Nahrávám ${batches[b].length} ${batches[b].length === 1 ? "fotku" : "fotek"}…`;
+          const result = await apiPost("/api/upload-images-batch", {
+            files: batches[b].map((p) => ({ mimeType: p.mimeType, base64: p.base64 }))
+          });
+          result.paths.forEach((path) => {
+            onEachUploaded(path);
+            successCount++;
+          });
+        }
+      } catch (err) {
+        progress.textContent = "Chyba: " + err.message;
+        await new Promise((resolve) => setTimeout(resolve, 1800));
       }
 
       progress.textContent = successCount ? `Nahráno ${successCount} z ${files.length} ✓` : "";
