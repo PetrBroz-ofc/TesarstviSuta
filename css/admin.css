@@ -383,7 +383,30 @@ label {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.1rem;
+  flex-wrap: wrap;
+  gap: 0.6rem;
 }
+.list-item-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+.reorder-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--a-border);
+  border-radius: var(--a-radius);
+  background: var(--a-panel);
+  color: var(--a-text);
+  font-size: 0.95rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.reorder-btn:hover:not(:disabled) { background: var(--a-bg); }
+.reorder-btn:disabled { opacity: 0.3; cursor: not-allowed; }
 .list-item-head .tag {
   display: inline-block;
   font-size: 0.72rem;
@@ -448,8 +471,16 @@ label {
   background: var(--a-panel);
   border: 1px solid var(--a-border);
   border-radius: var(--a-radius);
+  flex-wrap: wrap;
 }
 .album-photo-row .image-preview { width: 64px; height: 48px; }
+.album-photo-info { flex: 1; min-width: 120px; }
+.cover-tag {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--a-accent);
+}
 .upload-progress { font-size: 0.75rem; color: var(--a-muted); }
 
 /* ---------- Barvy (theme editor) ---------- */
