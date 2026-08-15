@@ -479,6 +479,149 @@
     return block;
   }
 
+  function renderAlbumPhotosList(item, container) {
+    container.innerHTML = "";
+    if (!item.images.length) return;
+
+    item.images.forEach((imgSrc, photoIndex) => {
+      const row = document.createElement("div");
+      row.className = "album-photo-row";
+
+      const thumb = document.createElement("div");
+      thumb.className = "image-preview";
+      updatePreviewThumb(thumb, imgSrc);
+      row.appendChild(thumb);
+
+      const info = document.createElement("div");
+      info.className = "album-photo-info";
+
+      if (photoIndex === 0) {
+        const coverTag = document.createElement("span");
+        coverTag.className = "cover-tag";
+        coverTag.textContent = "★ Úvodní fotka";
+        info.appendChild(coverTag);
+      } else {
+        info.appendChild(
+          smallBtn("Nastavit jako úvodní", () => {
+            const [moved] = item.images.splice(photoIndex, 1);
+            item.images.unshift(moved);
+            markDirty();
+            renderAlbumPhotosList(item, container);
+            sendPreviewUpdate();
+          })
+        );
+      }
+      row.appendChild(info);
+
+      const moveBtns = document.createElement("div");
+      moveBtns.className = "reorder-btns";
+
+      const upBtn = document.createElement("button");
+      upBtn.type = "button";
+      upBtn.className = "reorder-btn";
+      upBtn.setAttribute("aria-label", "Posunout fotku výš");
+      upBtn.textContent = "↑";
+      upBtn.disabled = photoIndex === 0;
+      upBtn.addEventListener("click", () => {
+        [item.images[photoIndex - 1], item.images[photoIndex]] = [
+          item.images[photoIndex],
+          item.images[photoIndex - 1]
+        ];
+        markDirty();
+        renderAlbumPhotosList(item, container);
+        sendPreviewUpdate();
+      });
+      moveBtns.appendChild(upBtn);
+
+      const downBtn = document.createElement("button");
+      downBtn.type = "button";
+      downBtn.className = "reorder-btn";
+      downBtn.setAttribute("aria-label", "Posunout fotku níž");
+      downBtn.textContent = "↓";
+      downBtn.disabled = photoIndex === item.images.length - 1;
+      downBtn.addEventListener("click", () => {
+        [item.images[photoIndex], item.images[photoIndex + 1]] = [
+          item.images[photoIndex + 1],
+          item.images[photoIndex]
+        ];
+        markDirty();
+        renderAlbumPhotosList(item, container);
+        sendPreviewUpdate();
+      });
+      moveBtns.appendChild(downBtn);
+      row.appendChild(moveBtns);
+
+      row.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            item.images.splice(photoIndex, 1);
+            markDirty();
+            renderAlbumPhotosList(item, container);
+            sendPreviewUpdate();
+          },
+          true
+        )
+      );
+
+      container.appendChild(row);
+    });
+  }
+
+  function multiImageField(onEachUploaded) {
+    const wrap = document.createElement("div");
+    wrap.className = "field";
+
+    const fileInput = document.createElement("input");
+    fileInput.type = "file";
+    fileInput.accept = "image/jpeg,image/png,image/webp";
+    fileInput.multiple = true;
+    fileInput.style.display = "none";
+
+    const uploadBtn = document.createElement("button");
+    uploadBtn.type = "button";
+    uploadBtn.className = "btn btn-ghost btn-sm";
+    uploadBtn.textContent = "+ Přidat fotky (lze vybrat víc najednou)";
+
+    const progress = document.createElement("div");
+    progress.className = "upload-progress";
+
+    uploadBtn.addEventListener("click", () => fileInput.click());
+
+    fileInput.addEventListener("change", async () => {
+      const files = Array.from(fileInput.files || []);
+      if (!files.length) return;
+      uploadBtn.disabled = true;
+      let successCount = 0;
+
+      for (let i = 0; i < files.length; i++) {
+        progress.textContent = `Nahrávám fotku ${i + 1} / ${files.length}…`;
+        try {
+          const processed = await ImageEditor.processFile(files[i], {});
+          const result = await apiPost("/api/upload-image", {
+            mimeType: processed.mimeType,
+            base64: processed.base64
+          });
+          onEachUploaded(result.path);
+          successCount++;
+        } catch (err) {
+          progress.textContent = `Chyba u "${files[i].name}": ${err.message}`;
+          await new Promise((resolve) => setTimeout(resolve, 1800));
+        }
+      }
+
+      progress.textContent = successCount ? `Nahráno ${successCount} z ${files.length} ✓` : "";
+      setTimeout(() => (progress.textContent = ""), 2500);
+      uploadBtn.disabled = false;
+      fileInput.value = "";
+    });
+
+    wrap.appendChild(uploadBtn);
+    wrap.appendChild(progress);
+    wrap.appendChild(fileInput);
+    return wrap;
+  }
+
   function renderGallerySection() {
     const g = state.content.gallery;
     const block = fieldsCard();
@@ -489,7 +632,7 @@
     const hint = document.createElement("div");
     hint.className = "hint";
     hint.textContent =
-      "Každá realizace je album - může mít jednu i víc fotek, mezi kterými se na webu listuje šipkami.";
+      "Každá realizace je album - může mít víc fotek najednou, mezi kterými se na webu listuje šipkami. Šipkami ↑↓ jde přeskládat pořadí alb i fotek v albu, tlačítkem u fotky jde nastavit, která bude úvodní (zobrazí se jako náhled na webu).";
     block.appendChild(hint);
 
     g.items.forEach((item, albumIndex) => {
@@ -504,7 +647,39 @@
       tag.className = "tag";
       tag.textContent = "Album " + (albumIndex + 1);
       head.appendChild(tag);
-      head.appendChild(
+
+      const headActions = document.createElement("div");
+      headActions.className = "list-item-head-actions";
+
+      const albumUpBtn = document.createElement("button");
+      albumUpBtn.type = "button";
+      albumUpBtn.className = "reorder-btn";
+      albumUpBtn.setAttribute("aria-label", "Posunout album výš");
+      albumUpBtn.textContent = "↑";
+      albumUpBtn.disabled = albumIndex === 0;
+      albumUpBtn.addEventListener("click", () => {
+        [g.items[albumIndex - 1], g.items[albumIndex]] = [g.items[albumIndex], g.items[albumIndex - 1]];
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      });
+      headActions.appendChild(albumUpBtn);
+
+      const albumDownBtn = document.createElement("button");
+      albumDownBtn.type = "button";
+      albumDownBtn.className = "reorder-btn";
+      albumDownBtn.setAttribute("aria-label", "Posunout album níž");
+      albumDownBtn.textContent = "↓";
+      albumDownBtn.disabled = albumIndex === g.items.length - 1;
+      albumDownBtn.addEventListener("click", () => {
+        [g.items[albumIndex], g.items[albumIndex + 1]] = [g.items[albumIndex + 1], g.items[albumIndex]];
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      });
+      headActions.appendChild(albumDownBtn);
+
+      headActions.appendChild(
         smallBtn(
           "Odebrat album",
           () => {
@@ -516,6 +691,7 @@
           true
         )
       );
+      head.appendChild(headActions);
       wrap.appendChild(head);
 
       wrap.appendChild(textField("Název realizace", item.title, (v) => (item.title = v)));
@@ -528,43 +704,17 @@
       photosHint.textContent = `Fotky v albu (${item.images.length})`;
       wrap.appendChild(photosHint);
 
-      if (item.images.length) {
-        const photosList = document.createElement("div");
-        photosList.className = "album-photos";
-
-        item.images.forEach((imgSrc, photoIndex) => {
-          const row = document.createElement("div");
-          row.className = "album-photo-row";
-
-          const thumb = document.createElement("div");
-          thumb.className = "image-preview";
-          updatePreviewThumb(thumb, imgSrc);
-          row.appendChild(thumb);
-
-          row.appendChild(
-            smallBtn(
-              "Odebrat",
-              () => {
-                item.images.splice(photoIndex, 1);
-                markDirty();
-                renderActiveSection();
-                sendPreviewUpdate();
-              },
-              true
-            )
-          );
-
-          photosList.appendChild(row);
-        });
-
-        wrap.appendChild(photosList);
-      }
+      const photosList = document.createElement("div");
+      photosList.className = "album-photos";
+      renderAlbumPhotosList(item, photosList);
+      wrap.appendChild(photosList);
 
       wrap.appendChild(
-        imageField("Přidat další fotku do alba", "", (path) => {
+        multiImageField((path) => {
           item.images.push(path);
           markDirty();
-          renderActiveSection();
+          renderAlbumPhotosList(item, photosList);
+          photosHint.textContent = `Fotky v albu (${item.images.length})`;
           sendPreviewUpdate();
         })
       );
