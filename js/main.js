@@ -427,31 +427,29 @@
     document.getElementById("contact-title").textContent = c.title;
     document.getElementById("contact-text").textContent = c.text;
 
+    if (c.company) {
+      const companyRow = document.getElementById("company-info-row");
+      if (companyRow) {
+        companyRow.innerHTML = "";
+        [c.company.name, "IČ: " + c.company.ico, c.company.address].forEach((txt) => {
+          companyRow.appendChild(el("span", null, escapeHTML(txt)));
+        });
+      }
+    }
+
     const grid = document.getElementById("contact-grid");
     grid.innerHTML = "";
     (c.persons || []).forEach((p) => {
       const card = el("div", "contact-card");
       card.appendChild(el("h3", null, escapeHTML(p.name)));
+      if (p.role) card.appendChild(el("p", "contact-role", escapeHTML(p.role)));
 
-      const rowPin = el(
-        "div",
-        "contact-row",
-        `${ICONS.pin}<span>${escapeHTML(p.address)}</span>`
-      );
-      const rowIc = el(
-        "div",
-        "contact-row",
-        `${ICONS.idCard}<span>IČ: ${escapeHTML(p.ic)}</span>`
-      );
       const telHref = "tel:" + String(p.phone).replace(/\s+/g, "");
       const rowPhone = el(
         "div",
         "contact-row",
         `${ICONS.phone}<a href="${telHref}">${escapeHTML(p.phone)}</a>`
       );
-
-      card.appendChild(rowPin);
-      card.appendChild(rowIc);
       card.appendChild(rowPhone);
       grid.appendChild(card);
     });
