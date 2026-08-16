@@ -52,11 +52,11 @@
       "label": "Prohlédnout realizace",
       "href": "#realizace"
     },
-    "scaleLabel": "EST. 2026",
+    "scaleLabel": "EST. 2008",
     "media": {
       "type": "image",
-      "src": "images/uploads/upload-1786889550307-bcf0b936.jpg",
-      "alt": "Konstrukce dřevěné kopule. "
+      "src": "images/hero-strecha.jpg",
+      "alt": "Rozestavěná střecha rodinného domu s krovem a difuzní fólií"
     }
   },
   "about": {
@@ -137,9 +137,9 @@
         "title": "Konstrukce altánů a pergol",
         "description": "Precizní tesařské zpracování",
         "images": [
-          "images/uploads/realizace-migrace-1786828493696-2.jpg",
           "images/uploads/realizace-migrace-1786828464982-0.jpg",
           "images/uploads/realizace-migrace-1786828468957-1.jpg",
+          "images/uploads/realizace-migrace-1786828493696-2.jpg",
           "images/uploads/realizace-migrace-1786828497713-3.jpg",
           "images/uploads/realizace-migrace-1786828502137-4.jpg"
         ]
@@ -157,38 +157,14 @@
         "title": "Konstrukce krovu na Rodinných domech",
         "description": "",
         "images": [
-          "images/uploads/realizace-migrace-1786828518650-8.jpg",
-          "images/uploads/upload-1786866168852-548b809b.jpg",
-          "images/uploads/upload-1786866168853-d5e5780e.jpg",
-          "images/uploads/upload-1786866168853-ee2cd1ea.jpg",
-          "images/uploads/upload-1786866168853-a34e09ef.jpg",
-          "images/uploads/upload-1786866168853-5ef24864.jpg",
-          "images/uploads/upload-1786866168853-4525bef7.jpg",
-          "images/uploads/upload-1786866168853-f922ba19.jpg",
-          "images/uploads/upload-1786866168853-42db937f.jpg",
-          "images/uploads/upload-1786866168854-9ea59910.jpg",
-          "images/uploads/upload-1786866168854-2b5fcec8.jpg",
-          "images/uploads/upload-1786866174389-533b87b3.jpg"
+          "images/uploads/realizace-migrace-1786828518650-8.jpg"
         ]
       },
       {
-        "title": "Nová realizace",
-        "description": "",
+        "title": "Dřevěná nástavba",
+        "description": "Tesařská konstrukce podkroví a terasy",
         "images": [
-          "images/uploads/upload-1786866855787-7a155f79.jpg",
-          "images/uploads/upload-1786866855787-ef886911.jpg",
-          "images/uploads/upload-1786866855787-0e8765c3.jpg",
-          "images/uploads/upload-1786866855787-05ee416a.jpg",
-          "images/uploads/upload-1786866855787-6d3b1525.jpg"
-        ]
-      },
-      {
-        "title": "Ruční tesaní trámů",
-        "description": "",
-        "images": [
-          "images/uploads/upload-1786867130589-7911054f.jpg",
-          "images/uploads/upload-1786867130589-a103406e.jpg",
-          "images/uploads/upload-1786867130589-0760e718.jpg"
+          "images/realizace-04.jpg"
         ]
       }
     ]
@@ -233,7 +209,7 @@
   "scaffolding": {
     "eyebrow": "Doplňková služba",
     "title": "Pronájem lešení UNI 70",
-    "text": "Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce.",
+    "text": "Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce. Pronájem je možné zajistit i včetně montáže a demontáže přímo u vás na místě.",
     "ctaLabel": "Poptat lešení",
     "ctaHref": "#kontakt"
   },
