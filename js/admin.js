@@ -939,6 +939,30 @@
     block.appendChild(textField("Text", c.text, (v) => (c.text = v), { textarea: true }));
     block.appendChild(textField("Text tlačítka", c.ctaLabel, (v) => (c.ctaLabel = v)));
 
+    if (!c.company) c.company = { name: "", ico: "", dic: "", address: "" };
+
+    const companyHint = document.createElement("div");
+    companyHint.className = "hint";
+    companyHint.textContent = "Firemní údaje (zobrazí se jednou nad kontaktními osobami i v patičce)";
+    block.appendChild(companyHint);
+
+    block.appendChild(
+      textField("Název společnosti", c.company.name, (v) => (c.company.name = v))
+    );
+    const companyRow = document.createElement("div");
+    companyRow.className = "field-row";
+    companyRow.appendChild(textField("IČ", c.company.ico, (v) => (c.company.ico = v)));
+    companyRow.appendChild(textField("DIČ", c.company.dic, (v) => (c.company.dic = v)));
+    block.appendChild(companyRow);
+    block.appendChild(
+      textField("Sídlo (adresa)", c.company.address, (v) => (c.company.address = v))
+    );
+
+    const personsHint = document.createElement("div");
+    personsHint.className = "hint";
+    personsHint.textContent = "Jednatelé / kontaktní osoby";
+    block.appendChild(personsHint);
+
     c.persons.forEach((person, index) => {
       const wrap = document.createElement("div");
       wrap.className = "list-item";
@@ -950,29 +974,34 @@
       tag.textContent = "Kontakt " + (index + 1);
       head.appendChild(tag);
       head.appendChild(
-        smallBtn("Odebrat", () => {
-          c.persons.splice(index, 1);
-          markDirty();
-          renderActiveSection();
-          sendPreviewUpdate();
-        }, true)
+        smallBtn(
+          "Odebrat",
+          () => {
+            c.persons.splice(index, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
       );
       wrap.appendChild(head);
 
-      wrap.appendChild(textField("Jméno", person.name, (v) => (person.name = v)));
-      wrap.appendChild(textField("Adresa", person.address, (v) => (person.address = v)));
       const row = document.createElement("div");
       row.className = "field-row";
-      row.appendChild(textField("IČ", person.ic, (v) => (person.ic = v)));
-      row.appendChild(textField("Telefon", person.phone, (v) => (person.phone = v)));
+      row.appendChild(textField("Jméno", person.name, (v) => (person.name = v)));
+      row.appendChild(
+        textField("Role", person.role, (v) => (person.role = v), { placeholder: "např. Jednatel" })
+      );
       wrap.appendChild(row);
+      wrap.appendChild(textField("Telefon", person.phone, (v) => (person.phone = v)));
 
       block.appendChild(wrap);
     });
 
     block.appendChild(
       smallBtn("+ Přidat kontaktní osobu", () => {
-        c.persons.push({ name: "Jméno Příjmení", address: "", ic: "", phone: "" });
+        c.persons.push({ name: "Jméno Příjmení", role: "Jednatel", phone: "" });
         markDirty();
         renderActiveSection();
         sendPreviewUpdate();
