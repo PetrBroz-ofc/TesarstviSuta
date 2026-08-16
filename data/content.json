@@ -247,21 +247,25 @@
     "persons": [
       {
         "name": "Jakub Šuta",
-        "address": "Francova Lhota 393, 756 14",
-        "ic": "87041693",
+        "role": "Jednatel",
         "phone": "+420 739 437 783"
       },
       {
         "name": "Milan Šuta",
-        "address": "Francova Lhota 30, 756 14",
-        "ic": "03345050",
+        "role": "Jednatel",
         "phone": "+420 737 020 984"
       }
-    ]
+    ],
+    "company": {
+      "name": "Tesařství Šuta s.r.o.",
+      "ico": "07257732",
+      "dic": "CZ07257732",
+      "address": "Francova Lhota 393, 756 14"
+    }
   },
   "footer": {
     "text": "Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2007.",
-    "copyright": "© 2026 Jakub Šuta. Všechna práva vyhrazena."
+    "copyright": "© 2026 Tesařství Šuta s.r.o. Všechna práva vyhrazena."
   },
   "cookieConsent": {
     "text": "Tento web používá pouze technické soubory cookie nezbytné pro jeho správné fungování. Žádná analytická ani marketingová data nesbíráme.",
@@ -274,7 +278,7 @@
     "sections": [
       {
         "heading": "Kdo je správcem vašich údajů",
-        "text": "Správcem osobních údajů je Jakub Šuta, IČ: 87041693, se sídlem Francova Lhota 393, 756 14. V rámci realizace zakázek spolupracuje s Milanem Šutou, IČ: 03345050, se sídlem Francova Lhota 30, 756 14."
+        "text": "Správcem osobních údajů je Tesařství Šuta s.r.o., IČ: 07257732, se sídlem Francova Lhota 393, 756 14. Jednateli společnosti jsou Jakub Šuta a Milan Šuta."
       },
       {
         "heading": "Jaké osobní údaje zpracováváme",
@@ -342,7 +346,7 @@
     "sections": [
       {
         "heading": "Úvodní ustanovení",
-        "text": "Tyto všeobecné obchodní podmínky upravují vzájemná práva a povinnosti mezi Jakubem Šutou, IČ: 87041693, a Milanem Šutou, IČ: 03345050 (dále jen \"zhotovitel\"), a objednatelem tesařských a pokrývačských prací (dále jen \"objednatel\")."
+        "text": "Tyto všeobecné obchodní podmínky upravují vzájemná práva a povinnosti mezi společností Tesařství Šuta s.r.o., IČ: 07257732, se sídlem Francova Lhota 393, 756 14 (dále jen \"zhotovitel\"), a objednatelem tesařských a pokrývačských prací (dále jen \"objednatel\")."
       },
       {
         "heading": "Uzavření smlouvy",
