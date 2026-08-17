@@ -435,6 +435,12 @@
         [c.company.name, "IČ: " + c.company.ico, c.company.address].forEach((txt) => {
           companyRow.appendChild(el("span", null, escapeHTML(txt)));
         });
+        if (c.company.email) {
+          const emailLink = document.createElement("a");
+          emailLink.href = "mailto:" + c.company.email;
+          emailLink.textContent = c.company.email;
+          companyRow.appendChild(emailLink);
+        }
       }
     }
 
