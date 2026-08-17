@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Tesařství a pokrývačství Jakub Šuta | Krovy, střechy, pergoly",
-    "description": "Tesařské a pokrývačské práce po celé České republice od roku 2007. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Ruční práce, zkušenost, spolehlivost.",
+    "title": "Tesařství Šuta | Krovy, střechy, pergoly",
+    "description": "Tesařské práce po celé České republice od roku 2008. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Rodinná firma, zkušenost, spolehlivost.",
     "ogImage": "images/og-cover.jpg",
     "favicon": "images/favicon-32.png",
     "siteUrl": "https://tesarstvi-suta.cz",
@@ -41,9 +41,9 @@
     "ctaLabel": "Nezávazná poptávka"
   },
   "hero": {
-    "titleLine1": "Tesařství a pokrývačství",
-    "titleLine2": "Jakub Šuta",
-    "text": "Řemeslná práce od roku 2008. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
+    "titleLine1": "Tesařství",
+    "titleLine2": "Šuta",
+    "text": "Řemeslná práce od roku 2008. Stavíme krovy, střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
     "ctaPrimary": {
       "label": "Nezávazná poptávka",
       "href": "#kontakt"
@@ -266,11 +266,12 @@
       "name": "Tesařství Šuta s.r.o.",
       "ico": "07257732",
       "dic": "CZ07257732",
-      "address": "Francova Lhota 393, 756 14"
+      "address": "Francova Lhota 393, 756 14",
+      "email": "tesarstvisuta@email.cz"
     }
   },
   "footer": {
-    "text": "Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2008.",
+    "text": "Tesařství Šuta — řemeslná práce od roku 2008.",
     "copyright": "© 2026 Tesařství Šuta s.r.o. Všechna práva vyhrazena.",
     "social": {
       "facebook": "https://share.google/5r0ZsjIvK0yQ04AaA",
@@ -319,7 +320,7 @@
         "text": "Máte právo na přístup ke svým osobním údajům, jejich opravu či výmaz, omezení zpracování, přenositelnost údajů a právo vznést námitku. Svá práva můžete uplatnit na kontaktech níže. Pokud se domníváte, že vaše údaje zpracováváme v rozporu se zákonem, máte právo podat stížnost u Úřadu pro ochranu osobních údajů (www.uoou.cz)."
       }
     ],
-    "contactNote": "S žádostmi ohledně ochrany osobních údajů nás kontaktujte na +420 739 437 783 nebo e-mailem."
+    "contactNote": "S žádostmi ohledně ochrany osobních údajů nás kontaktujte na +420 739 437 783 nebo e-mailem na tesarstvisuta@email.cz."
   },
   "warranty": {
     "pageTitle": "Reklamační řád",
@@ -347,7 +348,7 @@
         "text": "Záruka se nevztahuje na vady způsobené běžným opotřebením, nesprávným užíváním či údržbou, zásahem třetí osoby, živelní událostí nebo úpravami provedenými bez našeho souhlasu po předání díla."
       }
     ],
-    "contactNote": "Reklamaci uplatněte na +420 739 437 783 nebo e-mailem - domluvíme se na dalším postupu."
+    "contactNote": "Reklamaci uplatněte na +420 739 437 783 nebo e-mailem na tesarstvisuta@email.cz - domluvíme se na dalším postupu."
   },
   "terms": {
     "pageTitle": "Všeobecné obchodní podmínky",
@@ -395,6 +396,6 @@
         "text": "Tyto obchodní podmínky se řídí právním řádem České republiky, zejména občanským zákoníkem (zákon č. 89/2012 Sb.). V případě individuální písemné smlouvy o dílo má tato smlouva přednost před zněním těchto podmínek."
       }
     ],
-    "contactNote": "Máte k podmínkám dotaz? Ozvěte se na +420 739 437 783 nebo e-mailem."
+    "contactNote": "Máte k podmínkám dotaz? Ozvěte se na +420 739 437 783 nebo e-mailem na tesarstvisuta@email.cz."
   }
 }
