@@ -454,11 +454,11 @@ h1, h2, h3, .section-title {
 .hero-social {
   margin-top: 1.5rem;
 }
-.hero-social a {
+#hero-social a {
   border-color: var(--color-border);
   color: var(--color-text-muted);
 }
-.hero-social a:hover {
+#hero-social a:hover {
   border-color: var(--color-accent);
   color: var(--color-white);
   background: var(--color-accent);
