@@ -939,7 +939,7 @@
     block.appendChild(textField("Text", c.text, (v) => (c.text = v), { textarea: true }));
     block.appendChild(textField("Text tlačítka", c.ctaLabel, (v) => (c.ctaLabel = v)));
 
-    if (!c.company) c.company = { name: "", ico: "", dic: "", address: "" };
+    if (!c.company) c.company = { name: "", ico: "", dic: "", address: "", email: "" };
 
     const companyHint = document.createElement("div");
     companyHint.className = "hint";
@@ -956,6 +956,11 @@
     block.appendChild(companyRow);
     block.appendChild(
       textField("Sídlo (adresa)", c.company.address, (v) => (c.company.address = v))
+    );
+    block.appendChild(
+      textField("E-mail", c.company.email, (v) => (c.company.email = v), {
+        placeholder: "napr@email.cz"
+      })
     );
 
     const personsHint = document.createElement("div");
