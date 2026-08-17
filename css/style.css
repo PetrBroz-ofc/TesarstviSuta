@@ -451,6 +451,19 @@ h1, h2, h3, .section-title {
   margin-top: 2.4rem;
 }
 
+.hero-social {
+  margin-top: 1.5rem;
+}
+.hero-social a {
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+.hero-social a:hover {
+  border-color: var(--color-accent);
+  color: var(--color-white);
+  background: var(--color-accent);
+}
+
 .hero-media {
   position: relative;
   aspect-ratio: 4 / 3;
