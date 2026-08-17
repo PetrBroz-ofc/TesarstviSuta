@@ -1016,6 +1016,25 @@
     const block = fieldsCard();
     block.appendChild(textField("Text v patičce", f.text, (v) => (f.text = v)));
     block.appendChild(textField("Copyright řádek", f.copyright, (v) => (f.copyright = v)));
+
+    if (!f.social) f.social = { facebook: "", instagram: "" };
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = "Odkazy na sociální sítě (ikony v patičce webu)";
+    block.appendChild(hint);
+
+    block.appendChild(
+      textField("Facebook - odkaz", f.social.facebook, (v) => (f.social.facebook = v), {
+        placeholder: "https://facebook.com/..."
+      })
+    );
+    block.appendChild(
+      textField("Instagram - odkaz", f.social.instagram, (v) => (f.social.instagram = v), {
+        placeholder: "https://instagram.com/..."
+      })
+    );
+
     return block;
   }
 
