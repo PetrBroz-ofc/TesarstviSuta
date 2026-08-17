@@ -893,6 +893,12 @@ h1, h2, h3, .section-title {
   font-size: 0.9rem;
   color: rgba(250,250,248,0.6);
 }
+.company-info-row a {
+  color: rgba(250,250,248,0.6);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.company-info-row a:hover { color: var(--color-accent-light); }
 .company-info-row span:first-child {
   color: var(--color-white);
   font-weight: 700;
