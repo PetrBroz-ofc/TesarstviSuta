@@ -94,6 +94,7 @@
     document.getElementById("hero-title-2").textContent = hero.titleLine2;
     document.getElementById("hero-text").textContent = hero.text;
     buildHeroScale(hero.scaleLabel || "");
+    syncSocialLinks("hero-social", content.footer.social);
 
     const ctaPrimary = document.getElementById("hero-cta-primary");
     ctaPrimary.href = hero.ctaPrimary.href;
@@ -459,17 +460,18 @@
 
   /* ---------- Render: footer ---------- */
 
+  function syncSocialLinks(containerId, social) {
+    const wrap = document.getElementById(containerId);
+    if (!social || !wrap) return;
+    const links = wrap.querySelectorAll("a");
+    if (links[0] && social.facebook) links[0].href = social.facebook;
+    if (links[1] && social.instagram) links[1].href = social.instagram;
+  }
+
   function renderFooter(content) {
     document.getElementById("footer-text").textContent = content.footer.text;
     document.getElementById("footer-copy").textContent = content.footer.copyright;
-
-    const social = content.footer.social;
-    const socialWrap = document.getElementById("footer-social");
-    if (social && socialWrap) {
-      const links = socialWrap.querySelectorAll("a");
-      if (links[0] && social.facebook) links[0].href = social.facebook;
-      if (links[1] && social.instagram) links[1].href = social.instagram;
-    }
+    syncSocialLinks("footer-social", content.footer.social);
   }
 
   /* ---------- Cookie lišta ---------- */
