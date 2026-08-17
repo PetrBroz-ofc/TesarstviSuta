@@ -265,7 +265,11 @@
   },
   "footer": {
     "text": "Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2007.",
-    "copyright": "© 2026 Tesařství Šuta s.r.o. Všechna práva vyhrazena."
+    "copyright": "© 2026 Tesařství Šuta s.r.o. Všechna práva vyhrazena.",
+    "social": {
+      "facebook": "https://share.google/5r0ZsjIvK0yQ04AaA",
+      "instagram": "https://www.instagram.com/tesarstvisuta/"
+    }
   },
   "cookieConsent": {
     "text": "Tento web používá pouze technické soubory cookie nezbytné pro jeho správné fungování. Žádná analytická ani marketingová data nesbíráme.",
