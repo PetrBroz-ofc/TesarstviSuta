@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Tesařství Šuta | Krovy, střechy, pergoly",
-    "description": "Tesařské práce po celé České republice od roku 2008. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Rodinná firma, zkušenost, spolehlivost.",
+    "title": "Tesařství a pokrývačství Jakub Šuta | Krovy, střechy, pergoly",
+    "description": "Tesařské a pokrývačské práce po celé České republice od roku 2007. Krovy, střechy, pergoly, dřevěné konstrukce i rekonstrukce památek. Ruční práce, zkušenost, spolehlivost.",
     "ogImage": "images/og-cover.jpg",
     "favicon": "images/favicon-32.png",
     "siteUrl": "https://tesarstvi-suta.cz",
@@ -41,9 +41,9 @@
     "ctaLabel": "Nezávazná poptávka"
   },
   "hero": {
-    "titleLine1": "Tesařství",
-    "titleLine2": "Šuta",
-    "text": "Řemeslná práce od roku 2008. Stavíme krovy, střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
+    "titleLine1": "Tesařství a pokrývačství",
+    "titleLine2": "Jakub Šuta",
+    "text": "Řemeslná práce od roku 2008. Stavíme střechy, pergoly a dřevěné konstrukce s důrazem na kvalitu.",
     "ctaPrimary": {
       "label": "Nezávazná poptávka",
       "href": "#kontakt"
@@ -157,7 +157,13 @@
         "title": "Konstrukce krovu na Rodinných domech",
         "description": "",
         "images": [
-          "images/uploads/realizace-migrace-1786828518650-8.jpg"
+          "images/uploads/realizace-migrace-1786828518650-8.jpg",
+          "images/uploads/upload-1786957450932-8cac678d.jpg",
+          "images/uploads/upload-1786957450932-73dfc038.jpg",
+          "images/uploads/upload-1786957450932-cc003098.jpg",
+          "images/uploads/upload-1786957450932-85d769b9.jpg",
+          "images/uploads/upload-1786957450932-0ec97adf.jpg",
+          "images/uploads/upload-1786957450933-dfc6b13e.jpg"
         ]
       },
       {
@@ -264,7 +270,7 @@
     }
   },
   "footer": {
-    "text": "Tesařství Šuta — řemeslná práce od roku 2008.",
+    "text": "Tesařství a pokrývačství Jakub Šuta — řemeslná práce od roku 2007.",
     "copyright": "© 2026 Tesařství Šuta s.r.o. Všechna práva vyhrazena.",
     "social": {
       "facebook": "https://share.google/5r0ZsjIvK0yQ04AaA",
