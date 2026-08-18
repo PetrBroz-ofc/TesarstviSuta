@@ -726,6 +726,9 @@ h1, h2, h3, .section-title {
   color: var(--color-bg);
   background: rgba(28, 25, 23, 0.3);
   transition: border-color 0.2s ease, background 0.2s ease;
+  z-index: 2;
+  touch-action: manipulation;
+  cursor: pointer;
 }
 .lightbox-arrow:hover { border-color: var(--color-bg); background: rgba(28, 25, 23, 0.55); }
 .lightbox-arrow svg { width: 22px; height: 22px; }
@@ -744,7 +747,7 @@ h1, h2, h3, .section-title {
 }
 
 @media (max-width: 640px) {
-  .lightbox-arrow { width: 40px; height: 40px; }
+  .lightbox-arrow { width: 44px; height: 44px; }
   .lightbox-arrow-prev { left: 0.5rem; }
   .lightbox-arrow-next { right: 0.5rem; }
 }
@@ -1076,8 +1079,13 @@ h1, h2, h3, .section-title {
 .footer-admin-lock svg { width: 15px; height: 15px; }
 
 @media (max-width: 760px) {
-  .footer-grid { grid-template-columns: 1fr; gap: 2.2rem; }
-  .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
+  .footer-main { padding: 2.4rem 0 1.8rem; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.8rem; }
+  .footer-bottom-inner { flex-direction: column; align-items: flex-start; gap: 0.7rem; padding: 1rem 0; }
+  .footer-social { margin-top: 1rem; }
+  .footer-contact-block { gap: 0.4rem; }
+  .footer-contact-address { margin-top: 0.6rem; }
+  .footer-contact-name-2 { margin-top: 0.4rem; }
 }
 
 /* ==========================================================================
