@@ -563,14 +563,31 @@
     const toggle = document.getElementById("nav-toggle");
     const mobile = document.getElementById("nav-mobile");
     const closeBtn = document.getElementById("nav-mobile-close");
+    if (!toggle || !mobile) return;
+
+    // Kritické vlastnosti nastavujeme přímo přes JS (CSSOM), ne přes externí
+    // CSS soubor ani inline <style> blok - je to jediný způsob, jak zaručit
+    // fungování naprosto nezávisle na tom, jestli/kdy se stihne načíst
+    // externí stylesheet, a bez konfliktu s CSP politikou pro inline styly.
+    mobile.style.position = "fixed";
+    mobile.style.top = "0";
+    mobile.style.left = "0";
+    mobile.style.right = "0";
+    mobile.style.bottom = "0";
+    mobile.style.zIndex = "999";
+    mobile.style.overflowY = "auto";
+    mobile.style.transition = "transform 0.4s ease";
+    mobile.style.transform = "translateY(-100%)";
 
     function open() {
       mobile.classList.add("is-open");
+      mobile.style.transform = "translateY(0)";
       toggle.setAttribute("aria-expanded", "true");
       document.body.style.overflow = "hidden";
     }
     function close() {
       mobile.classList.remove("is-open");
+      mobile.style.transform = "translateY(-100%)";
       toggle.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
     }
@@ -578,7 +595,7 @@
     toggle.addEventListener("click", () => {
       mobile.classList.contains("is-open") ? close() : open();
     });
-    closeBtn.addEventListener("click", close);
+    if (closeBtn) closeBtn.addEventListener("click", close);
     mobile.querySelectorAll("a").forEach((a) => a.addEventListener("click", close));
   }
 
