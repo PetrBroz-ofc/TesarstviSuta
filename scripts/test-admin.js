@@ -104,7 +104,7 @@ async function run() {
       (b) => b.textContent === "Služby"
     );
     const switched =
-      editorText.includes("Přidat kartu služby") &&
+      editorText.includes("Přidat položku") &&
       servicesBtnAfter &&
       servicesBtnAfter.classList.contains("is-active");
     console.log((switched ? "OK  " : "FAIL") + " - Klik na 'Služby' přepne aktivní sekci");
