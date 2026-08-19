@@ -374,13 +374,6 @@
     return block;
   }
 
-  const SERVICE_ICONS = [
-    { value: "roofFrame", label: "Krov / konstrukce" },
-    { value: "roofTiles", label: "Střešní krytina" },
-    { value: "woodPlank", label: "Dřevěné prvky" },
-    { value: "church", label: "Historická stavba" }
-  ];
-
   function renderServicesSection() {
     const s = state.content.services;
     const block = fieldsCard();
@@ -388,88 +381,78 @@
     block.appendChild(textField("Nadpis nad titulkem", s.eyebrow, (v) => (s.eyebrow = v)));
     block.appendChild(textField("Titulek sekce", s.title, (v) => (s.title = v)));
 
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = "Jednoduchý seznam služeb (jeden sloupec na webu) - šipkami jde přeskládat pořadí.";
+    block.appendChild(hint);
+
     s.items.forEach((service, index) => {
-      const item = document.createElement("div");
-      item.className = "list-item";
+      const row = document.createElement("div");
+      row.className = "list-item";
 
       const head = document.createElement("div");
       head.className = "list-item-head";
       const tag = document.createElement("span");
       tag.className = "tag";
-      tag.textContent = "Karta " + (index + 1);
+      tag.textContent = "Položka " + (index + 1);
       head.appendChild(tag);
-      head.appendChild(
-        smallBtn("Odebrat kartu", () => {
-          s.items.splice(index, 1);
-          markDirty();
-          renderActiveSection();
-          sendPreviewUpdate();
-        }, true)
-      );
-      item.appendChild(head);
 
-      const iconSelect = fieldWrap("Ikona");
-      const select = document.createElement("select");
-      SERVICE_ICONS.forEach((opt) => {
-        const optionEl = document.createElement("option");
-        optionEl.value = opt.value;
-        optionEl.textContent = opt.label;
-        if (service.icon === opt.value) optionEl.selected = true;
-        select.appendChild(optionEl);
-      });
-      select.addEventListener("change", () => {
-        service.icon = select.value;
+      const headActions = document.createElement("div");
+      headActions.className = "list-item-head-actions";
+
+      const upBtn = document.createElement("button");
+      upBtn.type = "button";
+      upBtn.className = "reorder-btn";
+      upBtn.setAttribute("aria-label", "Posunout výš");
+      upBtn.textContent = "↑";
+      upBtn.disabled = index === 0;
+      upBtn.addEventListener("click", () => {
+        [s.items[index - 1], s.items[index]] = [s.items[index], s.items[index - 1]];
         markDirty();
+        renderActiveSection();
         sendPreviewUpdate();
       });
-      iconSelect.appendChild(select);
-      item.appendChild(iconSelect);
+      headActions.appendChild(upBtn);
 
-      item.appendChild(textField("Název karty", service.title, (v) => (service.title = v)));
+      const downBtn = document.createElement("button");
+      downBtn.type = "button";
+      downBtn.className = "reorder-btn";
+      downBtn.setAttribute("aria-label", "Posunout níž");
+      downBtn.textContent = "↓";
+      downBtn.disabled = index === s.items.length - 1;
+      downBtn.addEventListener("click", () => {
+        [s.items[index], s.items[index + 1]] = [s.items[index + 1], s.items[index]];
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      });
+      headActions.appendChild(downBtn);
 
-      const linesLabel = document.createElement("div");
-      linesLabel.className = "hint";
-      linesLabel.textContent = "Položky v kartě";
-      item.appendChild(linesLabel);
-
-      service.items.forEach((line, lineIndex) => {
-        const row = document.createElement("div");
-        row.className = "subitem-row";
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = line;
-        input.addEventListener("input", () => {
-          service.items[lineIndex] = input.value;
-          markDirty();
-          sendPreviewUpdate();
-        });
-        row.appendChild(input);
-        row.appendChild(
-          smallBtn("✕", () => {
-            service.items.splice(lineIndex, 1);
+      headActions.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            s.items.splice(index, 1);
             markDirty();
             renderActiveSection();
             sendPreviewUpdate();
-          }, true)
-        );
-        item.appendChild(row);
-      });
+          },
+          true
+        )
+      );
+      head.appendChild(headActions);
+      row.appendChild(head);
 
-      item.appendChild(
-        smallBtn("+ Přidat položku", () => {
-          service.items.push("Nová položka");
-          markDirty();
-          renderActiveSection();
-          sendPreviewUpdate();
-        })
+      row.appendChild(
+        textField("Text položky", service, (v) => (s.items[index] = v), { textarea: true, rows: 2 })
       );
 
-      block.appendChild(item);
+      block.appendChild(row);
     });
 
     block.appendChild(
-      smallBtn("+ Přidat kartu služby", () => {
-        s.items.push({ icon: "woodPlank", title: "Nová služba", items: ["Položka"] });
+      smallBtn("+ Přidat položku", () => {
+        s.items.push("Nová služba");
         markDirty();
         renderActiveSection();
         sendPreviewUpdate();
