@@ -567,46 +567,27 @@ h1, h2, h3, .section-title {
 /* ==========================================================================
    Služby
    ========================================================================== */
-.services-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--color-border);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+.services-list-single {
+  max-width: 760px;
+  margin: 0 auto;
 }
-.service-card {
-  background: var(--color-bg);
-  padding: clamp(1.8rem, 3vw, 2.5rem) clamp(1.5rem, 2.4vw, 2rem);
-  transition: background 0.35s ease;
-}
-.service-card:hover { background: var(--color-white); }
-.service-icon {
-  width: 46px;
-  height: 46px;
-  color: var(--color-accent);
-  margin-bottom: 1.5rem;
-}
-.service-card h3 {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
-}
-.service-card ul li {
-  font-size: 0.92rem;
-  color: var(--color-secondary);
-  padding: 0.4rem 0;
+.service-list-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.1rem 0.5rem;
   border-top: 1px solid var(--color-border);
+  font-size: 1.02rem;
+  color: var(--color-secondary);
+  line-height: 1.5;
 }
-.service-card ul li:first-child { border-top: none; }
-
-@media (max-width: 900px) {
-  .services-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 560px) {
-  .services-grid { grid-template-columns: 1fr; }
+.service-list-item:last-child { border-bottom: 1px solid var(--color-border); }
+.service-list-item svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  margin-top: 0.15rem;
+  color: var(--color-accent);
 }
 
 /* ==========================================================================
