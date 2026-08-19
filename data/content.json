@@ -89,44 +89,16 @@
     "eyebrow": "Co děláme",
     "title": "Služby",
     "items": [
-      {
-        "icon": "roofFrame",
-        "title": "Tesařské konstrukce",
-        "items": [
-          "Krovy",
-          "Pergoly",
-          "Altány",
-          "Přístřešky",
-          "Garážová stání"
-        ]
-      },
-      {
-        "icon": "roofTiles",
-        "title": "Pokrývačské práce",
-        "items": [
-          "Pokládka krytin",
-          "Rekonstrukce střech",
-          "Opravy starých střech"
-        ]
-      },
-      {
-        "icon": "woodPlank",
-        "title": "Dřevěné prvky",
-        "items": [
-          "Palubkové obklady",
-          "Dřevěné podlahy",
-          "Ruční tesání trámů"
-        ]
-      },
-      {
-        "icon": "church",
-        "title": "Speciální práce",
-        "items": [
-          "Historické objekty",
-          "Kostely",
-          "Památkové rekonstrukce"
-        ]
-      }
+      "Rekonstrukce historických a památkově chráněných dřevěných konstrukcí (kostelní věže, atd.)",
+      "Tesařské výměny, pomocí starých postupů",
+      "Tesání trámů",
+      "Výroba a montáž krovů na RD",
+      "Rekonstrukce starých střech",
+      "Dřevěné obklady, podbití",
+      "Půjčovna lešení",
+      "Odborné poradenství v oblasti dřevěných konstrukcí a střech",
+      "Stavba garážových stání a pergol",
+      "Montáž střešních krytin"
     ]
   },
   "gallery": {
