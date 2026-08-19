@@ -566,23 +566,24 @@
     // externí stylesheet, a bez konfliktu s CSP politikou pro inline styly.
     mobile.style.position = "fixed";
     mobile.style.top = "0";
-    mobile.style.left = "0";
     mobile.style.right = "0";
     mobile.style.bottom = "0";
+    mobile.style.left = "auto";
+    mobile.style.width = "min(340px, 84vw)";
     mobile.style.zIndex = "999";
     mobile.style.overflowY = "auto";
     mobile.style.transition = "transform 0.4s ease";
-    mobile.style.transform = "translateY(-100%)";
+    mobile.style.transform = "translateX(100%)";
 
     function open() {
       mobile.classList.add("is-open");
-      mobile.style.transform = "translateY(0)";
+      mobile.style.transform = "translateX(0)";
       toggle.setAttribute("aria-expanded", "true");
       document.body.style.overflow = "hidden";
     }
     function close() {
       mobile.classList.remove("is-open");
-      mobile.style.transform = "translateY(-100%)";
+      mobile.style.transform = "translateX(100%)";
       toggle.setAttribute("aria-expanded", "false");
       document.body.style.overflow = "";
     }
