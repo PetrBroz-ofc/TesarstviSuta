@@ -21,7 +21,7 @@ function testStaticHtmlHasRealContent() {
     ["Hero fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#hero-media img[src]")],
     ["O nás fotka je <img>, ne prázdný placeholder", !!doc.querySelector("#about-media img[src]")],
     ["Navigace je vyplněná bez JS (7 odkazů)", doc.querySelectorAll("#nav-desktop a").length === 7],
-    ["Karty služeb jsou v HTML bez JS (4)", doc.querySelectorAll(".service-card").length === 4],
+    ["Položky služeb jsou v HTML bez JS (10)", doc.querySelectorAll(".service-list-item").length === 10],
     ["Fotky realizací jsou v HTML bez JS (4)", doc.querySelectorAll(".gallery-item img").length === 4],
     ["FAQ otázky jsou v HTML bez JS (6)", doc.querySelectorAll(".faq-item").length === 6],
     ["Žádný prvek nemá data-skeleton (skrytý text)", doc.querySelectorAll("[data-skeleton]").length === 0]
@@ -88,7 +88,7 @@ async function run() {
     ["Hero nadpis vykreslen", doc.getElementById("hero-title-1").textContent.length > 0],
     ["Hero 2. řádek vykreslen", doc.getElementById("hero-title-2").textContent.includes("Šuta")],
     ["Nav odkazy vykresleny (7)", doc.querySelectorAll("#nav-desktop a").length === 7],
-    ["Karty služeb vykresleny (4)", doc.querySelectorAll(".service-card").length === 4],
+    ["Položky služeb vykresleny (10)", doc.querySelectorAll(".service-list-item").length === 10],
     ["Položky galerie vykresleny (4)", doc.querySelectorAll(".gallery-item").length === 4],
     ["Kontaktní karty vykresleny (2)", doc.querySelectorAll(".contact-card").length === 2],
     ["Patička vykreslena", doc.getElementById("footer-text").textContent.length > 0],
