@@ -161,19 +161,14 @@
 
     const grid = document.getElementById("services-grid");
     grid.innerHTML = "";
-    services.items.forEach((service) => {
-      const card = el("div", "service-card");
-      const icon = el("div", "service-icon", ICONS[service.icon] || ICONS.woodPlank);
-      const title = el("h3", null, escapeHTML(service.title));
-      const list = el("ul");
-      (service.items || []).forEach((line) => {
-        const li = el("li", null, escapeHTML(line));
-        list.appendChild(li);
-      });
-      card.appendChild(icon);
-      card.appendChild(title);
-      card.appendChild(list);
-      grid.appendChild(card);
+    (services.items || []).forEach((service) => {
+      const row = el("div", "service-list-item");
+      const check = document.createElement("div");
+      check.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+      row.appendChild(check.firstElementChild);
+      row.appendChild(el("span", null, escapeHTML(service)));
+      grid.appendChild(row);
     });
   }
 
