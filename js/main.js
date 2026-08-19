@@ -71,6 +71,13 @@
     navDesktop.innerHTML = "";
     navMobile.innerHTML = "";
 
+    // Kritické vlastnosti kontejneru nastavujeme přímo přes JS (CSSOM) -
+    // stejný spolehlivý přístup jako u pozicování celého panelu, aby
+    // odkazy vždy byly pod sebou bez ohledu na to, jestli/kdy se stihne
+    // načíst externí stylesheet.
+    navMobile.style.display = "flex";
+    navMobile.style.flexDirection = "column";
+
     h.nav.forEach((item) => {
       const a1 = el("a", null, "");
       a1.href = item.href;
@@ -78,6 +85,12 @@
       navDesktop.appendChild(a1);
 
       const a2 = a1.cloneNode(true);
+      a2.style.display = "block";
+      a2.style.padding = "0.85rem 0";
+      a2.style.fontSize = "1.25rem";
+      a2.style.fontWeight = "700";
+      a2.style.color = "#FAFAF8";
+      a2.style.textDecoration = "none";
       navMobile.appendChild(a2);
     });
 
@@ -570,6 +583,24 @@
     mobile.style.bottom = "0";
     mobile.style.left = "auto";
     mobile.style.width = "min(340px, 84vw)";
+    mobile.style.background = "#1C1917";
+
+    // Stylujeme i odkazy hned teď (ještě před stažením content.json), aby
+    // nebyly ani na okamžik bez odsazení/velikosti - renderHeader() tyhle
+    // uzly později nahradí novými se stejným stylováním.
+    const navLinksList = document.getElementById("nav-mobile-links");
+    if (navLinksList) {
+      navLinksList.style.display = "flex";
+      navLinksList.style.flexDirection = "column";
+      navLinksList.querySelectorAll("a").forEach((a) => {
+        a.style.display = "block";
+        a.style.padding = "0.85rem 0";
+        a.style.fontSize = "1.25rem";
+        a.style.fontWeight = "700";
+        a.style.color = "#FAFAF8";
+        a.style.textDecoration = "none";
+      });
+    }
     mobile.style.zIndex = "999";
     mobile.style.overflowY = "auto";
     mobile.style.transition = "transform 0.4s ease";
