@@ -423,6 +423,18 @@
     const s = content.scaffolding;
     document.getElementById("scaffolding-title").textContent = s.title;
     document.getElementById("scaffolding-text").textContent = s.text;
+
+    const itemsWrap = document.getElementById("scaffolding-items");
+    if (itemsWrap) {
+      itemsWrap.innerHTML = "";
+      (s.items || []).forEach((item) => {
+        const row = el("div", "scaffolding-item");
+        row.appendChild(el("span", "scaffolding-item-name", escapeHTML(item.name)));
+        row.appendChild(el("span", "scaffolding-item-detail", escapeHTML(item.detail)));
+        itemsWrap.appendChild(row);
+      });
+    }
+
     const cta = document.getElementById("scaffolding-cta");
     cta.querySelector(".btn-label").textContent = s.ctaLabel;
     cta.href = s.ctaHref || "#kontakt";
