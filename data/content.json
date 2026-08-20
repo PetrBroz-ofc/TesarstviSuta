@@ -186,10 +186,20 @@
   },
   "scaffolding": {
     "eyebrow": "Doplňková služba",
-    "title": "Pronájem lešení UNI 70",
-    "text": "Nabízíme pronájem kvalitního lešení UNI 70 pro stavební práce. Pronájem je možné zajistit i včetně montáže a demontáže přímo u vás na místě.",
+    "title": "Pronájem lešení a techniky",
+    "text": "Nabízíme pronájem kvalitního vybavení pro stavební práce. Pronájem lešení je možné zajistit i včetně montáže a demontáže přímo u vás na místě.",
     "ctaLabel": "Poptat lešení",
-    "ctaHref": "#kontakt"
+    "ctaHref": "#kontakt",
+    "items": [
+      {
+        "name": "Systémové lešení UNI 70",
+        "detail": "K dispozici 600 m²"
+      },
+      {
+        "name": "Geda Lift 250 comfort",
+        "detail": "Celková délka až 16 m"
+      }
+    ]
   },
   "faq": {
     "eyebrow": "Časté dotazy",
