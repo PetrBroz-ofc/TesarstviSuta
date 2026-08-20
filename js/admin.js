@@ -910,6 +910,55 @@
     block.appendChild(textField("Titulek", sc.title, (v) => (sc.title = v)));
     block.appendChild(textField("Text", sc.text, (v) => (sc.text = v), { textarea: true }));
     block.appendChild(textField("Text tlačítka", sc.ctaLabel, (v) => (sc.ctaLabel = v)));
+
+    if (!Array.isArray(sc.items)) sc.items = [];
+
+    const hint = document.createElement("div");
+    hint.className = "hint";
+    hint.textContent = "Vybavení k pronájmu (zobrazí se jako seznam pod textem)";
+    block.appendChild(hint);
+
+    sc.items.forEach((item, index) => {
+      const wrap = document.createElement("div");
+      wrap.className = "list-item";
+
+      const head = document.createElement("div");
+      head.className = "list-item-head";
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = "Položka " + (index + 1);
+      head.appendChild(tag);
+      head.appendChild(
+        smallBtn(
+          "Odebrat",
+          () => {
+            sc.items.splice(index, 1);
+            markDirty();
+            renderActiveSection();
+            sendPreviewUpdate();
+          },
+          true
+        )
+      );
+      wrap.appendChild(head);
+
+      wrap.appendChild(textField("Název", item.name, (v) => (item.name = v)));
+      wrap.appendChild(
+        textField("Detail (např. rozměr, kapacita)", item.detail, (v) => (item.detail = v))
+      );
+
+      block.appendChild(wrap);
+    });
+
+    block.appendChild(
+      smallBtn("+ Přidat vybavení", () => {
+        sc.items.push({ name: "Nové vybavení", detail: "Detail" });
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      })
+    );
+
     return block;
   }
 
