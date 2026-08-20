@@ -782,7 +782,39 @@
       tag.className = "tag";
       tag.textContent = "Certifikát " + (index + 1);
       head.appendChild(tag);
-      head.appendChild(
+
+      const headActions = document.createElement("div");
+      headActions.className = "list-item-head-actions";
+
+      const upBtn = document.createElement("button");
+      upBtn.type = "button";
+      upBtn.className = "reorder-btn";
+      upBtn.setAttribute("aria-label", "Posunout výš");
+      upBtn.textContent = "↑";
+      upBtn.disabled = index === 0;
+      upBtn.addEventListener("click", () => {
+        [c.items[index - 1], c.items[index]] = [c.items[index], c.items[index - 1]];
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      });
+      headActions.appendChild(upBtn);
+
+      const downBtn = document.createElement("button");
+      downBtn.type = "button";
+      downBtn.className = "reorder-btn";
+      downBtn.setAttribute("aria-label", "Posunout níž");
+      downBtn.textContent = "↓";
+      downBtn.disabled = index === c.items.length - 1;
+      downBtn.addEventListener("click", () => {
+        [c.items[index], c.items[index + 1]] = [c.items[index + 1], c.items[index]];
+        markDirty();
+        renderActiveSection();
+        sendPreviewUpdate();
+      });
+      headActions.appendChild(downBtn);
+
+      headActions.appendChild(
         smallBtn(
           "Odebrat",
           () => {
@@ -794,6 +826,7 @@
           true
         )
       );
+      head.appendChild(headActions);
       wrap.appendChild(head);
 
       wrap.appendChild(
