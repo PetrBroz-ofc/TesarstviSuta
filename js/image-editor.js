@@ -15,8 +15,8 @@ const ImageEditor = (function () {
   const ALLOWED_INPUT_TYPES = ["image/jpeg", "image/png", "image/webp"];
   const MAX_INPUT_BYTES = 20 * 1024 * 1024; // 20 MB - obrázek se před uploadem zmenší
   const MAX_PDF_BYTES = 3 * 1024 * 1024; // 3 MB - PDF se neupravuje
-  const MAX_DIMENSION = 1920;
-  const JPEG_QUALITY = 0.85;
+  const MAX_DIMENSION = 1600;
+  const JPEG_QUALITY = 0.8;
 
   function loadImage(file) {
     return new Promise((resolve, reject) => {
