@@ -83,7 +83,12 @@
         "unit": "",
         "label": "práce po celé ČR"
       }
-    ]
+    ],
+    "media": {
+      "type": "image",
+      "src": "images/uploads/upload-1787343641141-793bba9f.jpg",
+      "alt": ""
+    }
   },
   "services": {
     "eyebrow": "Co děláme",
