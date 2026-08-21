@@ -155,10 +155,20 @@
 
     const mediaContainer = document.getElementById("about-media");
     mediaContainer.innerHTML = "";
-    if (about.image && about.image.src) {
+    const media = about.media;
+    if (media && media.src && media.type === "video") {
+      const video = el("video");
+      video.src = media.src;
+      video.setAttribute("aria-label", escapeHTML(media.alt || ""));
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      mediaContainer.appendChild(video);
+    } else if (media && media.src) {
       const img = el("img");
-      img.src = about.image.src;
-      img.alt = escapeHTML(about.image.alt || "");
+      img.src = media.src;
+      img.alt = escapeHTML(media.alt || "");
       img.loading = "lazy";
       img.decoding = "async";
       mediaContainer.appendChild(img);
