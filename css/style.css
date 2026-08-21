@@ -679,7 +679,9 @@ h1, h2, h3, .section-title {
   max-height: 82vh;
   object-fit: contain;
   border-radius: var(--radius-md);
+  transition: opacity 0.15s ease;
 }
+.lightbox img.is-loading { opacity: 0.35; }
 .lightbox-caption {
   position: absolute;
   bottom: 2.2rem;
