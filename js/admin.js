@@ -25,25 +25,44 @@
     return JSON.parse(JSON.stringify(obj));
   }
 
-  async function apiPost(url, body) {
-    const res = await fetch(url, {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body || {})
-    });
-    let data = {};
-    try {
-      data = await res.json();
-    } catch {
-      /* prázdná odpověď */
+  async function apiPost(url, body, opts = {}) {
+    const maxAttempts = (opts.retries || 0) + 1;
+    let lastErr;
+
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const res = await fetch(url, {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body || {})
+        });
+        let data = {};
+        try {
+          data = await res.json();
+        } catch {
+          /* prázdná odpověď */
+        }
+        if (!res.ok) {
+          const err = new Error(data.error || `Chyba požadavku (${res.status})`);
+          err.status = res.status;
+          throw err;
+        }
+        return data;
+      } catch (err) {
+        lastErr = err;
+        // Opakujeme jen dočasné chyby (výpadek sítě = žádný status, 429 rate
+        // limit, 5xx server) - NIKDY přihlašovací/validační chyby (4xx),
+        // ty by opakování stejně nevyřešilo.
+        const isRetryable = err.status === undefined || err.status === 429 || err.status >= 500;
+        if (attempt < maxAttempts && isRetryable) {
+          await new Promise((resolve) => setTimeout(resolve, 600 * attempt));
+          continue;
+        }
+        throw err;
+      }
     }
-    if (!res.ok) {
-      const err = new Error(data.error || `Chyba požadavku (${res.status})`);
-      err.status = res.status;
-      throw err;
-    }
-    return data;
+    throw lastErr;
   }
 
   async function apiGet(url) {
@@ -182,19 +201,21 @@
       progress.textContent = file.type === "application/pdf" ? "Čtu PDF a dělám náhled…" : "Zpracovávám a nahrávám…";
       try {
         const processed = await ImageEditor.processFile(file, { allowPdf: opts.allowPdf });
-        const result = await apiPost("/api/upload-image", {
-          mimeType: processed.mimeType,
-          base64: processed.base64
-        });
+        const result = await apiPost(
+          "/api/upload-image",
+          { mimeType: processed.mimeType, base64: processed.base64 },
+          { retries: 2 }
+        );
         onUploaded(result.path);
         updatePreviewThumb(preview, result.path);
 
         if (processed.isPdf && processed.pdfBase64 && opts.onPdfUploaded) {
           progress.textContent = "Nahrávám originál PDF…";
-          const pdfResult = await apiPost("/api/upload-image", {
-            mimeType: processed.pdfMimeType,
-            base64: processed.pdfBase64
-          });
+          const pdfResult = await apiPost(
+            "/api/upload-image",
+            { mimeType: processed.pdfMimeType, base64: processed.pdfBase64 },
+            { retries: 2 }
+          );
           opts.onPdfUploaded(pdfResult.path);
         }
 
@@ -620,9 +641,11 @@
             batches.length > 1
               ? `Nahrávám dávku ${b + 1} / ${batches.length}…`
               : `Nahrávám ${batches[b].length} ${batches[b].length === 1 ? "fotku" : "fotek"}…`;
-          const result = await apiPost("/api/upload-images-batch", {
-            files: batches[b].map((p) => ({ mimeType: p.mimeType, base64: p.base64 }))
-          });
+          const result = await apiPost(
+            "/api/upload-images-batch",
+            { files: batches[b].map((p) => ({ mimeType: p.mimeType, base64: p.base64 })) },
+            { retries: 2 }
+          );
           result.paths.forEach((path) => {
             onEachUploaded(path);
             successCount++;
