@@ -389,8 +389,49 @@
     block.appendChild(textField("Titulek", a.title, (v) => (a.title = v)));
     block.appendChild(textField("Text", a.text, (v) => (a.text = v), { textarea: true, rows: 4 }));
 
-    block.appendChild(imageField("Fotografie", a.image.src, (path) => (a.image.src = path)));
-    block.appendChild(textField("Popisek fotografie (alt text)", a.image.alt, (v) => (a.image.alt = v)));
+    if (!a.media) a.media = { type: "image", src: "", alt: "" };
+
+    const typeWrap = fieldWrap("Typ média");
+    const typeSelect = document.createElement("select");
+    [
+      { value: "image", label: "Fotografie" },
+      { value: "video", label: "Video (přes URL odkaz)" }
+    ].forEach((opt) => {
+      const optionEl = document.createElement("option");
+      optionEl.value = opt.value;
+      optionEl.textContent = opt.label;
+      if (a.media.type === opt.value) optionEl.selected = true;
+      typeSelect.appendChild(optionEl);
+    });
+    typeSelect.addEventListener("change", () => {
+      a.media.type = typeSelect.value;
+      markDirty();
+      renderActiveSection();
+      sendPreviewUpdate();
+    });
+    typeWrap.appendChild(typeSelect);
+    block.appendChild(typeWrap);
+
+    if (a.media.type === "video") {
+      block.appendChild(
+        textField("URL adresa videa (přímý odkaz na .mp4)", a.media.src, (v) => (a.media.src = v), {
+          placeholder: "https://..."
+        })
+      );
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent =
+        "Video se přes administraci nenahrává jako soubor (videa jsou příliš velká pro přímý upload) - " +
+        "nahrajte ho nejdřív někam jinam (např. vlastní úložiště nebo videoplatformu s přímým odkazem na .mp4) " +
+        "a sem vložte jen odkaz. Video se přehrává potichu, automaticky a ve smyčce.";
+      block.appendChild(hint);
+    } else {
+      block.appendChild(
+        imageField("Fotografie", a.media.src, (path) => (a.media.src = path))
+      );
+    }
+
+    block.appendChild(textField("Popisek (alt text)", a.media.alt, (v) => (a.media.alt = v)));
 
     return block;
   }
