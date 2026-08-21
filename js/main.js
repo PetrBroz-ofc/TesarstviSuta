@@ -253,6 +253,7 @@
           open();
         }
       });
+      figure.addEventListener("mouseenter", () => preloadImage(images[0]), { once: true });
 
       grid.appendChild(figure);
     });
@@ -261,6 +262,21 @@
   function currentAlbumImages() {
     const item = lightboxSource[currentAlbumIndex];
     return item && Array.isArray(item.images) ? item.images : [];
+  }
+
+  function preloadImage(src) {
+    if (!src) return;
+    const img = new Image();
+    img.src = src;
+  }
+
+  function preloadAdjacent() {
+    const images = currentAlbumImages();
+    if (images.length < 2) return;
+    const nextIndex = (currentPhotoIndex + 1) % images.length;
+    const prevIndex = (currentPhotoIndex - 1 + images.length) % images.length;
+    preloadImage(images[nextIndex]);
+    preloadImage(images[prevIndex]);
   }
 
   function updateLightboxView() {
@@ -274,6 +290,11 @@
     const prevBtn = document.getElementById("lightbox-prev");
     const nextBtn = document.getElementById("lightbox-next");
 
+    // Jemný indikátor, dokud se fotka nedotáhne (u přednačtených sousedních
+    // fotek je to prakticky okamžité, ale u úplně první fotky v albu nebo
+    // na pomalejším připojení je vidět, že se něco děje, ne prázdno.
+    img.classList.add("is-loading");
+    img.onload = () => img.classList.remove("is-loading");
     img.src = images[currentPhotoIndex] || "";
     img.alt = escapeHTML(item.title || "");
     caption.textContent = [item.title, item.description].filter(Boolean).join(" — ");
@@ -282,6 +303,10 @@
     prevBtn.hidden = !hasMultiple;
     nextBtn.hidden = !hasMultiple;
     counter.textContent = hasMultiple ? `${currentPhotoIndex + 1} / ${images.length}` : "";
+
+    // Sousední fotky (další/předchozí) přednačteme na pozadí, aby posun
+    // šipkami/klávesnicí působil okamžitě, ne že se čeká na stažení.
+    preloadAdjacent();
   }
 
   function openLightbox(source, albumIndex, photoIndex) {
