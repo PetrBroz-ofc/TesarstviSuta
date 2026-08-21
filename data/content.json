@@ -115,13 +115,15 @@
           "images/uploads/realizace-migrace-1786828497713-3.jpg",
           "images/uploads/realizace-migrace-1786828502137-4.jpg",
           "images/uploads/upload-1787296559495-330855e5.jpg",
-          "images/uploads/upload-1787298718151-e8ae9a8f.jpg"
+          "images/uploads/upload-1787298718151-e8ae9a8f.jpg",
+          "images/uploads/upload-1787315274296-ac50e5a6.jpg"
         ]
       },
       {
         "title": "Rekonstrukce historických a památkově chráněných dřevěných konstrukcí ",
         "description": "",
         "images": [
+          "images/uploads/upload-1787306596961-ebcc655b.jpg",
           "images/uploads/upload-1787296507535-3be1a17d.jpg",
           "images/uploads/realizace-migrace-1786828506042-5.jpg",
           "images/uploads/realizace-migrace-1786828510526-6.jpg",
@@ -134,9 +136,7 @@
           "images/uploads/upload-1787304350750-aa1f852e.jpg",
           "images/uploads/upload-1787304350751-aee3c083.jpg",
           "images/uploads/upload-1787306596960-7167c67b.jpg",
-          "images/uploads/upload-1787306596961-ebcc655b.jpg",
           "images/uploads/upload-1787307092718-a0921e66.jpg",
-          "images/uploads/upload-1787307213914-ea8fb04f.jpg",
           "images/uploads/upload-1787308583550-07ff25a3.jpg"
         ]
       },
@@ -165,7 +165,7 @@
           "images/uploads/upload-1787303596142-f8430321.jpg",
           "images/uploads/upload-1787303596143-5bbe70e9.jpg",
           "images/uploads/upload-1787308287743-10c67b13.jpg",
-          "images/uploads/upload-1787316654263-e76ef881.jpg"
+          "images/uploads/upload-1787319197963-1b65a9aa.jpg"
         ]
       },
       {
@@ -278,7 +278,7 @@
   "contact": {
     "eyebrow": "Spojte se s námi",
     "title": "Kontakt",
-    "text": "Máte v plánu opravu střechy nebo tesařskou zakázku? Ozvěte se nám, poradíme a připravíme nabídku na míru.",
+    "text": "Máte v plánu rekonstrukci střechy, krovu nebo jinou tesařskou zakázku? Ozvěte se nám, poradíme a připravíme nabídku na míru.",
     "ctaLabel": "Kontaktujte nás",
     "persons": [
       {
