@@ -27,10 +27,18 @@ async function run() {
       return { ok: true, json: async () => ({ authenticated: true }) };
     }
     if (u.includes("content.json")) {
-      return { ok: true, json: async () => contentData };
+      return {
+        ok: true,
+        json: async () => contentData,
+        text: async () => JSON.stringify(contentData, null, 2)
+      };
     }
     if (u.includes("theme.json")) {
-      return { ok: true, json: async () => themeData };
+      return {
+        ok: true,
+        json: async () => themeData,
+        text: async () => JSON.stringify(themeData, null, 2)
+      };
     }
     return { ok: true, json: async () => ({}) };
   };
