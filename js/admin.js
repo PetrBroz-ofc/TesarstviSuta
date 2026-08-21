@@ -1527,12 +1527,44 @@
     const discardBtn = document.getElementById("discard-btn");
     saveBtn.disabled = true;
     discardBtn.disabled = true;
-    setSaveStatus("Publikuji…", "");
+    setSaveStatus("Kontroluji, jestli mezitím nikdo jiný neuložil změny…", "");
+
     try {
+      // Kontrola konfliktu: porovnáme aktuální stav na serveru s tím, co
+      // tahle záložka měla naposledy načtené. Pokud se liší, znamená to,
+      // že obsah mezitím (třeba z jiného otevřeného okna/zařízení) změnil
+      // někdo jiný - v tom případě NEPŘEPISUJEME a radši vyzveme k
+      // obnovení stránky, než abychom tiše ztratili cizí novější změny.
+      const [liveContentText, liveThemeText] = await Promise.all([
+        fetch("data/content.json", { cache: "no-store" }).then((r) => r.text()),
+        fetch("data/theme.json", { cache: "no-store" }).then((r) => r.text())
+      ]);
+
+      const contentChanged =
+        state.loadedContentSnapshot !== undefined &&
+        canonicalJson(liveContentText) !== state.loadedContentSnapshot;
+      const themeChanged =
+        state.loadedThemeSnapshot !== undefined &&
+        canonicalJson(liveThemeText) !== state.loadedThemeSnapshot;
+
+      if (contentChanged || themeChanged) {
+        setSaveStatus(
+          "⚠️ Obsah mezitím upravil někdo jiný (jiné okno/zařízení) - vaše změny NEBYLY uloženy, aby se nic nepřepsalo. Obnovte prosím stránku (F5) a upravte to znovu.",
+          "error"
+        );
+        return;
+      }
+
+      setSaveStatus("Publikuji…", "");
       await apiPost("/api/save", { file: "content", data: state.content });
       await apiPost("/api/save", { file: "theme", data: state.theme });
       isDirty = false;
       setSaveStatus("Publikováno ✓ (nasazení může trvat ~1 minutu)", "success");
+
+      // Po úspěšném uložení si osvěžíme snímek na nově uložený stav, ať
+      // případná DALŠÍ kontrola porovnává proti aktuálnímu stavu.
+      state.loadedContentSnapshot = canonicalJson(JSON.stringify(state.content));
+      state.loadedThemeSnapshot = canonicalJson(JSON.stringify(state.theme));
     } catch (err) {
       setSaveStatus("Chyba: " + err.message, "error");
     } finally {
@@ -1563,13 +1595,32 @@
 
   /* ==================== Přihlášení ==================== */
 
+  function canonicalJson(text) {
+    // Strukturální otisk obsahu - json.parse+stringify bez odsazení, ať
+    // drobné rozdíly ve formátování (koncové odřádkování, mezery) mezi
+    // různými cestami uložení (admin vs. přímá úprava souboru) nezpůsobí
+    // falešnou detekci konfliktu.
+    try {
+      return JSON.stringify(JSON.parse(text));
+    } catch {
+      return text;
+    }
+  }
+
   async function loadContentAndTheme() {
-    const [content, theme] = await Promise.all([
-      fetch("data/content.json", { cache: "no-store" }).then((r) => r.json()),
-      fetch("data/theme.json", { cache: "no-store" }).then((r) => r.json())
+    const [contentText, themeText] = await Promise.all([
+      fetch("data/content.json", { cache: "no-store" }).then((r) => r.text()),
+      fetch("data/theme.json", { cache: "no-store" }).then((r) => r.text())
     ]);
-    state.content = clone(content);
-    state.theme = clone(theme);
+    state.content = clone(JSON.parse(contentText));
+    state.theme = clone(JSON.parse(themeText));
+    // Snímek přesně toho, co je PRÁVĚ TEĎ na serveru - použije se před uložením
+    // ke kontrole, jestli mezitím (např. z jiného otevřeného okna/zařízení)
+    // někdo jiný obsah nezměnil. Bez týhle kontroly by "Publikovat" mohlo
+    // tiše přepsat cizí novější změny tím starším stavem, co má tahle
+    // konkrétní záložka v paměti - přesně tohle se už párkrát stalo.
+    state.loadedContentSnapshot = canonicalJson(contentText);
+    state.loadedThemeSnapshot = canonicalJson(themeText);
   }
 
   function showApp() {
