@@ -206,6 +206,7 @@
           { mimeType: processed.mimeType, base64: processed.base64 },
           { retries: 2 }
         );
+        if (processed.previewUrl) localPreviewUrls.set(result.path, processed.previewUrl);
         onUploaded(result.path);
         updatePreviewThumb(preview, result.path);
 
@@ -239,6 +240,12 @@
     return wrap;
   }
 
+  // Cesta na serveru -> lokální (blob) adresa nahrané fotky v TÉTO session.
+  // Živá URL adresa (images/uploads/...) se stane skutečně dostupnou až po
+  // dokončení nasazení nové verze webu (~1 minuta) - do té doby admin
+  // zobrazuje náhled přímo z fotky v prohlížeči, aby nebyl prázdný.
+  const localPreviewUrls = new Map();
+
   function updatePreviewThumb(node, src) {
     const isPdf = !!src && /\.pdf($|\?)/i.test(src);
     node.classList.toggle("is-pdf", isPdf);
@@ -249,7 +256,8 @@
       return;
     }
     if (src) {
-      node.style.backgroundImage = `url("${src}")`;
+      const localUrl = localPreviewUrls.get(src);
+      node.style.backgroundImage = `url("${localUrl || src}")`;
       node.textContent = "";
     } else {
       node.style.backgroundImage = "none";
@@ -687,7 +695,10 @@
             { files: batches[b].map((p) => ({ mimeType: p.mimeType, base64: p.base64 })) },
             { retries: 2 }
           );
-          result.paths.forEach((path) => {
+          result.paths.forEach((path, i) => {
+            if (batches[b][i] && batches[b][i].previewUrl) {
+              localPreviewUrls.set(path, batches[b][i].previewUrl);
+            }
             onEachUploaded(path);
             successCount++;
           });
