@@ -564,7 +564,12 @@ h1, h2, h3, .section-title {
   overflow: hidden;
   background: var(--color-secondary);
 }
-.about-media img { width: 100%; height: 100%; object-fit: cover; }
+.about-media img,
+.about-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 @media (max-width: 860px) {
   .about-grid { grid-template-columns: 1fr; }
