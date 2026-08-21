@@ -134,6 +134,7 @@
       img.src = media.src;
       img.alt = escapeHTML(media.alt || "");
       img.loading = "eager";
+      img.decoding = "async";
       heroMedia.appendChild(img);
     } else {
       heroMedia.appendChild(el("div", "placeholder-media", ICONS.roofFrame));
@@ -159,6 +160,7 @@
       img.src = about.image.src;
       img.alt = escapeHTML(about.image.alt || "");
       img.loading = "lazy";
+      img.decoding = "async";
       mediaContainer.appendChild(img);
     } else {
       mediaContainer.appendChild(el("div", "placeholder-media", ICONS.woodPlank));
@@ -213,6 +215,8 @@
         img.src = images[0];
         img.alt = escapeHTML(item.title || "Fotografie realizace");
         img.loading = "lazy";
+        img.decoding = "async";
+        img.setAttribute("fetchpriority", "low");
         figure.appendChild(img);
       } else {
         figure.appendChild(el("div", "placeholder-media", ICONS.roofTiles));
@@ -330,6 +334,8 @@
         img.src = item.image;
         img.alt = escapeHTML(item.title || "Certifikát");
         img.loading = "lazy";
+        img.decoding = "async";
+        img.setAttribute("fetchpriority", "low");
         card.appendChild(img);
 
         card.setAttribute("role", "button");
