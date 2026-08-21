@@ -27,26 +27,54 @@ function getConfig() {
   return { token, repo, branch };
 }
 
-async function githubRequest(path, options = {}) {
+async function githubRequest(path, options = {}, retryConfig = {}) {
   const { token } = getConfig();
-  const res = await fetch(`${API_BASE}${path}`, {
-    ...options,
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    }
-  });
+  const maxAttempts = retryConfig.maxAttempts ?? 3;
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => "");
-    const err = new Error(`GitHub API chyba (${res.status}): ${body}`);
-    err.status = res.status;
-    throw err;
+  let lastErr;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    let res;
+    try {
+      res = await fetch(`${API_BASE}${path}`, {
+        ...options,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/vnd.github+json",
+          "X-GitHub-Api-Version": "2022-11-28",
+          "Content-Type": "application/json",
+          ...(options.headers || {})
+        }
+      });
+    } catch (networkErr) {
+      // Vypadek site apod. - fetch samotny selze (zadna odpoved).
+      lastErr = networkErr;
+      if (attempt < maxAttempts) {
+        await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+        continue;
+      }
+      throw networkErr;
+    }
+
+    if (!res.ok) {
+      const body = await res.text().catch(() => "");
+      const err = new Error(`GitHub API chyba (${res.status}): ${body}`);
+      err.status = res.status;
+
+      // Opakujeme jen dočasné chyby (5xx = problém na straně GitHubu,
+      // 429 = rate limit) - NIKDY chyby typu 4xx způsobené naším
+      // požadavkem (ty by opakování stejně nevyřešilo).
+      const isTransient = res.status === 429 || res.status >= 500;
+      if (attempt < maxAttempts && isTransient) {
+        lastErr = err;
+        await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+        continue;
+      }
+      throw err;
+    }
+
+    return res.json();
   }
-  return res.json();
+  throw lastErr;
 }
 
 /** Načte soubor z repozitáře. Vrátí { content: string, sha } nebo null, pokud neexistuje. */
@@ -97,57 +125,76 @@ async function putFile(filePath, contentUtf8OrBase64, message, sha, isBase64 = f
  * samostatné nasazení, a při nahrávání víc fotek najednou by mohlo dojít
  * k závodu mezi rychle po sobě jdoucími nasazeními (CDN pak umí na chvíli
  * zaseknout chybnou odpověď pro soubor, který se objevil "mezi" nasazeními).
+ *
+ * DŮLEŽITÉ - odolnost proti souběhu: pokud mezi přečtením větve (krok 1) a
+ * jejím posunem (krok 5) proběhne JINÝ zápis (např. uživatel odešle dvě
+ * nahrání rychle po sobě, nebo souběžně běží uložení content.json), GitHub
+ * odmítne poslední krok s chybou 409/422 ("update is not a fast forward").
+ * Bez ošetření to celé nahrání zbytečně shodí, i když nešlo o skutečnou
+ * chybu - proto se v takovém případě (i při dočasném výpadku sítě/GitHubu)
+ * celá sekvence od čtení větve zopakuje s už čerstvým stavem.
  * @param {{path: string, base64: string}[]} files
  * @param {string} message
- * @returns {Promise<{ path: string, shaCommit: string }>}
+ * @returns {Promise<{ shaCommit: string, count: number }>}
  */
 async function putFilesBatch(files, message) {
   const { repo, branch } = getConfig();
 
-  // 1) Aktuální stav větve (poslední commit + jeho strom)
-  const ref = await githubRequest(`/repos/${repo}/git/ref/heads/${branch}`);
-  const baseCommitSha = ref.object.sha;
-  const baseCommit = await githubRequest(`/repos/${repo}/git/commits/${baseCommitSha}`);
-  const baseTreeSha = baseCommit.tree.sha;
-
-  // 2) Blob pro každý soubor (samotné nahrání obsahu, ještě nic nemění)
+  // Bloby (obsah souborů) vytvoříme jen JEDNOU - jejich obsah se mezi
+  // případnými opakováními nemění, nemá smysl je nahrávat znovu.
   const treeItems = [];
   for (const file of files) {
     const blob = await githubRequest(`/repos/${repo}/git/blobs`, {
       method: "POST",
       body: JSON.stringify({ content: file.base64, encoding: "base64" })
     });
-    treeItems.push({
-      path: file.path,
-      mode: "100644",
-      type: "blob",
-      sha: blob.sha
-    });
+    treeItems.push({ path: file.path, mode: "100644", type: "blob", sha: blob.sha });
   }
 
-  // 3) Nový strom (base_tree + nové/změněné soubory)
-  const newTree = await githubRequest(`/repos/${repo}/git/trees`, {
-    method: "POST",
-    body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems })
-  });
+  const maxAttempts = 3;
+  let lastErr;
 
-  // 4) Nový commit ukazující na nový strom
-  const newCommit = await githubRequest(`/repos/${repo}/git/commits`, {
-    method: "POST",
-    body: JSON.stringify({
-      message,
-      tree: newTree.sha,
-      parents: [baseCommitSha]
-    })
-  });
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      // 1) Aktuální (čerstvý) stav větve - při opakování se čte znovu
+      const ref = await githubRequest(`/repos/${repo}/git/ref/heads/${branch}`);
+      const baseCommitSha = ref.object.sha;
+      const baseCommit = await githubRequest(`/repos/${repo}/git/commits/${baseCommitSha}`);
+      const baseTreeSha = baseCommit.tree.sha;
 
-  // 5) Posun větve na nový commit (JEDINÝ trigger nasazení pro celou dávku)
-  await githubRequest(`/repos/${repo}/git/refs/heads/${branch}`, {
-    method: "PATCH",
-    body: JSON.stringify({ sha: newCommit.sha })
-  });
+      // 2) Nový strom (base_tree + naše soubory)
+      const newTree = await githubRequest(`/repos/${repo}/git/trees`, {
+        method: "POST",
+        body: JSON.stringify({ base_tree: baseTreeSha, tree: treeItems })
+      });
 
-  return { shaCommit: newCommit.sha, count: files.length };
+      // 3) Nový commit ukazující na nový strom
+      const newCommit = await githubRequest(`/repos/${repo}/git/commits`, {
+        method: "POST",
+        body: JSON.stringify({ message, tree: newTree.sha, parents: [baseCommitSha] })
+      });
+
+      // 4) Posun větve na nový commit (JEDINÝ trigger nasazení pro celou dávku)
+      await githubRequest(`/repos/${repo}/git/refs/heads/${branch}`, {
+        method: "PATCH",
+        body: JSON.stringify({ sha: newCommit.sha })
+      });
+
+      return { shaCommit: newCommit.sha, count: files.length };
+    } catch (err) {
+      lastErr = err;
+      // 409/422 = mezitím se posunula větev (souběh) - zkusíme znovu s
+      // čerstvým stavem. 5xx/bez statusu = dočasný výpadek - taky zkusíme znovu.
+      const isConflict = err.status === 409 || err.status === 422;
+      const isTransient = !err.status || err.status >= 500;
+      if (attempt < maxAttempts && (isConflict || isTransient)) {
+        await new Promise((resolve) => setTimeout(resolve, 400 * attempt));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
 }
 
 module.exports = { getFile, putFile, putFilesBatch };
