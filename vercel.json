@@ -78,5 +78,16 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/upload-image.js": {
+      "maxDuration": 30
+    },
+    "api/upload-images-batch.js": {
+      "maxDuration": 30
+    },
+    "api/save.js": {
+      "maxDuration": 20
+    }
+  }
 }
