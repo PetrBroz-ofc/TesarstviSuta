@@ -67,7 +67,11 @@ const ImageEditor = (function () {
     if (!blob) throw new Error("Zpracování obrázku selhalo.");
 
     const base64 = await blobToBase64(blob);
-    return { base64, mimeType: "image/jpeg", width, height, bytes: blob.size };
+    // Lokální adresa z právě zpracované fotky - použitelná OKAMŽITĚ v
+    // prohlížeči (na rozdíl od cesty na serveru, kde nasazení nové verze
+    // webu může trvat i minutu, než je fotka skutečně dostupná).
+    const previewUrl = URL.createObjectURL(blob);
+    return { base64, mimeType: "image/jpeg", width, height, bytes: blob.size, previewUrl };
   }
 
   function blobToBase64(blob) {
@@ -125,6 +129,7 @@ const ImageEditor = (function () {
 
     const base64 = await blobToBase64(thumbBlob);
     const pdfBase64 = await blobToBase64(file);
+    const previewUrl = URL.createObjectURL(thumbBlob);
 
     return {
       // Nahled - posila se stejne jako bezna fotka (image pole).
@@ -133,6 +138,7 @@ const ImageEditor = (function () {
       width: canvas.width,
       height: canvas.height,
       bytes: thumbBlob.size,
+      previewUrl,
       // + puvodni PDF k samostatnemu uploadu.
       isPdf: true,
       pdfBase64,
