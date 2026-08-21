@@ -63,6 +63,10 @@
     "eyebrow": "O firmě",
     "title": "Řemeslo, na které se dá spolehnout",
     "text": "Tesařině se věnujeme od roku 2008. Jsme rodinná firma z Francovy Lhoty. Stavíme střechy na rodinných domech i historických budovách a věnujeme se také náročným tesařským konstrukcím a rekonstrukcím památkových objektů.\nMezi naše nejzajímavější realizace patří zámek Lysice, zámek Hradec nad Moravicí, zámek Kunerad na Slovensku nebo kostel sv. Víta v Českém Krumlově.\nZa největší odměnu považujeme možnost podílet se na zachování staveb, které tu stojí desítky či stovky let. Ke každé zakázce přistupujeme s respektem k řemeslu, materiálu i představám zákazníka. \n",
+    "image": {
+      "src": "images/uploads/upload-1786948297858-c83e871a.jpg",
+      "alt": "Detail ručně tesaného spoje krokví"
+    },
     "stats": [
       {
         "value": "19+",
@@ -79,12 +83,7 @@
         "unit": "",
         "label": "práce po celé ČR"
       }
-    ],
-    "media": {
-      "type": "image",
-      "src": "images/uploads/upload-1786948297858-c83e871a.jpg",
-      "alt": "Detail ručně tesaného spoje krokví"
-    }
+    ]
   },
   "services": {
     "eyebrow": "Co děláme",
@@ -194,6 +193,11 @@
           "images/uploads/upload-1787311854048-716e0bde.jpg",
           "images/uploads/upload-1787315027761-7fa6bf4b.jpg"
         ]
+      },
+      {
+        "title": "Test",
+        "description": "Popis realizace",
+        "images": []
       }
     ]
   },
