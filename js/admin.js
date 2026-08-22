@@ -935,6 +935,27 @@
       }
 
       wrap.appendChild(textField("Název certifikátu", item.title, (v) => (item.title = v)));
+
+      const categoryWrap = fieldWrap("Kategorie (kam se zařadí na webu)");
+      const categorySelect = document.createElement("select");
+      [
+        { value: "certifikat", label: "Certifikát" },
+        { value: "osvedceni", label: "Osvědčení" }
+      ].forEach((opt) => {
+        const optionEl = document.createElement("option");
+        optionEl.value = opt.value;
+        optionEl.textContent = opt.label;
+        if ((item.category || "certifikat") === opt.value) optionEl.selected = true;
+        categorySelect.appendChild(optionEl);
+      });
+      categorySelect.addEventListener("change", () => {
+        item.category = categorySelect.value;
+        markDirty();
+        sendPreviewUpdate();
+      });
+      categoryWrap.appendChild(categorySelect);
+      wrap.appendChild(categoryWrap);
+
       const row = document.createElement("div");
       row.className = "field-row";
       row.appendChild(textField("Vydavatel", item.issuer, (v) => (item.issuer = v)));
@@ -946,7 +967,7 @@
 
     block.appendChild(
       smallBtn("+ Přidat certifikát", () => {
-        c.items.push({ image: "", title: "Název certifikátu", issuer: "", year: "" });
+        c.items.push({ image: "", title: "Název certifikátu", issuer: "", year: "", category: "certifikat" });
         markDirty();
         renderActiveSection();
         sendPreviewUpdate();
