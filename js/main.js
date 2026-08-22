@@ -338,6 +338,59 @@
 
   /* ---------- Render: lešení ---------- */
 
+  const CERT_CATEGORY_LABELS = {
+    certifikat: "Certifikáty",
+    osvedceni: "Osvědčení"
+  };
+  const CERT_CATEGORY_ORDER = ["certifikat", "osvedceni"];
+
+  function buildCertCard(item, globalIndex, certAsAlbums) {
+    const card = el("div", "cert-card");
+
+    if (item.image) {
+      const img = el("img");
+      img.src = item.image;
+      img.alt = escapeHTML(item.title || "Certifikát");
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.setAttribute("fetchpriority", "low");
+      card.appendChild(img);
+
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+      card.setAttribute("aria-label", "Zobrazit certifikát: " + (item.title || ""));
+      const open = () => openLightbox(certAsAlbums, globalIndex, 0);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      });
+
+      if (item.pdfFile) {
+        const pdfLink = document.createElement("a");
+        pdfLink.href = item.pdfFile;
+        pdfLink.target = "_blank";
+        pdfLink.rel = "noopener";
+        pdfLink.className = "cert-pdf-badge";
+        pdfLink.textContent = "PDF";
+        pdfLink.setAttribute("aria-label", "Stáhnout PDF originál: " + (item.title || ""));
+        pdfLink.addEventListener("click", (e) => e.stopPropagation());
+        card.appendChild(pdfLink);
+      }
+    } else {
+      card.appendChild(el("div", "placeholder-media", ICONS.idCard));
+    }
+
+    const info = el("div", "cert-info");
+    info.appendChild(el("div", "cert-title", escapeHTML(item.title)));
+    const meta = [item.issuer, item.year].filter(Boolean).join(" · ");
+    if (meta) info.appendChild(el("div", "cert-meta", escapeHTML(meta)));
+    card.appendChild(info);
+    return card;
+  }
+
   function renderCertificates(content) {
     const cert = content.certificates;
     const section = document.getElementById("certificates-section");
@@ -359,53 +412,26 @@
       images: item.image ? [item.image] : []
     }));
 
-    const grid = document.getElementById("certificates-grid");
-    grid.innerHTML = "";
-    cert.items.forEach((item, index) => {
-      const card = el("div", "cert-card");
+    const wrap = document.getElementById("certificates-grid");
+    wrap.innerHTML = "";
 
-      if (item.image) {
-        const img = el("img");
-        img.src = item.image;
-        img.alt = escapeHTML(item.title || "Certifikát");
-        img.loading = "lazy";
-        img.decoding = "async";
-        img.setAttribute("fetchpriority", "low");
-        card.appendChild(img);
-
-        card.setAttribute("role", "button");
-        card.setAttribute("tabindex", "0");
-        card.setAttribute("aria-label", "Zobrazit certifikát: " + (item.title || ""));
-        const open = () => openLightbox(certAsAlbums, index, 0);
-        card.addEventListener("click", open);
-        card.addEventListener("keydown", (e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            open();
-          }
-        });
-
-        if (item.pdfFile) {
-          const pdfLink = document.createElement("a");
-          pdfLink.href = item.pdfFile;
-          pdfLink.target = "_blank";
-          pdfLink.rel = "noopener";
-          pdfLink.className = "cert-pdf-badge";
-          pdfLink.textContent = "PDF";
-          pdfLink.setAttribute("aria-label", "Stáhnout PDF originál: " + (item.title || ""));
-          pdfLink.addEventListener("click", (e) => e.stopPropagation());
-          card.appendChild(pdfLink);
+    CERT_CATEGORY_ORDER.forEach((categoryKey) => {
+      const itemsInGroup = [];
+      cert.items.forEach((item, index) => {
+        if ((item.category || "certifikat") === categoryKey) {
+          itemsInGroup.push({ item, index });
         }
-      } else {
-        card.appendChild(el("div", "placeholder-media", ICONS.idCard));
-      }
+      });
+      if (!itemsInGroup.length) return;
 
-      const info = el("div", "cert-info");
-      info.appendChild(el("div", "cert-title", escapeHTML(item.title)));
-      const meta = [item.issuer, item.year].filter(Boolean).join(" · ");
-      if (meta) info.appendChild(el("div", "cert-meta", escapeHTML(meta)));
-      card.appendChild(info);
-      grid.appendChild(card);
+      const group = el("div", "cert-group");
+      group.appendChild(el("h3", "cert-group-title", CERT_CATEGORY_LABELS[categoryKey]));
+      const grid = el("div", "cert-grid");
+      itemsInGroup.forEach(({ item, index }) => {
+        grid.appendChild(buildCertCard(item, index, certAsAlbums));
+      });
+      group.appendChild(grid);
+      wrap.appendChild(group);
     });
   }
 
