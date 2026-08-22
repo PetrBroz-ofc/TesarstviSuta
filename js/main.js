@@ -779,6 +779,47 @@
 
   /* ---------- Inicializace ---------- */
 
+  let lastContentSnapshot = null;
+
+  function initUpdateChecker() {
+    // Stránka si data stáhne jen JEDNOU při načtení. Pokud má někdo kartu
+    // otevřenou dlouho (přes noc, celý den) a jen se v ní vrací/scrolluje
+    // bez skutečného obnovení, JS se znovu nezeptá serveru - i kdyby byl
+    // obsah dávno opravený/aktualizovaný. Tahle kontrola na pozadí (každé
+    // 3 minuty) to hlídá a nabídne nenápadné tlačítko k obnovení, ať to
+    // nikoho neruší uprostřed prohlížení tím, že by se stránka sama
+    // nečekaně překreslila.
+    const CHECK_INTERVAL_MS = 3 * 60 * 1000;
+
+    setInterval(async () => {
+      try {
+        const res = await fetch("data/content.json", { cache: "no-store" });
+        if (!res.ok) return;
+        const text = await res.text();
+        if (lastContentSnapshot !== null && text !== lastContentSnapshot) {
+          showUpdateBanner();
+        }
+      } catch {
+        /* tichy neuspech - zkusime to znovu pri dalsim intervalu */
+      }
+    }, CHECK_INTERVAL_MS);
+  }
+
+  function showUpdateBanner() {
+    if (document.getElementById("update-banner")) return; // uz zobrazeno
+    const banner = document.createElement("div");
+    banner.id = "update-banner";
+    banner.className = "update-banner";
+    banner.innerHTML =
+      '<span>Na webu je nová verze obsahu.</span>' +
+      '<button type="button" id="update-banner-btn">Obnovit stránku</button>';
+    document.body.appendChild(banner);
+    requestAnimationFrame(() => banner.classList.add("is-visible"));
+    document
+      .getElementById("update-banner-btn")
+      .addEventListener("click", () => window.location.reload());
+  }
+
   async function init() {
     // Tohle nepotřebuje data z content.json - HTML už obsahuje hotový text,
     // takže menu, scroll efekt hlavičky, lightbox, scroll-reveal animace
@@ -790,16 +831,18 @@
     initFAQAccordion();
     initReveal();
     initCookieBehavior();
+    initUpdateChecker();
 
     try {
-      const [content, theme] = await Promise.all([
-        fetchJSON("data/content.json"),
-        fetchJSON("data/theme.json")
+      const [contentText, themeText] = await Promise.all([
+        fetch("data/content.json", { cache: "no-store" }).then((r) => r.text()),
+        fetch("data/theme.json", { cache: "no-store" }).then((r) => r.text())
       ]);
+      lastContentSnapshot = contentText;
       // Doplní/aktualizuje obsah podle aktuálního content.json (např. po
       // úpravě v administraci). Pokud fetch selže, stránka dál funguje
       // s obsahem, který už je napevno v HTML.
-      renderAll(content, theme);
+      renderAll(JSON.parse(contentText), JSON.parse(themeText));
     } catch (err) {
       console.error("Chyba při načítání obsahu webu:", err);
     }
