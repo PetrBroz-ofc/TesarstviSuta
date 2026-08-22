@@ -72,7 +72,7 @@
 
   function markDirty() {
     isDirty = true;
-    setSaveStatus("Neuložené změny", "");
+    setSaveStatus("Neuložené změny", "dirty");
   }
 
   function setSaveStatus(text, kind) {
