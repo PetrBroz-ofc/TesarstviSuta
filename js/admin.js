@@ -79,6 +79,9 @@
     const node = document.getElementById("save-status");
     node.textContent = text;
     node.className = "save-status" + (kind ? " is-" + kind : "");
+
+    const icon = document.getElementById("save-status-icon");
+    if (icon) icon.hidden = kind !== "dirty";
   }
 
   /* ==================== Živý náhled ====================
