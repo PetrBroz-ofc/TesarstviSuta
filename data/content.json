@@ -199,38 +199,43 @@
   },
   "certificates": {
     "eyebrow": "Kvalita a záruky",
-    "title": "Certifikáty",
+    "title": "Certifikáty a osvědčení",
     "intro": "Naše práce je podložená odbornou způsobilostí a kvalifikací v oboru.",
     "items": [
       {
         "image": "images/uploads/realizace-1786389638546-7ce7d4c0.jpg",
         "title": "Referenční list",
         "issuer": "Arcibiskupství pražské",
-        "year": "2014"
+        "year": "2014",
+        "category": "osvedceni"
       },
       {
         "image": "images/uploads/realizace-1786389827109-975bf34f.jpg",
         "title": "Podnikatel roku",
         "issuer": "",
-        "year": "2012"
+        "year": "2012",
+        "category": "osvedceni"
       },
       {
         "image": "images/uploads/upload-1786563062856-4b78d29c.jpg",
         "title": "Osvědčení",
         "issuer": "Wienerberger s.r.o.",
-        "year": "2026"
+        "year": "2026",
+        "category": "osvedceni"
       },
       {
         "image": "images/uploads/upload-1786562768001-b26731e4.jpg",
         "title": "Školení pokrývačů 1. stupně",
         "issuer": "Wienerberger s.r.o.",
-        "year": "2026"
+        "year": "2026",
+        "category": "certifikat"
       },
       {
         "image": "images/uploads/upload-1786563026245-62511f9c.jpg",
         "title": "Živnostník roku",
         "issuer": "",
-        "year": "2014"
+        "year": "2014",
+        "category": "osvedceni"
       }
     ]
   },
