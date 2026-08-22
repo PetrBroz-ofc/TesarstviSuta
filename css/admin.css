@@ -293,12 +293,18 @@ label {
   z-index: 20;
 }
 .topbar-actions { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.save-status-wrap { display: flex; align-items: center; gap: 0.4rem; }
 .save-status { font-size: 0.82rem; color: var(--a-muted); }
 .save-status.is-success { color: var(--a-success); }
 .save-status.is-error { color: var(--a-danger); }
 .save-status.is-dirty {
   color: var(--a-danger);
   font-weight: 700;
+  animation: saveStatusBlink 1.1s ease-in-out infinite;
+}
+.save-status-icon {
+  color: var(--a-danger);
+  flex-shrink: 0;
   animation: saveStatusBlink 1.1s ease-in-out infinite;
 }
 @keyframes saveStatusBlink {
@@ -573,7 +579,8 @@ label {
   .section-card,
   .content-header,
   .section-description,
-  .save-status.is-dirty {
+  .save-status.is-dirty,
+  .save-status-icon {
     animation: none;
   }
   * { transition-duration: 0.01ms !important; }
