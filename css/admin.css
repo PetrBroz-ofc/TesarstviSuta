@@ -296,6 +296,15 @@ label {
 .save-status { font-size: 0.82rem; color: var(--a-muted); }
 .save-status.is-success { color: var(--a-success); }
 .save-status.is-error { color: var(--a-danger); }
+.save-status.is-dirty {
+  color: var(--a-danger);
+  font-weight: 700;
+  animation: saveStatusBlink 1.1s ease-in-out infinite;
+}
+@keyframes saveStatusBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
 
 .content-header {
   display: flex;
@@ -563,7 +572,8 @@ label {
 @media (prefers-reduced-motion: reduce) {
   .section-card,
   .content-header,
-  .section-description {
+  .section-description,
+  .save-status.is-dirty {
     animation: none;
   }
   * { transition-duration: 0.01ms !important; }
