@@ -943,7 +943,7 @@
       const categorySelect = document.createElement("select");
       [
         { value: "certifikat", label: "Certifikát" },
-        { value: "osvedceni", label: "Osvědčení" }
+        { value: "oceneni", label: "Ocenění" }
       ].forEach((opt) => {
         const optionEl = document.createElement("option");
         optionEl.value = opt.value;
