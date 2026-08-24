@@ -340,9 +340,9 @@
 
   const CERT_CATEGORY_LABELS = {
     certifikat: "Certifikáty",
-    osvedceni: "Osvědčení"
+    oceneni: "Ocenění"
   };
-  const CERT_CATEGORY_ORDER = ["certifikat", "osvedceni"];
+  const CERT_CATEGORY_ORDER = ["certifikat", "oceneni"];
 
   function buildCertCard(item, globalIndex, certAsAlbums) {
     const card = el("div", "cert-card");
