@@ -81,7 +81,13 @@
     node.className = "save-status" + (kind ? " is-" + kind : "");
 
     const icon = document.getElementById("save-status-icon");
-    if (icon) icon.hidden = kind !== "dirty";
+    if (icon) {
+      const shouldShow = kind === "dirty";
+      icon.hidden = !shouldShow;
+      // Přímo přes JS (CSSOM), nezávisle na atributu hidden i na CSS pravidle
+      // - nejspolehlivější způsob, jak zaručit skutečné skrytí/zobrazení.
+      icon.style.display = shouldShow ? "" : "none";
+    }
   }
 
   /* ==================== Živý náhled ====================
