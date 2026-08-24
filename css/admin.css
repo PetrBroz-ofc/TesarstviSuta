@@ -307,6 +307,10 @@ label {
   flex-shrink: 0;
   animation: saveStatusBlink 1.1s ease-in-out infinite;
 }
+/* Explicitní vynucení skrytí - atribut [hidden] se u SVG elementů nemusí ve
+   všech prohlížečích chovat spolehlivě jen díky výchozímu UA stylu, proto
+   to raději nezávisle zajistíme vlastním pravidlem. */
+#save-status-icon[hidden] { display: none !important; }
 @keyframes saveStatusBlink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
