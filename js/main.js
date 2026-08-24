@@ -542,7 +542,7 @@
       const rowPhone = el(
         "div",
         "contact-row",
-        `${ICONS.phone}<a href="${telHref}">${escapeHTML(p.phone)}</a>`
+        `${ICONS.phone}<a href="${telHref}"><span class="tel-number">${escapeHTML(p.phone)}</span></a>`
       );
       card.appendChild(rowPhone);
       grid.appendChild(card);
