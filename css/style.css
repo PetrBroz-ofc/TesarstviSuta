@@ -1066,6 +1066,7 @@ h1, h2, h3, .section-title {
   font-size: 0.88rem;
   color: rgba(250, 250, 248, 0.65);
 }
+.tel-number { white-space: nowrap; }
 .footer-contact-row svg { width: 15px; height: 15px; flex-shrink: 0; color: var(--color-accent-light); }
 .footer-contact-row:hover { color: var(--color-white); }
 .footer-contact-address { margin-top: 0.9rem; }
