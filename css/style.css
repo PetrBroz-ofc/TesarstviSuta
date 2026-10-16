@@ -104,6 +104,11 @@ textarea:focus-visible {
 /* ==========================================================================
    Typografie
    ========================================================================== */
+/* Malé popisky nad nadpisy sekcí (O firmě, Co děláme…) jsou na přání klienta skryté.
+   Texty zůstávají v datech i v adminu, pro návrat stačí smazat display:none níže. */
+.eyebrow {
+  display: none !important;
+}
 .eyebrow {
   display: inline-flex;
   align-items: center;
