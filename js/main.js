@@ -203,6 +203,7 @@
   let lightboxSource = [];
   let currentAlbumIndex = 0;
   let currentPhotoIndex = 0;
+  let lightboxLoadToken = 0;
 
   function renderGallery(content) {
     const gallery = content.gallery;
@@ -290,12 +291,26 @@
     const prevBtn = document.getElementById("lightbox-prev");
     const nextBtn = document.getElementById("lightbox-next");
 
-    // Jemný indikátor, dokud se fotka nedotáhne (u přednačtených sousedních
-    // fotek je to prakticky okamžité, ale u úplně první fotky v albu nebo
-    // na pomalejším připojení je vidět, že se něco děje, ne prázdno.
-    img.classList.add("is-loading");
-    img.onload = () => img.classList.remove("is-loading");
-    img.src = images[currentPhotoIndex] || "";
+    // Novou fotku nejdřív načteme a dekódujeme mimo obrazovku a teprve pak
+    // ji vyměníme. Dřív se jen přepsal src a na telefonu chvíli zůstávala
+    // vidět předchozí fotka a obrázek měnil velikost (poskakoval). Token
+    // zajistí, že při rychlém listování vyhraje vždy poslední fotka.
+    const src = images[currentPhotoIndex] || "";
+    const token = ++lightboxLoadToken;
+    if (img.getAttribute("src") !== src) {
+      img.classList.add("is-loading");
+      const loader = new Image();
+      loader.src = src;
+      const show = () => {
+        if (token !== lightboxLoadToken) return;
+        img.src = src;
+        img.classList.remove("is-loading");
+      };
+      (loader.decode ? loader.decode() : Promise.reject()).then(show, () => {
+        if (loader.complete) show();
+        else { loader.onload = show; loader.onerror = show; }
+      });
+    }
     img.alt = escapeHTML(item.title || "");
     caption.textContent = [item.title, item.description].filter(Boolean).join(" — ");
 
@@ -334,6 +349,10 @@
     const lightbox = document.getElementById("lightbox");
     lightbox.classList.remove("is-open");
     document.body.style.overflow = "";
+    lightboxLoadToken++;
+    const img = document.getElementById("lightbox-img");
+    img.removeAttribute("src");
+    img.classList.remove("is-loading");
   }
 
   /* ---------- Render: lešení ---------- */
@@ -735,6 +754,23 @@
       e.stopPropagation();
       lightboxStep(1);
     });
+    // Listování prstem na telefonu (vodorovné přejetí)
+    const lb = document.getElementById("lightbox");
+    let touchX = null;
+    let touchY = null;
+    lb.addEventListener("touchstart", (e) => {
+      if (e.touches.length !== 1) { touchX = null; return; }
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    lb.addEventListener("touchend", (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      const dy = e.changedTouches[0].clientY - touchY;
+      touchX = null;
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.3) lightboxStep(dx < 0 ? 1 : -1);
+    }, { passive: true });
+
     document.getElementById("lightbox").addEventListener("click", (e) => {
       if (e.target.id === "lightbox") closeLightbox();
     });

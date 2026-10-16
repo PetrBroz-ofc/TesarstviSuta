@@ -672,21 +672,48 @@ h1, h2, h3, .section-title {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: rgba(17, 15, 14, 0.94);
+  background: rgba(17, 15, 14, 0.97);
   display: none;
   align-items: center;
   justify-content: center;
   padding: 2rem;
 }
 .lightbox.is-open { display: flex; }
+.lightbox {
+  overscroll-behavior: contain;
+  touch-action: pan-y pinch-zoom;
+}
+/* Pevný rámeček: fotky různých rozměrů se do něj jen vejdou, takže při
+   listování nic neposkakuje. */
 .lightbox img {
-  max-width: min(1100px, 100%);
-  max-height: 82vh;
+  width: min(1100px, 100%);
+  height: 82vh;
   object-fit: contain;
-  border-radius: var(--radius-md);
+  transition: opacity 0.15s ease;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.lightbox img:not([src]) { visibility: hidden; }
+.lightbox img.is-loading { opacity: 0; }
+.lightbox::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 28px;
+  margin: -14px 0 0 -14px;
+  border: 2px solid rgba(250, 250, 248, 0.25);
+  border-top-color: var(--color-bg);
+  border-radius: 50%;
+  opacity: 0;
+  pointer-events: none;
+  animation: lightbox-spin 0.8s linear infinite;
   transition: opacity 0.15s ease;
 }
-.lightbox img.is-loading { opacity: 0.35; }
+.lightbox:has(img.is-loading)::after { opacity: 1; }
+@keyframes lightbox-spin { to { transform: rotate(360deg); } }
 .lightbox-caption {
   position: absolute;
   bottom: 2.2rem;
@@ -747,6 +774,8 @@ h1, h2, h3, .section-title {
 }
 
 @media (max-width: 640px) {
+  .lightbox { padding: 1rem 0; }
+  .lightbox img { width: 100%; height: 72vh; }
   .lightbox-arrow { width: 44px; height: 44px; }
   .lightbox-arrow-prev { left: 0.5rem; }
   .lightbox-arrow-next { right: 0.5rem; }
